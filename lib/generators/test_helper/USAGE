@@ -1,0 +1,9 @@
+Description:
+    Generates a new Capybara Test Helper file
+
+Example:
+    bin/rails g test_helper name
+
+    This will create:
+        test_helpers/#{name}_test_helper
+
