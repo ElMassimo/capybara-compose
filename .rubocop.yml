@@ -3,6 +3,7 @@ inherit_from: .rubocop_todo.yml
 AllCops:
   Exclude:
     - "examples/rails_app/**/*"
+    - "vendor/bundle"
 
 Style/DoubleNegation:
   Enabled: false

@@ -2,7 +2,6 @@
 Capybara Test Helpers
 <p align="center">
 <a href="https://github.com/ElMassimo/capybara_test_helpers/actions"><img alt="Build Status" src="https://github.com/ElMassimo/capybara_test_helpers/workflows/build/badge.svg"/></a>
-<a href="https://inch-ci.org/github/ElMassimo/capybara_test_helpers"><img alt="Inline docs" src="https://inch-ci.org/github/ElMassimo/capybara_test_helpers.svg"/></a>
 <a href="https://codeclimate.com/github/ElMassimo/capybara_test_helpers"><img alt="Maintainability" src="https://codeclimate.com/github/ElMassimo/capybara_test_helpers/badges/gpa.svg"/></a>
 <a href="https://codeclimate.com/github/ElMassimo/capybara_test_helpers"><img alt="Test Coverage" src="https://codeclimate.com/github/ElMassimo/capybara_test_helpers/badges/coverage.svg"/></a>
 <a href="https://rubygems.org/gems/capybara_test_helpers"><img alt="Gem Version" src="https://img.shields.io/gem/v/capybara_test_helpers.svg?colorB=e9573f"/></a>

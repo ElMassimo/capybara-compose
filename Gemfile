@@ -7,7 +7,7 @@ gemspec
 
 gem 'rake', '~> 12.0'
 
-group :development do
+group :development, :test do
   gem 'pry-byebug'
   gem 'pry-rescue'
   gem 'pry-stack_explorer'

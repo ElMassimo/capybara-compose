@@ -65,7 +65,6 @@ GEM
       zeitwerk (~> 2.2, >= 2.2.2)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
-    bindex (0.8.1)
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
     bootsnap (1.5.1)
@@ -140,9 +139,6 @@ GEM
     i18n (1.8.5)
       concurrent-ruby (~> 1.0)
     interception (0.5)
-    listen (3.3.1)
-      rb-fsevent (~> 0.10, >= 0.10.3)
-      rb-inotify (~> 0.9, >= 0.9.10)
     loofah (2.7.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -217,9 +213,6 @@ GEM
       thor (>= 0.20.3, < 2.0)
     rainbow (3.0.0)
     rake (13.0.1)
-    rb-fsevent (0.10.4)
-    rb-inotify (0.10.1)
-      ffi (~> 1.0)
     regexp_parser (1.8.2)
     rspec-core (3.10.0)
       rspec-support (~> 3.10.0)
@@ -257,9 +250,6 @@ GEM
       spring (>= 0.9.1)
     spring-commands-rspec (1.0.4)
       spring (>= 0.9.1)
-    spring-watcher-listen (2.0.1)
-      listen (>= 2.7, < 4.0)
-      spring (>= 1.2, < 3.0)
     sprockets (4.0.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -278,11 +268,6 @@ GEM
     turbolinks-source (5.2.0)
     tzinfo (1.2.8)
       thread_safe (~> 0.1)
-    web-console (4.1.0)
-      actionview (>= 6.0.0)
-      activemodel (>= 6.0.0)
-      bindex (>= 0.4.0)
-      railties (>= 6.0.0)
     webdrivers (4.4.1)
       nokogiri (~> 1.6)
       rubyzip (>= 1.3.0)
@@ -308,7 +293,6 @@ DEPENDENCIES
   cucumber-rails
   cuprite
   database_cleaner
-  listen (~> 3.2)
   pry-byebug
   pry-rescue
   pry-stack_explorer
@@ -321,10 +305,8 @@ DEPENDENCIES
   spring
   spring-commands-cucumber
   spring-commands-rspec
-  spring-watcher-listen (~> 2.0.0)
   sqlite3 (~> 1.4)
   turbolinks (~> 5)
-  web-console (>= 3.3.0)
   webdrivers
   webpacker (~> 4.0)
 

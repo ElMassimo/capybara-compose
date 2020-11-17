@@ -225,7 +225,7 @@ RSpec.describe 'Capybara::Session', driver: :chrome_headless, type: :feature, he
   end
 
   describe 'Capybara#Node#attach_file', driver: :chrome_headless do
-    it 'can attach a directory', driver: :cuprite do
+    it 'can attach a directory', driver: :chrome, skip: ENV['CI'] do
       visit_page(:form)
       form_page.upload_directory
       current_page.body.should.have_content('4 | ') # number of files

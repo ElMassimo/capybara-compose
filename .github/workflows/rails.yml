@@ -18,17 +18,26 @@ jobs:
       - uses: actions/setup-ruby@v1
         with:
           ruby-version: ${{ env.RUBY_VERSION }}
+      - name: Update Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get --only-upgrade install google-chrome-stable
+          google-chrome --version
       - uses: nanasess/setup-chromedriver@master
       - uses: actions/cache@v2
         with:
-          path: vendor/bundle
+          path: examples/rails_app/vendor/bundle
           key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-gems-
+      - uses: c-hive/gha-yarn-cache@v1
       - name: Install dependencies
         run: |
           bin/bundle config path vendor/bundle
           bin/bundle install --jobs 4 --retry 3
+          yarn install --ignore-engines --frozen-lockfile
+      - name: Precompile Assets
+        run: bin/rake webpacker:compile
       - name: Run RSpecs
         run: bin/rspec
       - name: Run Cucumber

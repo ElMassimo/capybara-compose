@@ -14,7 +14,14 @@ jobs:
       - uses: actions/setup-ruby@v1
         with:
           ruby-version: ${{ env.RUBY_VERSION }}
+      - name: Update Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get --only-upgrade install google-chrome-stable
+          google-chrome --version
       - uses: nanasess/setup-chromedriver@master
+      - name: ChromeDriver Version
+        run: chromedriver --version
       - uses: actions/cache@v2
         with:
           path: vendor/bundle
