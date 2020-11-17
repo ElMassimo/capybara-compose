@@ -7,7 +7,7 @@ Given('there is an {string} city') do |name|
 end
 
 When('I add a city:') do |table|
-  cities.add(**table.rows_hash.symbolize_keys) { }
+  cities.add(**table.rows_hash.symbolize_keys) {}
 end
 
 When('I go back to the cities') do

@@ -15,7 +15,7 @@ RSpec.feature 'have_table', helpers: [:html_page] do
     html_page.should.have_table(:horizontal_table, with_rows:
       [
         { 'First Name' => 'Vern', 'Last Name' => 'Konopelski', 'City' => 'Everette' },
-        { 'First Name' => 'Palmer', 'Last Name' => 'Sawayn', 'City' => 'West Trinidad' }
+        { 'First Name' => 'Palmer', 'Last Name' => 'Sawayn', 'City' => 'West Trinidad' },
       ])
 
     expect { html_page.should_not.have_table(:horizontal_table) }
@@ -26,7 +26,7 @@ RSpec.feature 'have_table', helpers: [:html_page] do
     html_page.should.have_table('Horizontal Headers', with_rows:
       [
         { 'First Name' => 'Thomas' },
-        { 'Last Name' => 'Sawayn', 'City' => 'West Trinidad' }
+        { 'Last Name' => 'Sawayn', 'City' => 'West Trinidad' },
       ])
   end
 
@@ -34,7 +34,7 @@ RSpec.feature 'have_table', helpers: [:html_page] do
     html_page.should.have_table('Horizontal Headers', with_rows:
       [
         %w[Thomas Walpole Oceanside],
-        ['Ratke', 'Lawrence', 'East Sorayashire']
+        ['Ratke', 'Lawrence', 'East Sorayashire'],
       ])
   end
 
@@ -42,7 +42,7 @@ RSpec.feature 'have_table', helpers: [:html_page] do
     html_page.should_not.have_table('Horizontal Headers', with_rows:
       [
         %w[Thomas Walpole Oceanside],
-        ['Lawrence', 'Ratke', 'East Sorayashire']
+        ['Lawrence', 'Ratke', 'East Sorayashire'],
       ])
   end
 
@@ -53,7 +53,7 @@ RSpec.feature 'have_table', helpers: [:html_page] do
         %w[Danilo Wilkinson Johnsonville],
         %w[Vern Konopelski Everette],
         ['Ratke', 'Lawrence', 'East Sorayashire'],
-        ['Palmer', 'Sawayn', 'West Trinidad']
+        ['Palmer', 'Sawayn', 'West Trinidad'],
       ])
   end
 
@@ -62,14 +62,14 @@ RSpec.feature 'have_table', helpers: [:html_page] do
       [
         { 'First Name' => 'Thomas' },
         { 'First Name' => 'Danilo', 'Last Name' => 'Wilkinson', 'City' => 'Johnsonville' },
-        { 'Last Name' => 'Sawayn', 'City' => 'West Trinidad' }
+        { 'Last Name' => 'Sawayn', 'City' => 'West Trinidad' },
       ])
   end
 
   it 'should match col with array of cell values' do
     html_page.should.have_table('Vertical Headers', with_cols:
       [
-        %w[Vern Konopelski Everette]
+        %w[Vern Konopelski Everette],
       ])
   end
 
@@ -77,7 +77,7 @@ RSpec.feature 'have_table', helpers: [:html_page] do
     html_page.should.have_table('Vertical Headers', with_cols:
       [
         %w[Danilo Wilkinson Johnsonville],
-        %w[Vern Konopelski Everette]
+        %w[Vern Konopelski Everette],
       ])
   end
 
@@ -88,14 +88,14 @@ RSpec.feature 'have_table', helpers: [:html_page] do
         %w[Danilo Wilkinson Johnsonville],
         %w[Vern Konopelski Everette],
         ['Ratke', 'Lawrence', 'East Sorayashire'],
-        ['Palmer', 'Sawayn', 'West Trinidad']
+        ['Palmer', 'Sawayn', 'West Trinidad'],
       ])
   end
 
   it "should not match if the order of cell values doesn't match" do
     html_page.should_not.have_table('Vertical Headers', with_cols:
       [
-        %w[Vern Everette Konopelski]
+        %w[Vern Everette Konopelski],
       ])
   end
 
@@ -104,7 +104,7 @@ RSpec.feature 'have_table', helpers: [:html_page] do
       [
         { 'First Name' => 'Thomas' },
         { 'First Name' => 'Danilo', 'Last Name' => 'Walpole', 'City' => 'Johnsonville' },
-        { 'Last Name' => 'Sawayn', 'City' => 'West Trinidad' }
+        { 'Last Name' => 'Sawayn', 'City' => 'West Trinidad' },
       ])
   end
 
@@ -146,7 +146,7 @@ RSpec.feature 'have_no_table', helpers: [:html_page] do
   it 'should consider rows' do
     html_page.should.have_no_table('Horizontal Headers', with_rows:
      [
-       { 'First Name' => 'Thomas', 'City' => 'Los Angeles' }
+       { 'First Name' => 'Thomas', 'City' => 'Los Angeles' },
      ])
   end
 
@@ -154,7 +154,7 @@ RSpec.feature 'have_no_table', helpers: [:html_page] do
     it 'should consider a single column' do
       html_page.should.have_no_table('Vertical Headers', with_cols:
         [
-          { 'First Name' => 'Joe' }
+          { 'First Name' => 'Joe' },
         ])
     end
 
@@ -164,8 +164,8 @@ RSpec.feature 'have_no_table', helpers: [:html_page] do
           {
             'First Name' => 'What?',
             'What?' => 'Walpole',
-            'City' => 'Oceanside' # This line makes the example fail
-          }
+            'City' => 'Oceanside', # This line makes the example fail
+          },
         ])
     end
 
@@ -175,8 +175,8 @@ RSpec.feature 'have_no_table', helpers: [:html_page] do
           {
             'First Name' => 'What?',
             'What?' => 'Walpole',
-            'City' => 'What?'
-          }
+            'City' => 'What?',
+          },
         ])
     end
 
@@ -186,8 +186,8 @@ RSpec.feature 'have_no_table', helpers: [:html_page] do
           {
             'First Name' => 'Thomas',
             'Last Name' => 'What',
-            'City' => 'What'
-          }
+            'City' => 'What',
+          },
         ])
     end
 
@@ -197,8 +197,8 @@ RSpec.feature 'have_no_table', helpers: [:html_page] do
           {
             'First Name' => 'What',
             'Last Name' => 'What',
-            'City' => 'What'
-          }
+            'City' => 'What',
+          },
         ])
     end
   end

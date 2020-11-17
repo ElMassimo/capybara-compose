@@ -42,7 +42,6 @@ RSpec.feature 'Development Warnings' do
   end
 
   it 'warns when using dynamic RSpec predicates' do
-
     expect(html_page.respond_to?(:random)).to eq false
     expect { html_page.random }
       .to raise_error(NoMethodError, /undefined method `random' for #<HtmlPageTestHelper .*>$/)

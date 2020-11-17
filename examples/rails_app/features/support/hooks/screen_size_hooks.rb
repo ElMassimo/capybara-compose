@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Capybara.get_test_helper_class(:current_page)
 
 CurrentPageTestHelper::SCREEN_SIZES.each_key do |name|

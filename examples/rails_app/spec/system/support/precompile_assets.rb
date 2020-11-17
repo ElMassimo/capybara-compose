@@ -21,15 +21,19 @@ RSpec.configure do |config|
       # Use test-prof now 'cause it couldn't be monkey-patched (e.g., by Timecop or similar)
       start = Time.current
       begin
-        # Silence Webpacker output
-        $stdout.reopen(File.new("/dev/null", "w"))
         # next 3 lines to compile webpacker before running our test suite
-        require "rake"
+        require 'rake'
         Rails.application.load_tasks
-        Rake::Task["webpacker:compile"].execute
+        # Silence Webpacker output
+        $stdout.reopen(File.new('/dev/null', 'w'))
+        Rake::Task['webpacker:compile'].execute
+      rescue Exception => error
+        original_stdout.puts error.message
+        original_stdout.puts "\n⚠️  Retrying to precompile assets.\n"
+        Rake::Task['webpacker:compile'].execute
       ensure
         $stdout.reopen(original_stdout)
-        $stdout.puts "Finished in #{(Time.current - start).round(2)} seconds"
+        $stdout.puts "Finished in #{ (Time.current - start).round(2) } seconds"
       end
     end
   end

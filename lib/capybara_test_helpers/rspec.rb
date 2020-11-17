@@ -26,7 +26,7 @@ RSpec.configure do |config|
   }
 
   # Allow injecting test helpers in a feature or scenario.
-  %i[feature system view].each do |type|
+  types.each do |type|
     config.include(CapybaraTestHelpers::DependencyInjection, type: type)
     config.before(:each, type: type, &inject_test_helpers)
   end

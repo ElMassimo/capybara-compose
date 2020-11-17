@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'capybara_test_helpers'
 require 'rails/generators/named_base'
 

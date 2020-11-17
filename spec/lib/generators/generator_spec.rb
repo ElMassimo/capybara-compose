@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'generator_spec'
 require 'generators/test_helper/test_helper_generator'
 
 RSpec.describe TestHelperGenerator, type: :generator do
-  destination File.expand_path("../../../tmp", __dir__)
+  destination File.expand_path('../../../tmp', __dir__)
 
   before do
     prepare_destination
@@ -11,7 +13,7 @@ RSpec.describe TestHelperGenerator, type: :generator do
   context 'normal helpers' do
     before { run_generator %w[button] }
 
-    it "generates a test helper" do
+    it 'generates a test helper' do
       assert_file 'test_helpers/button_test_helper.rb', <<~TEST_HELPER
         # frozen_string_literal: true
 
@@ -34,7 +36,7 @@ RSpec.describe TestHelperGenerator, type: :generator do
   context 'base helper' do
     before { run_generator %w[base] }
 
-    it "generates the base test helper" do
+    it 'generates the base test helper' do
       assert_file 'test_helpers/base_test_helper.rb', <<~TEST_HELPER
         # frozen_string_literal: true
 

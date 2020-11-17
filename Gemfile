@@ -15,9 +15,9 @@ group :development do
 end
 
 group :test do
+  gem 'cuprite'
   gem 'rspec', '~> 3.0'
   gem 'selenium-webdriver', '~> 3'
-  gem 'cuprite'
   gem 'simplecov', '< 0.18'
   gem 'webdrivers'
 

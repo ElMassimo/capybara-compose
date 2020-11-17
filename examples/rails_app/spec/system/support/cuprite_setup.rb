@@ -10,7 +10,7 @@ Capybara.register_driver(:cuprite) do |app|
       browser_options: { 'no-sandbox' => nil },
       process_timeout: 10,
       inspector: true,
-      headless: !ENV['HEADLESS'].in?(%w[n 0 no false])
+      headless: !ENV['HEADLESS'].in?(%w[n 0 no false]),
     },
   )
 end
