@@ -19,12 +19,5 @@ class WindowsPageTestHelper < BaseTestHelper
   end
 
 # Assertions: Allow to check on element properties while keeping it DRY.
-  # NOTE: This is similar to become_closed, using it just to test that it retries.
-  def be_closed_after_delay(delay)
-    synchronize_expectation(wait: delay) {
-      expect(current_window.exists?).to_or not_to, eq(false)
-    }
-  end
-
 # Background: Helpers to add/modify/delete data in the database or session.
 end

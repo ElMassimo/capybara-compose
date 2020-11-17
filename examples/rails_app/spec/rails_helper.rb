@@ -11,7 +11,7 @@ require 'rspec/rails'
 require 'capybara_test_helpers/rspec'
 require Rails.root.join('test_helpers/base_test_helper')
 
-Dir[File.expand_path('spec/support/**/*.rb')].sort.each { |f| require f }
+Dir[File.expand_path('spec/system/support/**/*.rb')].sort.each { |f| require f }
 
 RSpec.configure do |config|
   config.fixture_path = "#{ ::Rails.root }/spec/fixtures"

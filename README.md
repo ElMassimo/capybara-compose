@@ -150,8 +150,7 @@ class UsersTestHelper < Capybara::TestHelper
   end
 
   def delete(user)
-    row_for(user).click_on('Delete')
-    accept_confirm
+    accept_confirm { row_for(user).click_on('Delete') }
   end
 
   private \

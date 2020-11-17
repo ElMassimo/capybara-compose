@@ -27,8 +27,7 @@ class CitiesTestHelper < BaseTestHelper
   end
 
   def delete(city)
-    row_for(city).click_on('Destroy')
-    accept_confirm
+    accept_confirm { row_for(city).click_on('Destroy') }
   end
 
   private \

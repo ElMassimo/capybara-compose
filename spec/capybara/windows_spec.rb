@@ -6,13 +6,6 @@ RSpec.describe 'new windows', type: :feature, driver: :chrome_headless, test_hel
     current_page.should.be(:windows_page)
     current_page.should.have_title('With Windows')
 
-    # Closing it manually after a certain time, homemade assertion with synchronize_expectation.
-    current_page.after_opening_new_tab(-> { windows_page.open_window }, close_afterwards: false) {
-      windows_page.close_with_delay(500)
-      current_page.should.have_title('Title of the first popup')
-      windows_page.should.be_closed_after_delay(1000)
-    }
-
     # Closing it manually after a certain time.
     current_page.after_opening_new_tab(-> { windows_page.open_window }, close_afterwards: false) { |new_window|
       windows_page.close_with_delay(500)
