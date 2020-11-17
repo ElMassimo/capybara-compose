@@ -1,4 +1,3 @@
-@selenium
 Feature: Cities
   Background:
     Given there is an "NYC" city

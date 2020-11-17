@@ -20,3 +20,4 @@ Cucumber::Rails::Database.javascript_strategy = :truncation
 
 # Require all hooks.
 Dir[Rails.root.join('features/support/hooks/**/*.rb')].each { |f| require f }
+Dir[Rails.root.join('spec/system/support/**/*.rb')].sort.each { |f| require f }
