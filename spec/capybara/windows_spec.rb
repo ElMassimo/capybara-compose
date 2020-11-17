@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'new windows', type: :feature, driver: :chrome, test_helpers: [:windows_page] do
+RSpec.describe 'new windows', type: :feature, driver: :chrome_headless, test_helpers: [:windows_page] do
   it 'should become closed' do
     windows_page.visit_page
     current_page.should.be(:windows_page)

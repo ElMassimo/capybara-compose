@@ -224,7 +224,7 @@ RSpec.describe 'Capybara::Session', driver: :chrome_headless, type: :feature, he
     end
   end
 
-  describe 'Capybara#Node#attach_file', driver: :chrome do
+  describe 'Capybara#Node#attach_file', driver: :chrome_headless do
     it 'can attach a directory' do
       visit_page(:form)
       form_page.upload_directory

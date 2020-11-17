@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.feature '#matches_style?', driver: :chrome, helpers: [:html_page] do
+RSpec.feature '#matches_style?', driver: :chrome_headless, helpers: [:html_page] do
   before do
     html_page.visit_page
   end

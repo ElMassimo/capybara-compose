@@ -592,7 +592,7 @@ RSpec.feature 'node', test_helpers: [:html_page, :form_page, :js_page] do
     end
   end
 
-  describe 'Element#drop', driver: :chrome do
+  describe 'Element#drop', driver: :chrome_headless do
     it 'can drop a file' do
       js_page.visit_page
       js_page.drop_target
