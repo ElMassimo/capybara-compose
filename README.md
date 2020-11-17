@@ -174,11 +174,6 @@ When using Rails, you can generate a test helper by running:
 
     $ rails g test_helper users
 
-To make the test helper available you can [use the `test_helpers` option in RSpec][rspec_injection],
-or [call `use_test_helpers` in Cucumber step definitions][cucumber_injection].
-
-For test helpers that you expect to use very often, [`use_test_helpers` allows you to make them available globally][rspec_global_injection].
-
 ### Writing a Test with Helpers ✅
 
 You can find [this working example](https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/spec/system/cities_spec.rb) and more in the [example app] and the [Capybara tests][capybara_test_helpers_tests].
@@ -215,9 +210,16 @@ RSpec.describe 'Cities', test_helpers: [:cities] do
 end
 ```
 
+To make the test helper available you can use the [`test_helpers` option][rspec_injection]
+in a `describe`, `context` or `scenario` as seen above.
+
+When using Cucumber, you may call [`use_test_helpers`][cucumber_injection] in the step definitions.
+
+Finally, for test helpers that you expect to use very often, you can [`use_test_helpers`][rspec_global_injection] in an RSpec helper module to make them available globally.
+
 ## DSL 🛠
 
-A documentation website with the full API and examples is coming soon.
+A documentation website with the full API and examples is coming soon :shipit:
 
 Every single method in the [Capybara DSL] is available inside test helpers, as
 well as the [built-in RSpec matchers][rspec matchers].
@@ -326,13 +328,10 @@ they are both available because we are using an existing assertion.
 #### Advanced Assertions ⚙️
 
 Sometimes built-in assertions are not enough, and you need to use an expectation
-directly. Test helpers provide a `to_or` and `not_to` method, similar to [the
-technique described in this post][positive and negative assertions] that you
+directly. Test helpers provide [`to_or` and `not_to` methods][positive and negative assertions] that you
 can use to implement an assertion that you can use with `should` or `should_not`.
 
 ```ruby
-# frozen_string_literal: true
-
 class CurrentPageTestHelper < BaseTestHelper
 # Getters: A convenient way to get related data or nested elements.
   def fullscreen?
