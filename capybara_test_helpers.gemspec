@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['maximomussini@gmail.com']
 
   spec.summary       = 'Easily write fluent Page Objects for Capybara in Ruby.'
-  # spec.description   = 'capybara_test_helpers'
+  spec.description   = 'Write tests that everyone can understand, and leverage your Ruby skills to keep them easy to read and easy to change.'
   spec.homepage      = 'https://github.com/ElMassimo/capybara_test_helpers'
   spec.license       = 'MIT'
   spec.required_ruby_version = Gem::Requirement.new('>= 2.3.0')

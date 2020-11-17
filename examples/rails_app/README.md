@@ -1,24 +1,14 @@
-# README
+# Capybara Test Helpers in Rails 🛤
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This example app uses [__Capybara Test Helpers__](https://github.com/ElMassimo/capybara_test_helpers)
+to implement its integration tests.
 
-Things you may want to cover:
+It provides examples on how to write both Cucumber features and RSpec system specs.
 
-* Ruby version
+Write tests that everyone can understand, and leverage your Ruby skills to keep them __easy to read and easy to change__.
 
-* System dependencies
+## Generators ⚙️
 
-* Configuration
+In Rails you can generate a test helper by running:
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+    $ rails g test_helper users

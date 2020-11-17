@@ -14,7 +14,7 @@ Capybara Test Helpers
 an opinionated library built on top of [capybara], that encourages good testing
 practices based on encapsulation and reuse.
 
-Write tests that everyone can understand, and leverage your Ruby skills to keep tests __easy to read and easy to change__.
+Write tests that everyone can understand, and leverage your Ruby skills to keep them __easy to read and easy to change__.
 
 [capybara]: https://github.com/teamcapybara/capybara
 [capybara dsl]: https://github.com/teamcapybara/capybara#the-dsl
@@ -124,10 +124,6 @@ from Cucumber to RSpec.
 You can define a test helper by subclassing `Capybara::TestHelper`, which has
 full access to the Capybara DSL.
 
-When using Rails, you can generate a test helper by running:
-
-      rails g test_helper users
-
 ```ruby
 class UsersTestHelper < Capybara::TestHelper
 # Selectors: Semantic aliases for elements, a useful abstraction.
@@ -175,6 +171,10 @@ class UsersTestHelper < Capybara::TestHelper
 end
 ```
 
+When using Rails, you can generate a test helper by running:
+
+    $ rails g test_helper users
+
 To make the test helper available you can [use the `test_helpers` option in RSpec][rspec_injection],
 or [call `use_test_helpers` in Cucumber step definitions][cucumber_injection].
 
@@ -182,7 +182,7 @@ For test helpers that you expect to use very often, [`use_test_helpers` allows y
 
 ### Writing a Test with Helpers ✅
 
-You can find [this working example](https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/spec/features/cities_spec.rb) and more in the [example app] and the [Capybara tests][capybara_test_helpers_tests].
+You can find [this working example](https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/spec/system/cities_spec.rb) and more in the [example app] and the [Capybara tests][capybara_test_helpers_tests].
 
 ```ruby
 require 'rails_helper'
