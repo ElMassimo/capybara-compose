@@ -43,11 +43,11 @@ jobs:
           yarn install --ignore-engines --frozen-lockfile
 
       - name: Precompile Assets
-        run: bin/rake webpacker:compile
+        run: bin/bundle exec rake webpacker:compile
       - name: Run RSpecs
-        run: bin/bundle rspec
+        run: bin/bundle exec rspec
       - name: Run Cucumber
-        run: bin/bundle cucumber
+        run: bin/bundle exec cucumber
       - name: Upload coverage results to GitHub
         uses: actions/upload-artifact@main
         with:

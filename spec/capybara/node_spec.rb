@@ -596,7 +596,7 @@ RSpec.feature 'node', test_helpers: [:html_page, :form_page, :js_page] do
     it 'can drop a file' do
       js_page.visit_page
       js_page.drop_target
-        .drop_file(support_file_path('capybara.jpg'))
+        .drop_file('capybara.jpg')
         .should.have_dropped('file: capybara.jpg')
     end
 
