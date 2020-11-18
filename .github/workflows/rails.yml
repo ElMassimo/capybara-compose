@@ -46,10 +46,3 @@ jobs:
         run: bin/bundle exec rake webpacker:compile
       - name: Run Cucumber
         run: bin/bundle exec cucumber
-      - name: Run RSpecs
-        run: bin/bundle exec rspec
-      - name: Upload coverage results to GitHub
-        uses: actions/upload-artifact@main
-        with:
-          name: coverage-report
-          path: coverage

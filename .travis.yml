@@ -1,5 +1,12 @@
 language: ruby
 
+cache:
+  bundler: true
+  yarn: true
+  directories:
+    - examples/rails_app/node_modules
+    - examples/rails_app/vendor/bundle
+
 bundler_args: --without development
 
 rvm:
@@ -14,15 +21,24 @@ gemfile:
 env:
   global:
     - CI="travis"
-    - CC_TEST_REPORTER_ID=995c46f3c70a74590a7affa80e4341b22d7a86035d1e29d7d18a136f2226de1c
 
-before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
+before_install: cd examples/rails_app
 
-after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+install:
+  - bundle before_install
+  - yarn install
+install:
+  - bundle install --path=vendor/bundle
+  - nvm install node
+  - node -v
+  - npm i -g yarn
+  - yarn install
+
+before_script: bin/bundle exec rake webpacker:compile
+
+script:
+  - bin/bundle exec rspec
+  - bin/bundle exec cucumber
 
 notifications:
   email: false
