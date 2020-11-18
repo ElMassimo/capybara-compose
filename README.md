@@ -124,47 +124,51 @@ You can define a test helper by subclassing `Capybara::TestHelper`, which has
 full access to the Capybara DSL.
 
 ```ruby
-class UsersTestHelper < Capybara::TestHelper
+class CitiesTestHelper < BaseTestHelper
+  use_test_helpers(:form, :table)
+
 # Selectors: Semantic aliases for elements, a useful abstraction.
   SELECTORS = {
-    el: 'table.users',
-    form: '.user-form',
-    submit_button: [:button, type: 'submit'],
+    el: 'table.cities',
   }
 
 # Getters: A convenient way to get related data or nested elements.
-  def row_for(user)
-    within { find(:table_row, { 'Name' => user.name }) }
+  def row_for(city)
+    within { table.row_for(city.name) }
   end
 
 # Actions: Encapsulate complex actions to provide a cleaner interface.
-  def add(attrs)
-    click_on('Add User')
-    save_user(**attrs)
+  def add(**args)
+    click_on('New City')
+    save_city(**args)
+    yield(form) if block_given?
   end
 
-  def edit(user, with:)
-    row_for(user).click_on('Edit')
-    save_user(**with)
+  def edit(city, with:)
+    row_for(city).click_on('Edit')
+    save_city(**with)
   end
 
-  def delete(user)
-    accept_confirm { row_for(user).click_on('Delete') }
+  def delete(city)
+    accept_confirm { row_for(city).click_on('Destroy') }
   end
 
   private \
-  def save_user(name:, language:)
-    within(:form) {
-      fill_in('Name', with: name)
-      choose('Language', option: language)
-      submit_button.click
+  def save_city(name:)
+    form.within {
+      fill_in 'Name', with: name
+      form.save
     }
   end
 
-# Assertions: Allow to check on element properties while keeping it DRY.
-  def have_user(name:, language:)
-    columns = { 'Name' => name, 'Language' => language }
-    within { have(:table_row, columns) }
+# Assertions: Check on element properties, used with `should` and `should_not`.
+  def have_city(name)
+    within { have(:table_row, { 'Name' => name }) }
+  end
+
+# Background: Helpers to add/modify/delete data in the database or session.
+  def given_there_is_a_city(name)
+    City.create!(name: name)
   end
 end
 ```
