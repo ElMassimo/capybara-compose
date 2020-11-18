@@ -1,14 +1,5 @@
 language: ruby
 
-cache:
-  bundler: true
-  yarn: true
-  directories:
-    - examples/rails_app/node_modules
-    - examples/rails_app/vendor/bundle
-
-bundler_args: --without development
-
 rvm:
   - 2.7.1
 
@@ -22,23 +13,13 @@ env:
   global:
     - CI="travis"
 
-before_install: cd examples/rails_app
-
-install:
-  - bundle before_install
-  - yarn install
-install:
-  - bundle install --path=vendor/bundle
+before_install:
   - nvm install node
   - node -v
   - npm i -g yarn
-  - yarn install
-
-before_script: bin/bundle exec rake webpacker:compile
 
 script:
-  - bin/bundle exec rspec
-  - bin/bundle exec cucumber
+  - bin/rails_tests
 
 notifications:
   email: false

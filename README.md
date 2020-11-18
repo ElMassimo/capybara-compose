@@ -26,7 +26,7 @@ Write tests that everyone can understand, and leverage your Ruby skills to keep 
 [testing_robots]: https://jakewharton.com/testing-robots/
 [page_objects]: https://martinfowler.com/bliki/PageObject.html
 [rspec_injection]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/spec/system/cities_spec.rb#L7
-[rspec_global_injection]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/spec/support/default_test_helpers.rb#L8
+[rspec_global_injection]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/spec/system/support/default_test_helpers.rb#L8
 [cucumber_injection]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/features/step_definitions/city_steps.rb#L3
 [example app]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app
 [capybara_test_helpers_tests]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/spec
@@ -232,8 +232,8 @@ well as the [built-in RSpec matchers][rspec matchers].
 You can encapsulate locators for commonly used elements to avoid hardcoding them
 in different tests.
 
-As a result, if the implementation changes, there are less places that need to
-be updated, making it faster to update tests after UI changes.
+As a result, if the UI changes there are less places that need to be updated in
+the tests 😃
 
 ```ruby
 class FormTestHelper < BaseTestHelper

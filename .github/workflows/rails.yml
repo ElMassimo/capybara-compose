@@ -1,7 +1,7 @@
 env:
   RUBY_VERSION: 2.7
 
-name: rails
+name: cucumber
 
 on: [push, pull_request]
 
@@ -11,7 +11,7 @@ defaults:
 
 jobs:
   build:
-    name: RSpec & Cucumber
+    name: Cucumber
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
@@ -20,12 +20,6 @@ jobs:
           bundler-cache: true
           ruby-version: ${{ env.RUBY_VERSION }}
           working-directory: examples/rails_app
-      - name: Update Chrome
-        run: |
-          sudo apt-get update
-          sudo apt-get --only-upgrade install google-chrome-stable
-          google-chrome --version
-      - uses: nanasess/setup-chromedriver@master
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -41,7 +35,6 @@ jobs:
       - name: Install dependencies
         run: |
           yarn install --ignore-engines --frozen-lockfile
-
       - name: Precompile Assets
         run: bin/bundle exec rake webpacker:compile
       - name: Run Cucumber

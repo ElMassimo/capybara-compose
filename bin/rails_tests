@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+cd "$(dirname "$0")/../examples/rails_app"
+bundle install
+yarn install
+bin/bundle exec rake webpacker:compile
+bin/bundle exec rspec
+bin/bundle exec cucumber
