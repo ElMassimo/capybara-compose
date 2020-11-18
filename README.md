@@ -124,7 +124,7 @@ You can define a test helper by subclassing `Capybara::TestHelper`, which has
 full access to the Capybara DSL.
 
 ```ruby
-class CitiesTestHelper < BaseTestHelper
+class CitiesTestHelper < Capybara::TestHelper
   use_test_helpers(:form, :table)
 
 # Selectors: Semantic aliases for elements, a useful abstraction.
