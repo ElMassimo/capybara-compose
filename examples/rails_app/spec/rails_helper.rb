@@ -21,6 +21,14 @@ RSpec.configure do |config|
 
   # Make the default helpers available in all files.
   config.include(DefaultTestHelpers, type: :system)
+
+  config.before(:all, type: :system) {
+    driven_by(:selenium_chrome_headless)
+  }
+
+  config.before(:each, type: :system) {
+    driven_by(:selenium_chrome_headless)
+  }
 end
 
 begin

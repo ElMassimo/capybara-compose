@@ -1,3 +1,4 @@
+@selenium_chrome_headless
 Feature: Cities
   Background:
     Given there is an "NYC" city
