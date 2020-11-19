@@ -28,9 +28,9 @@ const config = {
     editLinks: true,
 
     algolia: {
+      appId: 'GERZE019PN',
       apiKey: 'cdb4a3df8ecf73fadf6bde873fc1b0d2',
       indexName: 'capybara_test_helpers',
-      algoliaOptions: { facetFilters: ['tags:guide,api'] },
     },
 
     nav: [

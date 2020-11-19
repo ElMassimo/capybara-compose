@@ -5,6 +5,7 @@
   "scripts": {
     "docs": "massimopress dev docs",
     "docs:build": "massimopress build docs",
+    "docs:search": "docker run -it --env-file=docs/.algolia/.env -e \"CONFIG=$(cat docs/.algolia/config.json | jq -r tostring)\" algolia/docsearch-scraper",
     "lint": "eslint --ignore-pattern '!docs/.vitepress' docs/.vitepress --ext .js,.vue --format node_modules/eslint-formatter-friendly"
   },
   "peerDependencies": {

@@ -30,3 +30,6 @@ temp
 markdown
 explorations
 selenium-server.log
+
+# Algolia
+.algolia.env
