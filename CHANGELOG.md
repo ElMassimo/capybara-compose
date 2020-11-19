@@ -1,4 +1,4 @@
-## Upcoming Changes
+## Capybara Test Helpers 1.0.1 (2020-11-19) ##
 
 *   Add `has?` alias for `has_selector?`.
 *   Delegate `have` to the RSpec collection matcher when passing an Integer.
