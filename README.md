@@ -37,7 +37,7 @@ Write tests that everyone can understand, and leverage your Ruby skills to keep 
 [rails_integration]: https://github.com/ElMassimo/capybara_test_helpers/commit/c512e39987215e30227dad45e775480bc1348325
 [cucumber_integration]: https://github.com/ElMassimo/capybara_test_helpers/commit/68e20cb40ba409c50f88f8b745eb908fb067a0aa
 
-Check out the [documentation][docs] for more information.
+Check out the [documentation site][docs] for more information.
 
 ## Why? 🤔
 
@@ -225,7 +225,7 @@ Finally, for test helpers that you expect to use very often, you can [`use_test_
 
 ## DSL 🛠
 
-A documentation website with the full API and examples is coming soon :shipit:
+A [documentation website][docs] with the full API and examples is [now available][docs] :shipit:
 
 Every single method in the [Capybara DSL] is available inside test helpers, as
 well as the [built-in RSpec matchers][rspec matchers].
