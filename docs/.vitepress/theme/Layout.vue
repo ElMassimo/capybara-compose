@@ -1,5 +1,5 @@
 <script>
-import DefaultTheme from 'vitepress/dist/client/theme-default'
+import DefaultTheme from 'massimopress/dist/client/theme-default'
 import AlgoliaSearchBox from './components/AlgoliaSearchBox.vue'
 
 export default {

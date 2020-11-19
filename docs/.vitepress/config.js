@@ -49,57 +49,55 @@ const config = {
       },
     ],
 
-    sidebar: {
-      '/': [
-        { text: 'Introduction', link: '/introduction.html' },
-        { text: 'Installation', link: '/installation.html' },
-        {
-          text: 'Basic Usage',
-          collapsable: false,
-          children: [
-            {
-              text: 'Getting Started',
-              link: '/guide/index.html',
-            },
-            {
-              text: 'Selectors',
-              link: '/guide/essentials/selectors.html',
-            },
-            {
-              text: 'Assertions',
-              link: '/guide/essentials/assertions.html',
-            },
-            {
-              text: 'Actions',
-              link: '/guide/essentials/actions.html',
-            },
-            {
-              text: 'Finders',
-              link: '/guide/essentials/finders.html',
-            },
-            {
-              text: 'Matchers',
-              link: '/guide/essentials/matchers.html',
-            },
-          ],
-        },
-        {
-          text: 'Advanced',
-          collapsable: false,
-          children: [
-            {
-              text: 'Synchronizing Assertions',
-              link: '/guide/advanced/synchronization.html',
-            },
-            {
-              text: 'Design Patterns',
-              link: '/guide/advanced/design-patterns.html',
-            },
-          ],
-        },
-        { text: 'Migrating from Cucumber', link: '/guide/migrating_from_cucumber/index.html' },
-      ],
-    },
+    sidebar: [
+      { text: 'Introduction', link: '/introduction.html' },
+      { text: 'Installation', link: '/installation.html' },
+      {
+        text: 'Basic Usage',
+        collapsable: false,
+        children: [
+          {
+            text: 'Getting Started',
+            link: '/guide/index.html',
+          },
+          {
+            text: 'Selectors',
+            link: '/guide/essentials/selectors.html',
+          },
+          {
+            text: 'Assertions',
+            link: '/guide/essentials/assertions.html',
+          },
+          {
+            text: 'Actions',
+            link: '/guide/essentials/actions.html',
+          },
+          {
+            text: 'Finders',
+            link: '/guide/essentials/finders.html',
+          },
+          {
+            text: 'Matchers',
+            link: '/guide/essentials/matchers.html',
+          },
+        ],
+      },
+      {
+        text: 'Advanced',
+        collapsable: false,
+        children: [
+          {
+            text: 'Synchronizing Assertions',
+            link: '/guide/advanced/synchronization.html',
+          },
+          {
+            text: 'Design Patterns',
+            link: '/guide/advanced/design-patterns.html',
+          },
+        ],
+      },
+      { text: 'Migrating from Cucumber', link: '/guide/migrating_from_cucumber/index.html' },
+    ],
   },
 }
 

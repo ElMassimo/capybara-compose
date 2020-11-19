@@ -1,4 +1,4 @@
-import DefaultTheme from 'vitepress/dist/client/theme-default'
+import DefaultTheme from 'massimopress/dist/client/theme-default'
 import Layout from './Layout.vue'
 import SampleComponent from '../components/SampleComponent.vue'
 

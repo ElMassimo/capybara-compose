@@ -23,7 +23,7 @@
     "eslint-plugin-standard": "^4.1.0",
     "eslint-plugin-vue": "^7.1.0",
     "typescript": "^4.0.5",
-    "massimopress": "0.7.5-rc2",
+    "massimopress": "0.7.5-rc3",
     "vitepress": "^0.7.4",
     "vue": "^3.0.2"
   }
