@@ -4,6 +4,7 @@
 [cucumber_injection]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/features/step_definitions/city_steps.rb#L3
 [example app]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app
 [capybara_test_helpers_tests]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/spec
+[rspec matchers]: https://relishapp.com/rspec/rspec-expectations/docs/built-in-matchers
 
 # Getting Started 🚀
 
