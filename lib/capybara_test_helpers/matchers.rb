@@ -52,4 +52,6 @@ module CapybaraTestHelpers::Matchers
   ].each do |method_name|
     CapybaraTestHelpers.define_helper_method(self, method_name, target: :to_capybara_node)
   end
+
+  alias has? has_selector?
 end

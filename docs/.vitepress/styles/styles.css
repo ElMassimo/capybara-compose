@@ -1,0 +1,25 @@
+.theme {
+  --accent-color: rgb(238, 115, 38);
+  --sidebar-width: 18rem;
+}
+
+.hero img {
+  border-radius: 30%;
+}
+
+.home .nav-link {
+  border-color: #DC3008;
+}
+
+.home .nav-link:hover {
+  background-color: #f38b54;
+}
+
+.content > div:first-child a {
+  color: #cb4e00;
+}
+
+.custom-block.custom-block.tip {
+  background-color: #f7f5f3;
+  border-color: #f38b54;
+}
