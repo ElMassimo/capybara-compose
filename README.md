@@ -15,6 +15,7 @@ practices based on encapsulation and reuse.
 
 Write tests that everyone can understand, and leverage your Ruby skills to keep them __easy to read and easy to change__.
 
+[docs]: https://capybara-test-helpers.netlify.app/
 [capybara]: https://github.com/teamcapybara/capybara
 [capybara dsl]: https://github.com/teamcapybara/capybara#the-dsl
 [capybara querying]: https://github.com/teamcapybara/capybara#querying
@@ -35,6 +36,8 @@ Write tests that everyone can understand, and leverage your Ruby skills to keep 
 [should_not]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/lib/capybara_test_helpers/assertions.rb#L17-L22
 [rails_integration]: https://github.com/ElMassimo/capybara_test_helpers/commit/c512e39987215e30227dad45e775480bc1348325
 [cucumber_integration]: https://github.com/ElMassimo/capybara_test_helpers/commit/68e20cb40ba409c50f88f8b745eb908fb067a0aa
+
+Check out the [documentation][docs] for more information.
 
 ## Why? 🤔
 
