@@ -4,4 +4,4 @@ sidebar: auto
 
 # API Reference
 
-Coming Soon
+__Coming Soon__

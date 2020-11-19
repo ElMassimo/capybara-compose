@@ -26,8 +26,6 @@ const config = {
     docsDir: 'docs',
     docsBranch: 'master',
     editLinks: true,
-    nextLinks: true,
-    prevLinks: true,
 
     algolia: {
       apiKey: 'cdb4a3df8ecf73fadf6bde873fc1b0d2',
@@ -92,6 +90,10 @@ const config = {
             {
               text: 'Synchronizing Assertions',
               link: '/guide/advanced/synchronization.html',
+            },
+            {
+              text: 'Design Patterns',
+              link: '/guide/advanced/design-patterns.html',
             },
           ],
         },
