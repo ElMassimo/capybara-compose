@@ -93,7 +93,14 @@ module CapybaraTestHelpers::Assertions
     CapybaraTestHelpers.define_helper_method(self, method_name, target: :page, assertion: true, inject_test_helper: false)
   end
 
-  alias have have_selector
+  # Public: Allows to call have_selector with a shorter syntax.
+  def have(*args, **kwargs, &filter)
+    if args.first.is_a?(Integer)
+      ::RSpec::CollectionMatchers::Have.new(*args, **kwargs)
+    else
+      have_selector(*args, **kwargs, &filter)
+    end
+  end
 
   # Public: Allows to check on any input value asynchronously.
   def have_value(expected_value, **options)

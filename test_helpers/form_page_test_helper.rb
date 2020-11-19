@@ -24,6 +24,9 @@ class FormPageTestHelper < BaseTestHelper
 
     # Buttons Spec
     submit_button: [:button, type: 'submit'],
+
+    # Matchers Spec
+    middle_name_input: [:field, 'Middle Name', disabled: false],
   }.freeze
 
 # Getters: A convenient way to get related data or nested elements.

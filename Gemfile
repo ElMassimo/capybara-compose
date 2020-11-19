@@ -21,6 +21,9 @@ group :test do
   gem 'simplecov', '< 0.18'
   gem 'webdrivers'
 
+  # Test delegation to built-in matchers
+  gem 'rspec-collection_matchers'
+
   # Generator
   gem 'generator_spec', require: false
   gem 'rails', require: false

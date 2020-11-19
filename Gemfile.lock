@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    capybara_test_helpers (1.0.0)
+    capybara_test_helpers (1.0.1)
       activesupport
       capybara
 
@@ -181,6 +181,8 @@ GEM
       rspec-core (~> 3.9.0)
       rspec-expectations (~> 3.9.0)
       rspec-mocks (~> 3.9.0)
+    rspec-collection_matchers (1.2.0)
+      rspec-expectations (>= 2.99.0.beta1)
     rspec-core (3.9.3)
       rspec-support (~> 3.9.3)
     rspec-expectations (3.9.3)
@@ -267,6 +269,7 @@ DEPENDENCIES
   rainbow
   rake (~> 12.0)
   rspec (~> 3.0)
+  rspec-collection_matchers
   rspec-rails
   rubocop
   selenium-webdriver (~> 3)

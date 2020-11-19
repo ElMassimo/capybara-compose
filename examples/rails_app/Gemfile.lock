@@ -1,7 +1,7 @@
 PATH
   remote: ../..
   specs:
-    capybara_test_helpers (1.0.0)
+    capybara_test_helpers (1.0.1)
       activesupport
       capybara
 
