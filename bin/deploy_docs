@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+
+# Abort on errors
+set -e
+
+cd "$(dirname "$0")/.."
+
+# Build
+GITHUB_PAGES=true yarn docs:build
+
+# Navigate into the build output directory
+cd docs/.vitepress/dist
+
+# When deploying to a custom domain
+# echo 'www.example.com' > CNAME
+
+# Push changes to GitHub
+git init
+git add -A
+git commit -m 'deploy'
+git push -f git@github.com:ElMassimo/capybara_test_helpers.git master:gh-pages

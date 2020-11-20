@@ -13,13 +13,18 @@ if (process.env.NODE_ENV === 'production') {
   ])
 }
 
+const base = process.env.GITHUB_PAGES ? '/capybara_test_helpers/' : '/'
+
 /** @type {UserConfig} */
 const config = {
+  base,
   lang: 'en-US',
   title: 'Capybara Test Helpers',
   description: 'The perfect companion for your integration tests.',
   head,
+
   // serviceWorker: true,
+
   themeConfig: {
     repo: 'ElMassimo/capybara_test_helpers',
     docsRepo: 'ElMassimo/capybara_test_helpers',
