@@ -15,6 +15,14 @@
   background-color: #f38b54;
 }
 
+.nav-link:active, .nav-link:hover {
+  text-decoration: none;
+}
+
+a.sidebar-link:hover {
+  text-decoration: none;
+}
+
 .content > div:first-child a {
   color: #cb4e00;
 }
