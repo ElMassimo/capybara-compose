@@ -2678,10 +2678,10 @@ markdown-it@^10.0.0:
     mdurl "^1.0.1"
     uc.micro "^1.0.5"
 
-massimopress@0.7.5-rc3:
-  version "0.7.5-rc3"
-  resolved "https://registry.yarnpkg.com/massimopress/-/massimopress-0.7.5-rc3.tgz#0047001fd9c3e0ef639faeaed79f96ca8191791f"
-  integrity sha512-dyq9wVxVJO/Jxb4Vp3ZyAVwUDqJX/oLh4RkrV6olwhEegc25hukYLOw3TtzVQxo3MEUbpC9ysutBiDXiHznAUg==
+massimopress@0.7.5-rc4:
+  version "0.7.5-rc4"
+  resolved "https://registry.yarnpkg.com/massimopress/-/massimopress-0.7.5-rc4.tgz#bdaa6bf62ccb34448dc8e2218fc68c24f87d1182"
+  integrity sha512-XqBVOdrfOBYKaYohppI/IuLuDYF6NLRrCt8J2VAUpOqpetRHbyjb1qbgMKrMBNPslVfWaaOCUouX+HQBep/rbw==
   dependencies:
     "@vue/compiler-sfc" "^3.0.2"
     "@vue/server-renderer" "^3.0.2"

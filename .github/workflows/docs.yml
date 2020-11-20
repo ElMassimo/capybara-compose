@@ -39,6 +39,9 @@ jobs:
       - name: Build Docs
         run: GITHUB_PAGES=true yarn docs:build
 
+      - name: Hint GitHub Pages to allow _assets
+        run: touch docs/.vitepress/dist/.nojekyll
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
