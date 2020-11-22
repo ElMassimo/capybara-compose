@@ -2,7 +2,7 @@
 [should]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/lib/capybara_test_helpers/assertions.rb#L10-L15
 [should_not]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/lib/capybara_test_helpers/assertions.rb#L17-L22
 [positive and negative assertions]: https://maximomussini.com/posts/cucumber-to_or_not_to/
-[synchronization]: /guide/advanced/synchronization/
+[synchronization]: /guide/advanced/synchronization
 
 # Assertions ☑️
 
