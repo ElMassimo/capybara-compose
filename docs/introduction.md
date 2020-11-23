@@ -4,6 +4,9 @@
 [testing_robots]: https://jakewharton.com/testing-robots/
 [cucumber]: https://github.com/cucumber/cucumber-ruby
 [rspec]: https://github.com/rspec/rspec
+[aliases]: /guide/essentials/aliases
+[assertions]: /guide/essentials/assertions
+[injection]: /guide/essentials/injection
 
 # Introduction
 
@@ -16,13 +19,12 @@ Write integration tests that everyone can understand, and leverage your Ruby ski
 ## Features ⚡️
 
 - Leverage your __Ruby__ skills for keeping tests in good shape
-- Powerful syntax for __assertions__ (without monkey patching)
-- __Aliases__ for element locators to avoid repetition
-- __Composability__: define interactions with your UI once, and [focus on the tests][testing robots] many times
-- Dependency injection to make tests __predictable and robust__
+- [__Aliases__][aliases] for element locators to avoid repetition
+- Powerful syntax for [__assertions__][assertions] (without monkey patching)
+- [__Composability__][injection]: implement a flow or interaction once, and [focus on the tests][testing_robots]
 - Full access to the __[Capybara DSL]__
 
-[Get started](/installation/), or check the [API reference](/api/).
+[Get started](/installation), or check the [API reference](/api/).
 
 ## Why 🤔
 

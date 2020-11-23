@@ -5,10 +5,12 @@
 [example app]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app
 [capybara_test_helpers_tests]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/spec
 [rspec matchers]: https://relishapp.com/rspec/rspec-expectations/docs/built-in-matchers
+[actions]: /guide/essentials/actions
+[api]: /api/
 
 # Getting Started 🚀
 
-Using Capybara Test Helpers is very similar to using plain Capybara.
+If you have used Capybara before, using Capybara Test Helpers should feel very natural.
 
 Every single method in the [Capybara DSL] is available inside test helpers, as
 well as the [built-in RSpec matchers][rspec matchers].
@@ -16,36 +18,24 @@ well as the [built-in RSpec matchers][rspec matchers].
 The advantage is that when we add test helpers to the mix, it becomes easier to
 encapsulate and modularize the interactions with different pages or UI components.
 
-Here's an example:
+<!-- A complete [API Reference][api] is available. -->
 
-## Integration Test
+## A Small Example 🌆
+
+Let's say we have a list of cities, and we want to test the _Edit_ functionality.
+
+We can create an RSpec feature or system test to make sure things are working as expected.
 
 ```ruby
-RSpec.describe 'Cities', test_helpers: [:cities] do
+RSpec.feature 'Cities', test_helpers: [:cities] do
   let!(:nyc) { cities.given_there_is_a_city('NYC') }
 
-  before { cities.visit_page }
-
-  scenario 'valid inputs' do
-    cities.add(name: 'Minneapolis')
-    cities.should.have_city('Minneapolis')
-  end
-
-  scenario 'invalid inputs' do
-    cities.add(name: '') { |form|
-      form.should.have_error("Name can't be blank")
-    }
-  end
+  before { visit(cities_path) }
 
   scenario 'editing a city' do
-    cities.edit(nyc, with: { name: 'New York City' })
+    cities.edit('NYC', with: { name: 'New York City' })
     cities.should_no_longer.have_city('NYC')
     cities.should_now.have_city('New York City')
-  end
-
-  scenario 'deleting a city', screen_size: :phone do
-    cities.delete(nyc)
-    cities.should_no_longer.have_city('NYC')
   end
 end
 ```
@@ -58,26 +48,6 @@ RSpec.describe 'Cities' do
   let!(:nyc) { City.create!(name: 'NYC') }
 
   before { visit(cities_path) }
-
-  scenario 'valid inputs' do
-    click_on('New City')
-    within('form') {
-      fill_in 'Name', with: 'Minneapolis'
-      click_button(type: 'submit')
-    }
-    within('table.cities') {
-      expect(page).to have_selector(:table_row, { 'Name' => 'Minneapolis' })
-    }
-  end
-
-  scenario 'invalid inputs' do
-    click_on('New City')
-    within('form') {
-      fill_in 'Name', with: ''
-      click_button(type: 'submit')
-      expect(page).to have_selector('#error_explanation', text: "Name can't be blank")
-    }
-  end
 
   scenario 'editing a city' do
     within('.table.cities') {
@@ -92,25 +62,15 @@ RSpec.describe 'Cities' do
       expect(page).to have_selector(:table_row, { 'Name' => 'New York City' })
     }
   end
-
-  scenario 'deleting a city' do
-    within('.table.cities') {
-      nyc_row = find(:table_row, { 'Name' => 'NYC' })
-      accept_confirm { nyc_row.click_on('Destroy') }
-    }
-    within('table.cities') {
-      expect(page).not_to have_selector(:table_row, { 'Name' => 'NYC' })
-    }
-  end
 end
 ```
 </details>
 
-## Test Helper
+Now that we have a test with a clear intent, let's create a test helper to perform these interactions.
 
 ```ruby
 class CitiesTestHelper < Capybara::TestHelper
-  use_test_helpers(:form, :table)
+  use_test_helpers(:form)
 
 # Selectors: Semantic aliases for elements, a useful abstraction.
   SELECTORS = {
@@ -118,30 +78,15 @@ class CitiesTestHelper < Capybara::TestHelper
   }
 
 # Getters: A convenient way to get related data or nested elements.
-  def row_for(city)
-    within { table.row_for(city.name) }
+  def row_for(name)
+    within { find(:table_row, { 'Name' => name }) }
   end
 
 # Actions: Encapsulate complex actions to provide a cleaner interface.
-  def add(**args)
-    click_on('New City')
-    save_city(**args)
-    yield(form) if block_given?
-  end
-
-  def edit(city, with:)
-    row_for(city).click_on('Edit')
-    save_city(**with)
-  end
-
-  def delete(city)
-    accept_confirm { row_for(city).click_on('Destroy') }
-  end
-
-  private \
-  def save_city(name:)
+  def edit(name, with:)
+    row_for(name).click_on('Edit')
     form.within {
-      fill_in 'Name', with: name
+      fill_in 'Name', with: with[:name]
       form.save
     }
   end
@@ -158,71 +103,8 @@ class CitiesTestHelper < Capybara::TestHelper
 end
 ```
 
-You can find [this working example](https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/spec/system/cities_spec.rb) and more in the [example app] and the [Capybara tests][capybara_test_helpers_tests].
+Although it might seem overkill for this small example, using a test helper brings the test a lot of clarity, making it easier to understand and to maintain in the future.
 
-## Injecting Test Helpers
+The advantages of this approach become apparent when [several](https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/spec/system/cities_spec.rb) scenarios work with the same elements, or when the interactions are complex.
 
-### In RSpec
-
-To make the test helper available you can use the [`test_helpers` option][rspec_injection]
-in a `describe`, `context` or `scenario`.
-
-```ruby
-RSpec.describe 'Cities', test_helpers: [:cities] do
-# or
-scenario 'submit the form', helpers: [:form, :users] do
-```
-
-#### Global Injection
-
-You can [`use_test_helpers`][rspec_global_injection] in an RSpec helper module to make them available globally.
-
-```ruby
-module GlobalTestHelpers
-  extend ActiveSupport::Concern
-
-  included do
-    use_test_helpers(:current_page, :routes)
-  end
-end
-
-RSpec.configure do |config|
-  # Make the default helpers available in all feature or system tests.
-  config.include(GlobalTestHelpers, type: :feature)
-  config.include(GlobalTestHelpers, type: :system)
-end
-```
-
-### In Cucumber
-
-When using Cucumber, you may call [`use_test_helpers`][cucumber_injection] in the step definitions.
-
-```ruby
-# features/step_definitions/city_steps.rb
-use_test_helpers(:cities, :form, :modal)
-```
-
-## Naming Conventions 🔤
-
-The following convention is applied when injecting test helpers by using `use_test_helpers`, or the `test_helpers` option in RSpec scenarios:
-
-| Shorthand Name                 | Test Helper Class        | File Name                                |
-| ------------------------------ | ------------------------ | ---------------------------------------- |
-| `:cities`                      | `CitiesTestHelper`       | `cities_test_helper.rb`     |
-| `:form`                        | `FormTestHelper`         | `form_test_helper.rb`       |
-| `:current_page`                | `CurrentPageTestHelper`  | `current_page_test_helper.rb`|
-
-
-Test helpers should be located in a `test_helpers` folder at the root of your project.
-
-You may configure a different location by configuring `helpers_paths`:
-
-```ruby
-CapybaraTestHelpers.config.helpers_paths = ['my_integration_test_helpers']
-```
-
-## Generating Test Helpers
-
-When using Rails, you can generate a test helper by running:
-
-    $ rails g test_helper users
+[Read on][actions] to find out more about test helpers.

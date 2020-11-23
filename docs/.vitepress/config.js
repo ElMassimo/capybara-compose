@@ -61,14 +61,6 @@ const config = {
             link: '/guide/index.html',
           },
           {
-            text: 'Selectors',
-            link: '/guide/essentials/selectors.html',
-          },
-          {
-            text: 'Assertions',
-            link: '/guide/essentials/assertions.html',
-          },
-          {
             text: 'Actions',
             link: '/guide/essentials/actions.html',
           },
@@ -77,8 +69,24 @@ const config = {
             link: '/guide/essentials/finders.html',
           },
           {
-            text: 'Matchers',
-            link: '/guide/essentials/matchers.html',
+            text: 'Querying',
+            link: '/guide/essentials/querying.html',
+          },
+          {
+            text: 'Assertions',
+            link: '/guide/essentials/assertions.html',
+          },
+          {
+            text: 'Locator Aliases',
+            link: '/guide/essentials/aliases.html',
+          },
+          {
+            text: 'Current Context',
+            link: '/guide/essentials/current-context.html',
+          },
+          {
+            text: 'Using Test Helpers',
+            link: '/guide/essentials/injection.html',
           },
         ],
       },
@@ -87,8 +95,12 @@ const config = {
         collapsable: false,
         children: [
           {
-            text: 'Synchronizing Assertions',
-            link: '/guide/advanced/synchronization.html',
+            text: 'Advanced Assertions',
+            link: '/guide/advanced/assertions.html',
+          },
+          {
+            text: 'Advanced Filtering',
+            link: '/guide/advanced/filtering.html',
           },
           {
             text: 'Design Patterns',

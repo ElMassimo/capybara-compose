@@ -1,4 +1,11 @@
-# Selectors 🔍
+[el convention]: /guide/essentials/current-context.html#el-convention
+[actions]: /guide/essentials/actions
+[finders]: /guide/essentials/finders
+[assertions]: /guide/essentials/assertions
+[matchers]: /guide/essentials/matchers
+[capybara selectors]: https://www.rubydoc.info/github/teamcapybara/capybara/Capybara/Selector
+
+# Locator Aliases 🔍
 
 You can encapsulate locators for commonly used elements to avoid hardcoding them
 in different tests.
@@ -17,7 +24,7 @@ class FormTestHelper < BaseTestHelper
 end
 ```
 
-You can then leverage these aliases on any Capybara method:
+You can then leverage these aliases on any of the [actions], [finders], [matchers], or [assertions]:
 
 ```ruby
 # Finding an element
@@ -28,58 +35,32 @@ form.fill_in(:name_input, with: 'Jane')
 
 # Making an assertion
 form.has_selector?(:error_summary, text: "Can't be blank")
+
+# Scoping interactions or assertions
+form.within { form.should.have(:name_input, with: 'Jane') }
 ```
+
+In the [next section][el convention] we will learn about how `:el` plays a special role.
 
 ## Getters
 
-To avoid repetition, getters are available for every selector alias:
+To avoid repetition, getters are available for every defined alias:
 
 ```ruby
-form.find(:name_input)
-# same as
 form.name_input
-
-form.find(:error_summary, text: "Can't be blank")
 # same as
+form.find(:name_input)
+
 form.error_summary(text: "Can't be blank")
-```
-
-## `:el` convention
-
-By convention, `:el` is the top-level element of the component or page the test
-helper is encapsulating, which will be used automatically when calling a
-Capybara operation that requires a node, such as `click` or `value`.
-
-```ruby
-form.within { save_button.click }
 # same as
-form.within(:el) { save_button.click }
-# same as
-form.el.within { save_button.click }
+form.find(:error_summary, text: "Can't be blank")
 ```
 
-This is convenient when using test helpers to encapsulate components:
+## Capybara Selectors
 
+All [built-in selectors][capybara selectors] in Capybara can be used in the aliases.
 
-```ruby
-class DropdownTestHelper < BaseTestHelper
-  SELECTORS = {
-    el: '.dropdown',
-    toggle: '.dropdown-toggle',
-  }
-
-  def toggle_menu
-    within { toggle.click }
-  end
-end
-
-dropdown.toggle_menu
-```
-
-## Capybara Built-in Selectors
-
-All built-in selectors in Capybara can be used in the aliases, though you may
-omit it when using the default selector (usually `css`, but sometimes `xpath`).
+You can omit the selector when using the default one, which is usually `css` but [can be changed](https://github.com/teamcapybara/capybara#xpath-css-and-selectors).
 
 ```ruby
 class ExampleTestHelper < BaseTestHelper
@@ -93,7 +74,7 @@ class ExampleTestHelper < BaseTestHelper
 end
 ```
 
-When using a selector alias with additional options they will be merged:
+When passing options to an alias, any keyword arguments will be merged:
 
 ```ruby
 example.city_input(with: 'Montevideo')
@@ -101,7 +82,7 @@ example.city_input(with: 'Montevideo')
 example.find(:field, 'City', readonly: false, with: 'Montevideo')
 ```
 
-## Nested Selectors
+## Nested Aliases
 
 When using `css` or `xpath`, you can reference other aliases in the test helper,
 and they will be joined together.
