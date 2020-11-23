@@ -6,7 +6,7 @@ class DownloadsTestHelper < BaseTestHelper
   DOWNLOADS_DIR = Pathname.new(__dir__).join('../tmp', "capybara_downloads#{ ENV['TEST_ENV_NUMBER'] }")
   DOWNLOAD_WAIT_TIME = 5.seconds
 
-# Getters: A convenient way to get related data or nested elements.
+# Finders: A convenient way to get related data or nested elements.
   private \
   def downloaded_files
     Dir.glob(DOWNLOADS_DIR.join('*')).sort_by { |path| file_timestamp(path) }.reverse

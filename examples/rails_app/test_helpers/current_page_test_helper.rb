@@ -9,7 +9,6 @@ class CurrentPageTestHelper < BaseTestHelper
     desktop: { width: 1280, height: 1024 },
   }.freeze
 
-# Getters: A convenient way to get related data or nested elements.
   # Override: Provide a clearer message on this anti-pattern.
   def to_capybara_node
     return current_context if current_element?

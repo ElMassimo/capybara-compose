@@ -3,15 +3,15 @@
 class ScopesPageTestHelper < BaseTestHelper
   use_test_helpers(:results)
 
-# Selectors: Semantic aliases for elements, a very useful abstraction.
-  SELECTORS = {
+# Aliases: Semantic aliases for locators, can be used in most DSL methods.
+  aliases(
     first_section: '#for_foo',
     main_section: '#for_bar',
     list_item: [:main_section, ' li'],
     first_item: [:list_item, ':first-child'],
-  }.freeze
+  )
 
-# Getters: A convenient way to get related data or nested elements.
+# Finders: A convenient way to get related data or nested elements.
   # Internal: Test exceptions when :el is not defined, and fallback to `page` so
   # that it can leverage `have_content`.
   def to_capybara_node

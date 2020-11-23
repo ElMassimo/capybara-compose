@@ -21,11 +21,11 @@ RSpec.feature 'matchers', test_helpers: [:form_page] do
     end
 
     it 'should be able to use the RSpec matcher' do
-      expect { expect([1,2,3]).to form.have(3).items }.to raise_error(NameError)
+      expect { expect([1, 2, 3]).to form.have(3).items }.to raise_error(NameError)
 
       require 'rspec/collection_matchers'
-      expect([1,2,3]).to form.have(3).items
-      expect([1,2,3]).not_to form.have(2).items
+      expect([1, 2, 3]).to form.have(3).items
+      expect([1, 2, 3]).not_to form.have(2).items
     end
   end
 end

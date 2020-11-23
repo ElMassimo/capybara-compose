@@ -18,10 +18,12 @@ RSpec.describe TestHelperGenerator, type: :generator do
         # frozen_string_literal: true
 
         class ButtonTestHelper < BaseTestHelper
-        # Selectors: Semantic aliases for elements, a useful abstraction.
-          SELECTORS = {}
+        # Aliases: Semantic aliases for locators, can be used in most DSL methods.
+          aliases(
+            # el: '.button',
+          )
 
-        # Getters: A convenient way to get related data or nested elements.
+        # Finders: A convenient way to get related data or nested elements.
 
         # Actions: Encapsulate complex actions to provide a cleaner interface.
 
@@ -41,10 +43,12 @@ RSpec.describe TestHelperGenerator, type: :generator do
         # frozen_string_literal: true
 
         class BaseTestHelper < Capybara::TestHelper
-        # Selectors: Semantic aliases for elements, a useful abstraction.
-          SELECTORS = {}
+        # Aliases: Semantic aliases for locators, can be used in most DSL methods.
+          aliases(
+            # Avoid defining :el here since it will be inherited by all helpers.
+          )
 
-        # Getters: A convenient way to get related data or nested elements.
+        # Finders: A convenient way to get related data or nested elements.
 
         # Actions: Encapsulate complex actions to provide a cleaner interface.
 

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class InvalidSelectorsTestHelper < Capybara::TestHelper
-  SELECTORS = {
+  aliases(
     button: '.button',
     link: '.link',
-  }.freeze
+  )
 end

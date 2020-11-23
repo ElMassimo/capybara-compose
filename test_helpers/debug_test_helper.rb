@@ -2,10 +2,7 @@
 
 # Public: Contains useful methods for debugging test failures.
 class DebugTestHelper < BaseTestHelper
-# Selectors: Semantic aliases for elements, a very useful abstraction.
-  SELECTORS = {}.freeze
-
-# Getters: A convenient way to get related data or nested elements.
+# Finders: A convenient way to get related data or nested elements.
   # Public: Returns the inner HTML of the specified element.
   def inner_html(element)
     element = element.to_capybara_node if element.respond_to?(:to_capybara_node)

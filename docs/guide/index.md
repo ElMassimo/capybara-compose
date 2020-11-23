@@ -72,12 +72,12 @@ Now that we have a test with a clear intent, let's create a test helper to perfo
 class CitiesTestHelper < Capybara::TestHelper
   use_test_helpers(:form)
 
-# Selectors: Semantic aliases for elements, a useful abstraction.
-  SELECTORS = {
+# Aliases: Semantic aliases for locators, can be used in most DSL methods.
+  aliases(
     el: 'table.cities',
-  }
+  )
 
-# Getters: A convenient way to get related data or nested elements.
+# Finders: A convenient way to get related data or nested elements.
   def row_for(name)
     within { find(:table_row, { 'Name' => name }) }
   end

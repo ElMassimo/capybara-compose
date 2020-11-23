@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 class HeadingsTestHelper < BaseTestHelper
-# Selectors: Semantic aliases for elements, a very useful abstraction.
-  SELECTORS = {
+# Aliases: Semantic aliases for locators, can be used in most DSL methods.
+  aliases(
     title: 'h1',
     subtitle: 'h2',
     paragraph: 'p',
-  }.freeze
+  )
 
-# Getters: A convenient way to get related data or nested elements.
+# Finders: A convenient way to get related data or nested elements.
   def subtitles
     all(:subtitle) { |element| element[:class] == 'head' }
   end

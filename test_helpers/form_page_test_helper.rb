@@ -3,8 +3,8 @@
 class FormPageTestHelper < BaseTestHelper
   use_test_helpers(:headings, :results)
 
-# Selectors: Semantic aliases for elements, a very useful abstraction.
-  SELECTORS = {
+# Aliases: Semantic aliases for locators, can be used in most DSL methods.
+  aliases(
     get_form: '#get-form',
     title: [:id, 'form_title'],
     clickable_button: [:button, 'Click me!'],
@@ -27,9 +27,9 @@ class FormPageTestHelper < BaseTestHelper
 
     # Matchers Spec
     middle_name_input: [:field, 'Middle Name', disabled: false],
-  }.freeze
+  )
 
-# Getters: A convenient way to get related data or nested elements.
+# Finders: A convenient way to get related data or nested elements.
   def city_options
     city_select.all('option')
   end

@@ -3,11 +3,11 @@
 class CurrentPageTestHelper < BaseTestHelper
   use_test_helpers(:routes)
 
-# Selectors: Semantic aliases for elements, a very useful abstraction.
-  SELECTORS = {
+# Aliases: Semantic aliases for locators, can be used in most DSL methods.
+  aliases(
     body: 'body',
     html: 'html',
-  }.freeze
+  )
 
   SCREEN_SIZES = {
     phone: { width: 375, height: 667 },
@@ -15,7 +15,7 @@ class CurrentPageTestHelper < BaseTestHelper
     desktop: { width: 1280, height: 1024 },
   }.freeze
 
-# Getters: A convenient way to get related data or nested elements.
+# Finders: A convenient way to get related data or nested elements.
   def to_capybara_node
     return current_context if current_element?
 

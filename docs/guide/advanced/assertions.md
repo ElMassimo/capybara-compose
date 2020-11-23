@@ -15,7 +15,7 @@ Test helpers also provide the [`to_or` method][positive and negative assertions]
 
 ```ruby
 class CurrentPageTestHelper < BaseTestHelper
-# Getters: A convenient way to get related data or nested elements.
+# Finders: A convenient way to get related data or nested elements.
   def fullscreen?
     evaluate_script('!!(document.mozFullScreenElement || document.webkitFullscreenElement)')
   end
@@ -53,9 +53,9 @@ Elements will be automatically reloaded by Capybara as the block is retried, so 
 
 ```ruby
 class CheckboxTestHelper < BaseTestHelper
-  SELECTORS = {
+  aliases(
     el: '.checkbox',
-  }
+  )
 
   def be_checked
     synchronize_expectation { expect(checked?).to eq(!not_to) }

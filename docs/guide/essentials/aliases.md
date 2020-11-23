@@ -4,6 +4,7 @@
 [assertions]: /guide/essentials/assertions
 [matchers]: /guide/essentials/matchers
 [capybara selectors]: https://www.rubydoc.info/github/teamcapybara/capybara/Capybara/Selector
+[trailing_commas]: https://maximomussini.com/posts/trailing-commas/
 
 # Locator Aliases 🔍
 
@@ -15,12 +16,12 @@ the tests 😃
 
 ```ruby
 class FormTestHelper < BaseTestHelper
-  SELECTORS = {
+  aliases(
     el: '.form',
     error_summary: ['#error_explanation', visible: true],
     name_input: [:fillable_field, 'Name'],
     save_button: [:button, type: 'submit'],
-  }
+  )
 end
 ```
 
@@ -64,13 +65,13 @@ You can omit the selector when using the default one, which is usually `css` but
 
 ```ruby
 class ExampleTestHelper < BaseTestHelper
-  SELECTORS = {
+  aliases(
     popover_toggle: '.popover .popover-toggle',
     parent: [:xpath, '../..'],
     city_input: [:field, 'City', readonly: false],
     back_button: [:link_or_button, 'Go Back'],
     contact_info: [:fieldset, legend: 'Contact Information'] ,
-  }
+  )
 end
 ```
 
@@ -89,12 +90,12 @@ and they will be joined together.
 
 ```ruby
 class ContainerTestHelper < BaseTestHelper
-  SELECTORS = {
+  aliases(
     el: '.container',
     wide: [:el, '.wide'],
     column: [:el, ' .column'],
     sibling: [:el, ' + ', :el],
-  }
+  )
 end
 
 container.wide
@@ -110,3 +111,18 @@ container.should.have(:sibling)
 expect(page).to have_selector('.container + .container')
 ```
 
+## Formatting 📏
+
+It's highly recommend to write one alias per line, sorting them alphabetically (most editors can do it for you), and
+[always using a trailing comma][trailing_commas].
+
+```ruby
+class DropdownTestHelper < BaseTestHelper
+  aliases(
+    el: '.dropdown',
+    toggle: '.dropdown-toggle',
+  )
+end
+```
+
+It will minimize the amount of git conflicts, and keep the history a lot cleaner and more meaningful when using `git blame`.

@@ -1,11 +1,6 @@
 # frozen_string_literal: true
 
 class RoutesTestHelper < BaseTestHelper
-# Selectors: Semantic aliases for elements, a very useful abstraction.
-  SELECTORS = {}.freeze
-
-# Getters: A convenient way to get related data or nested elements.
-
 # Actions: Encapsulate complex actions to provide a cleaner interface.
   # Public: Visits a page defined under the specified alias.
   #

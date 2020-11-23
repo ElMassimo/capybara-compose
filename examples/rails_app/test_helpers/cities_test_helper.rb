@@ -3,12 +3,12 @@
 class CitiesTestHelper < BaseTestHelper
   use_test_helpers(:form, :table)
 
-# Selectors: Semantic aliases for elements, a useful abstraction.
-  SELECTORS = {
+# Aliases: Semantic aliases for locators, can be used in most DSL methods.
+  aliases(
     el: 'table.cities',
-  }
+  )
 
-# Getters: A convenient way to get related data or nested elements.
+# Finders: A convenient way to get related data or nested elements.
   def row_for(city)
     within { table.row_for(city.is_a?(String) ? city : city.name) }
   end

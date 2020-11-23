@@ -29,9 +29,9 @@ If a test helper is not wrapping an element when these methods are called, then 
 
 ```ruby
 class CheckboxTestHelper < BaseTestHelper
-  SELECTORS = {
+  aliases(
     el: 'input[type=checkbox]',
-  }
+  )
 end
 
 checkbox.value
@@ -47,10 +47,10 @@ This convention makes it less cumbersome to extract and use test helpers for sim
 
 ```ruby
 class DropdownTestHelper < BaseTestHelper
-  SELECTORS = {
+  aliases(
     el: '.dropdown',
     toggle: '.dropdown-toggle',
-  }
+  )
 
   def toggle_menu
     within { toggle.click }

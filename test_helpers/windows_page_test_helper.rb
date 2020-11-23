@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 class WindowsPageTestHelper < BaseTestHelper
-# Selectors: Semantic aliases for elements, a very useful abstraction.
-  SELECTORS = {
+# Aliases: Semantic aliases for locators, can be used in most DSL methods.
+  aliases(
     open_button: '#openWindow',
     open_with_delay_button: '#openWindowWithTimeout',
-  }.freeze
+  )
 
-# Getters: A convenient way to get related data or nested elements.
+# Finders: A convenient way to get related data or nested elements.
 
 # Actions: Encapsulate complex actions to provide a cleaner interface.
   def open_window(delay: false)

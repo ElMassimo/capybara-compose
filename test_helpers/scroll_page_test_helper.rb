@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 class ScrollPageTestHelper < BaseTestHelper
-# Selectors: Semantic aliases for elements, a very useful abstraction.
-  SELECTORS = {
+# Aliases: Semantic aliases for locators, can be used in most DSL methods.
+  aliases(
     scroller: '#scroll',
     scrollable: '#scrollable',
     inside_scrollable: '#inner',
-  }.freeze
+  )
 
-# Getters: A convenient way to get related data or nested elements.
+# Finders: A convenient way to get related data or nested elements.
   def center
     evaluate_script('(rect => (rect.top + rect.bottom) / 2)(this.getBoundingClientRect())')
   end

@@ -3,8 +3,8 @@
 class JsPageTestHelper < BaseTestHelper
   use_test_helpers(:headings)
 
-# Selectors: Semantic aliases for elements, a very useful abstraction.
-  SELECTORS = {
+# Aliases: Semantic aliases for locators, can be used in most DSL methods.
+  aliases(
     el: '#with_js',
     change: '#change',
     alert_toggle: 'Open alert',
@@ -16,9 +16,9 @@ class JsPageTestHelper < BaseTestHelper
     change_event: '.change_event_triggered',
     input_event: [:xpath, '//p[@class="input_event_triggered"]'],
     input_with_focus_listener: '#with_focus_event',
-  }.freeze
+  )
 
-# Getters: A convenient way to get related data or nested elements.
+# Finders: A convenient way to get related data or nested elements.
 
 # Actions: Encapsulate complex actions to provide a cleaner interface.
   def open_and_accept_alert

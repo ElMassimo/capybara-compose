@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class ResultsTestHelper < BaseTestHelper
-# Selectors: Semantic aliases for elements, a very useful abstraction.
+# Aliases: Semantic aliases for locators, can be used in most DSL methods.
 
-# Getters: A convenient way to get related data or nested elements.
+# Finders: A convenient way to get related data or nested elements.
 
 # Actions: Encapsulate complex actions to provide a cleaner interface.
 

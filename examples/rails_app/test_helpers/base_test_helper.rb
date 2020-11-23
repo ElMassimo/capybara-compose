@@ -9,9 +9,10 @@ class BaseTestHelper < Capybara::TestHelper
   # Internal: These are used on most test helpers.
   use_test_helpers(:current_page, :routes)
 
-# Selectors: Semantic aliases for elements, a useful abstraction.
+# Aliases: Semantic aliases for locators, can be used in most DSL methods.
+  # Avoid defining :el here since it will be inherited by all helpers.
 
-# Getters: A convenient way to get related data or nested elements.
+# Finders: A convenient way to get related data or nested elements.
 
 # Actions: Encapsulate complex actions to provide a cleaner interface.
   # Public: Allows to visit the page that matches the test helper name, as

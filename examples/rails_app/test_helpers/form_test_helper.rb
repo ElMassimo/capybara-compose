@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 class FormTestHelper < BaseTestHelper
-# Selectors: Semantic aliases for elements, a useful abstraction.
-  SELECTORS = {
+# Aliases: Semantic aliases for locators, can be used in most DSL methods.
+  aliases(
     el: 'form[action]',
     submit_button: [:button, type: 'submit'],
     error_summary: '#error_explanation',
-  }
+  )
 
-# Getters: A convenient way to get related data or nested elements.
+# Finders: A convenient way to get related data or nested elements.
 
 # Actions: Encapsulate complex actions to provide a cleaner interface.
   # Public: Submits the form.

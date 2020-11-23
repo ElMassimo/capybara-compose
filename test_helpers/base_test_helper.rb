@@ -16,11 +16,10 @@ class BaseTestHelper < Capybara::TestHelper
   # Example: Accessing a method that is included in RSpec.
   delegate_to_test_context(:support_file_path)
 
-# Selectors: Semantic aliases for elements, a very useful abstraction.
-  SELECTORS = {
-  }.freeze
+# Aliases: Semantic aliases for locators, can be used in most DSL methods.
+  # Avoid defining :el here since it will be inherited by all helpers.
 
-# Getters: A convenient way to get related data or nested elements.
+# Finders: A convenient way to get related data or nested elements.
   # Public: A helper to retrieve the nth element that matches the selector.
   protected \
   def find_by_index(selector_alias, index:, **options)

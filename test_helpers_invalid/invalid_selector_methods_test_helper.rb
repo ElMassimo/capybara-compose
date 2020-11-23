@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class InvalidSelectorMethodsTestHelper < Capybara::TestHelper
-  SELECTORS = {
+  aliases(
     source: '.main',
-  }.freeze
+  )
 end

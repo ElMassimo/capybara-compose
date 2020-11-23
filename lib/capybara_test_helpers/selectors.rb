@@ -40,6 +40,11 @@ module CapybaraTestHelpers::Selectors
   end
 
   module ClassMethods
+    # Public: Light wrapper as syntax sugar for defining SELECTORS.
+    def aliases(selectors = {})
+      const_set('SELECTORS', selectors)
+    end
+
     # Public: Returns the available selectors for the test helper, or an empty
     # Hash if selectors are not defined.
     def selectors

@@ -3,8 +3,8 @@
 class HtmlPageTestHelper < BaseTestHelper
   use_test_helpers(:headings)
 
-# Selectors: Semantic aliases for elements, a very useful abstraction.
-  SELECTORS = {
+# Aliases: Semantic aliases for locators, can be used in most DSL methods.
+  aliases(
     # Ancestors Spec
     parent: '#ancestor3',
     child: '#ancestor2',
@@ -36,9 +36,9 @@ class HtmlPageTestHelper < BaseTestHelper
 
     # Have Table Spec
     horizontal_table: [:table, 'Horizontal Headers'],
-  }.freeze
+  )
 
-# Getters: A convenient way to get related data or nested elements.
+# Finders: A convenient way to get related data or nested elements.
   delegate :subtitles, to: :headings
 
   # Public: Override to allow returning page.
