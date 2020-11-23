@@ -31,3 +31,7 @@ a.sidebar-link:hover {
   background-color: #f7f5f3;
   border-color: #f38b54;
 }
+
+details > summary {
+  cursor: pointer;
+}

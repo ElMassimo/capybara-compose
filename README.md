@@ -1,21 +1,6 @@
-<h1 align="center">
-Capybara Test Helpers
-<p align="center">
-<a href="https://github.com/ElMassimo/capybara_test_helpers/actions"><img alt="Build Status" src="https://github.com/ElMassimo/capybara_test_helpers/workflows/build/badge.svg"/></a>
-<a href="https://codeclimate.com/github/ElMassimo/capybara_test_helpers"><img alt="Maintainability" src="https://codeclimate.com/github/ElMassimo/capybara_test_helpers/badges/gpa.svg"/></a>
-<a href="https://codeclimate.com/github/ElMassimo/capybara_test_helpers"><img alt="Test Coverage" src="https://codeclimate.com/github/ElMassimo/capybara_test_helpers/badges/coverage.svg"/></a>
-<a href="https://rubygems.org/gems/capybara_test_helpers"><img alt="Gem Version" src="https://img.shields.io/gem/v/capybara_test_helpers.svg?colorB=e9573f"/></a>
-<a href="https://github.com/ElMassimo/capybara_test_helpers/blob/master/LICENSE.txt"><img alt="License" src="https://img.shields.io/badge/license-MIT-428F7E.svg"/></a>
-</p>
-</h1>
-
-[__Capybara Test Helpers__](https://github.com/ElMassimo/capybara_test_helpers) is
-an opinionated library built on top of [capybara], that encourages good testing
-practices based on encapsulation and reuse.
-
-Write tests that everyone can understand, and leverage your Ruby skills to keep them __easy to read and easy to change__.
-
 [docs]: https://capybara-test-helpers.netlify.app/
+[design patterns]: https://capybara-test-helpers.netlify.app/guide/advanced/design-patterns
+[installation]: https://capybara-test-helpers.netlify.app/installation
 [capybara]: https://github.com/teamcapybara/capybara
 [capybara dsl]: https://github.com/teamcapybara/capybara#the-dsl
 [capybara querying]: https://github.com/teamcapybara/capybara#querying
@@ -37,38 +22,36 @@ Write tests that everyone can understand, and leverage your Ruby skills to keep 
 [rails_integration]: https://github.com/ElMassimo/capybara_test_helpers/commit/c512e39987215e30227dad45e775480bc1348325
 [cucumber_integration]: https://github.com/ElMassimo/capybara_test_helpers/commit/68e20cb40ba409c50f88f8b745eb908fb067a0aa
 
-Check out the [documentation site][docs] for more information.
+<h1 align="center">
+  Capybara Test Helpers
+  <p align="center">
+    <a href="https://github.com/ElMassimo/capybara_test_helpers/actions">
+      <img alt="Build Status" src="https://github.com/ElMassimo/capybara_test_helpers/workflows/build/badge.svg"/>
+    </a>
+    <a href="https://codeclimate.com/github/ElMassimo/capybara_test_helpers">
+      <img alt="Maintainability" src="https://codeclimate.com/github/ElMassimo/capybara_test_helpers/badges/gpa.svg"/>
+    </a>
+    <a href="https://codeclimate.com/github/ElMassimo/capybara_test_helpers">
+      <img alt="Test Coverage" src="https://codeclimate.com/github/ElMassimo/capybara_test_helpers/badges/coverage.svg"/>
+    </a>
+    <a href="https://rubygems.org/gems/capybara_test_helpers">
+      <img alt="Gem Version" src="https://img.shields.io/gem/v/capybara_test_helpers.svg?colorB=e9573f"/>
+    </a>
+    <a href="https://github.com/ElMassimo/capybara_test_helpers/blob/master/LICENSE.txt">
+      <img alt="License" src="https://img.shields.io/badge/license-MIT-428F7E.svg"/>
+    </a>
+  </p>
+</h1>
 
-## Why? 🤔
+[__Capybara Test Helpers__](https://github.com/ElMassimo/capybara_test_helpers) is
+an opinionated library built on top of [capybara], that encourages good testing
+practices based on encapsulation and reuse.
 
-[`capybara`][capybara] is a great library for integration tests in Ruby,
-commonly used in combination with [RSpec] or [cucumber].
+Write tests that everyone can understand, and leverage your Ruby skills to keep them __easy to read and easy to change__.
 
-Although [cucumber] encourages good practices such as writing steps at a high
-level, thinking in terms of the user rather than the interactions required, it
-__doesn't scale well__ in a large project. Steps are available for all tests,
-and there's no way to partition or isolate them.
+## Documentation 📖
 
-At the same time, Gherkin is very limited as a language, it can be very awkward
-to use when steps require parameters, and it's hard to find and detect duplicate
-steps, and very __time consuming__ to refactor them.
-
-In contrast, writing tests in [RSpec] has a very low barrier since Ruby is a joy
-to work with, but you are on your own to encapsulate code to avoid coupling
-tests to the current UI. Small changes to the UI should not require rewriting
-dozens of tests, but __without clear guidelines__ it's hard to achieve good tests.
-
-This library provides __a solid foundation__ of simple and repeatable patterns
-that can be used to write better tests.
-
-## Features ⚡️
-
-- Leverage your __Ruby__ skills for keeping tests in good shape
-- Powerful syntax for __assertions__ (without monkey patching)
-- __Aliases__ for element locators to avoid repetition
-- __Composability__: define interactions with your UI once, and [focus on the tests][testing robots] many times
-- Dependency injection to make tests __predictable and robust__
-- Full access to the __[Capybara DSL]__
+[Visit the documentation website][docs] to check out the guides, API reference, and examples.
 
 ## Installation 💿
 
@@ -78,325 +61,66 @@ Add this line to your application's Gemfile:
 gem 'capybara_test_helpers'
 ```
 
-And then run:
-
-    $ bundle install
-
-### RSpec
-
-To use with [RSpec], require the following in `spec_helper.rb`:
+To use with [RSpec], add the following to your `spec_helper.rb`:
 
 ```ruby
 require 'capybara_test_helpers/rspec'
 ```
 
-#### In Rails
-
-If using Rails, make sure you [follow the setup in `rspec-rails`][rspec-rails] first.
-
-You can run `rails g test_helper base` to create a base test helper and require
-it as well so that other test helpers can extend it without manually requiring.
-
-```ruby
-# spec/rails_helper.rb
-require 'capybara_test_helpers/rspec'
-require Rails.root.join('test_helpers/base_test_helper')
-```
-
-[Check this example][rails_integration] to see how you can get started.
-
-### Cucumber
-
-To use with [Cucumber], require the following in `env.rb`:
+To use with [Cucumber], add the following to your `support/env.rb`:
 
 ```ruby
 require 'capybara_test_helpers/cucumber'
-require Rails.root.join('test_helpers/base_test_helper')
 ```
 
-Have in mind that RSpec is a much better fit, as Gherkin is very limited.
+Additional installation instructions are available in the [documentation website][installation].
 
-That said, test helpers do provide [a nice way to share code](https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/features/step_definitions/city_steps.rb) if you are migrating
-from Cucumber to RSpec.
+## Quick Tour ⚡️
 
-[Check this example][cucumber_integration] to see how you can get started.
-
-## Usage 🚀
-
-You can define a test helper by subclassing `Capybara::TestHelper`, which has
-full access to the Capybara DSL.
+Let's say we have a list of cities, and we want to test the _Edit_ functionality using [Capybara].
 
 ```ruby
-class CitiesTestHelper < Capybara::TestHelper
-  use_test_helpers(:form, :table)
+scenario 'editing a city' do
+  visit('/cities')
 
-# Selectors: Semantic aliases for elements, a useful abstraction.
-  SELECTORS = {
-    el: 'table.cities',
+  within('.cities') {
+    find(:table_row, { 'Name' => 'NYC' }).click_on('Edit')
   }
+  fill_in 'Name', with: 'New York City'
+  click_on('Update City')
 
-# Getters: A convenient way to get related data or nested elements.
-  def row_for(city)
-    within { table.row_for(city.name) }
-  end
-
-# Actions: Encapsulate complex actions to provide a cleaner interface.
-  def add(**args)
-    click_on('New City')
-    save_city(**args)
-    yield(form) if block_given?
-  end
-
-  def edit(city, with:)
-    row_for(city).click_on('Edit')
-    save_city(**with)
-  end
-
-  def delete(city)
-    accept_confirm { row_for(city).click_on('Destroy') }
-  end
-
-  private \
-  def save_city(name:)
-    form.within {
-      fill_in 'Name', with: name
-      form.save
-    }
-  end
-
-# Assertions: Check on element properties, used with `should` and `should_not`.
-  def have_city(name)
-    within { have(:table_row, { 'Name' => name }) }
-  end
-
-# Background: Helpers to add/modify/delete data in the database or session.
-  def given_there_is_a_city(name)
-    City.create!(name: name)
-  end
+  within('.cities') {
+    expect(page).not_to have_selector(:table_row, { 'Name' => 'NYC' })
+    expect(page).to have_selector(:table_row, { 'Name' => 'New York City' })
+  }
 end
 ```
 
-When using Rails, you can generate a test helper by running:
+Even though it gets the job done, it takes a while to understand what the test is trying to do.
 
-    $ rails g test_helper users
+Without discipline these tests can become __hard to manage__ and require __frequent updating__.
 
-### Writing a Test with Helpers ✅
+### Using Test Helpers
 
-You can find [this working example](https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/spec/system/cities_spec.rb) and more in the [example app] and the [Capybara tests][capybara_test_helpers_tests].
+We can avoid the duplication and keep the [focus on the test][design patterns] instead of its
+implementation by using [__test helpers__][docs].
 
 ```ruby
-require 'rails_helper'
+scenario 'editing a city', test_helpers: [:cities] do
+  cities.visit_page
 
-RSpec.describe 'Cities', test_helpers: [:cities] do
-  let!(:nyc) { cities.given_there_is_a_city('NYC') }
+  cities.edit('NYC', with: { name: 'New York City' })
 
-  before { cities.visit_page }
-
-  scenario 'valid inputs' do
-    cities.add(name: 'Minneapolis')
-    cities.should.have_city('Minneapolis')
-  end
-
-  scenario 'invalid inputs' do
-    cities.add(name: '') { |form|
-      form.should.have_error("Name can't be blank")
-    }
-  end
-
-  scenario 'editing a city' do
-    cities.edit(nyc, with: { name: 'New York City' })
-    cities.should_no_longer.have_city('NYC')
-    cities.should_now.have_city('New York City')
-  end
-
-  scenario 'deleting a city', screen_size: :phone do
-    cities.delete(nyc)
-    cities.should_no_longer.have_city('NYC')
-  end
+  cities.should_no_longer.have_city('NYC')
+  cities.should_now.have_city('New York City')
 end
 ```
 
-To make the test helper available you can use the [`test_helpers` option][rspec_injection]
-in a `describe`, `context` or `scenario` as seen above.
-
-When using Cucumber, you may call [`use_test_helpers`][cucumber_injection] in the step definitions.
-
-Finally, for test helpers that you expect to use very often, you can [`use_test_helpers`][rspec_global_injection] in an RSpec helper module to make them available globally.
-
-## DSL 🛠
-
-A [documentation website][docs] with the full API and examples is [now available][docs] :shipit:
-
-Every single method in the [Capybara DSL] is available inside test helpers, as
-well as the [built-in RSpec matchers][rspec matchers].
-
-### Selectors 🔍
-
-You can encapsulate locators for commonly used elements to avoid hardcoding them
-in different tests.
-
-As a result, if the UI changes there are less places that need to be updated in
-the tests 😃
-
-```ruby
-class FormTestHelper < BaseTestHelper
-  SELECTORS = {
-    el: '.form',
-    error_summary: ['#error_explanation', visible: true],
-    name_input: [:fillable_field, 'Name'],
-    save_button: [:button, type: 'submit'],
-  }
-```
-
-You can then leverage these aliases on any Capybara method:
-
-```ruby
-# Finding an element
-form.find(:save_button, visible: false)
-
-# Interacting with an element
-form.fill_in(:name_input, with: 'Jane')
-
-# Making an assertion
-form.has_selector?(:error_summary, text: "Can't be blank")
-```
-
-#### Syntax Sugar
-
-To avoid repetition, getters are available for every selector alias:
-
-```ruby
-form.find(:name_input)
-# same as
-form.name_input
-
-form.find(:error_summary, text: "Can't be blank")
-# same as
-form.error_summary(text: "Can't be blank")
-```
-
-#### `:el` convention
-
-By convention, `:el` is the top-level element of the component or page the test
-helper is encapsulating, which will be used automatically when calling a
-Capybara operation that requires a node, such as `click` or `value`.
-
-```ruby
-form.within { save_button.click }
-# same as
-form.within(:el) { save_button.click }
-# same as
-form.el.within { save_button.click }
-```
-
-### Assertions ☑️
-
-You can use any of the [RSpec matchers provided by Capybara][capybara querying],
-but the way to use them in test helpers is slightly different.
-
-Before using an assertion, you must call [`should`][should] or [`should_not`][should_not], and then
-chain the RSpec matcher or your own custom assertion.
-
-```ruby
-users.find(:table)
-  .should.have_selector(:table_row, ['Jane', 'Doe']
-  .should_not.have_selector(:table_row, ['John', 'Doe'])
-```
-
-#### Custom Assertions 🎩
-
-The example above becomes a lot nicer if we define a more semantic assertion,
-which can be easily done by leveraging an existing assertion:
-
-```ruby
-class UsersTestHelper < BaseTestHelper
-  SELECTORS = {
-    list: 'table.users',
-  }
-
-# Assertions: Check on element properties, used with `should` and `should_not`.
-  def have_user(*names)
-    have(:table_row, names)
-  end
-```
-
-and then use it as:
-
-```ruby
-users.list
-  .should.have_user('Jane', 'Doe')
-  .should_not.have_user('John', 'Doe')
-```
-
-Notice that you don't need to define both the [positive and negative assertions],
-they are both available because we are using an existing assertion.
-
-#### Advanced Assertions ⚙️
-
-Sometimes built-in assertions are not enough, and you need to use an expectation
-directly. Test helpers provide [`to_or` and `not_to` methods][positive and negative assertions] that you
-can use to implement an assertion that you can use with `should` or `should_not`.
-
-```ruby
-class CurrentPageTestHelper < BaseTestHelper
-# Getters: A convenient way to get related data or nested elements.
-  def fullscreen?
-    evaluate_script('!!(document.mozFullScreenElement || document.webkitFullscreenElement)')
-  end
-
-# Assertions: Allow to check on element properties while keeping it DRY.
-  def be_fullscreen
-    expect(fullscreen?).to_or not_to, eq(true)
-  end
-end
-
-current_page.should.be_fullscreen
-current_page.should_not.be_fullscreen
-```
-
-You can make the assertion retry automatically until the Capybara timeout by
-using `synchronize_expectation`:
-
-```ruby
-  def be_fullscreen
-    synchronize_expectation {
-      expect(fullscreen?).to_or not_to, eq(true)
-    }
-  end
-```
-
-## Design 📐
-
-This library is loosely based on the concepts of [Page Objects][page_objects] and [Testing Robots][testing_robots], with a healthy dose of [dependency injection](https://martinfowler.com/articles/injection.html).
-
-Capybara has a great DSL, so the focus of this library is to build upon it, by
-allowing you to create your own actions and assertions and call them just as
-fluidly as you would call `find` or `has_content?`.
-
-This library works best when encapsulating common UI patterns in separate helpers,
-such as a `FormTestHelper` or a `DropdownTestHelper`, and then reusing them in
-page-specific test helpers to make the test read more semantically.
-
-## Formatting 📏
-
-Regarding selectors, I highly recommend writing one attribute per line, sorting
-them alphabetically (most editors can do it for you), and
-[always using a trailing comma][trailing_commas].
-
-```ruby
-class DropdownTestHelper < BaseTestHelper
-# Selectors: Semantic aliases for elements, a useful abstraction.
-  SELECTORS = {
-    el: '.dropdown',
-    toggle: '.dropdown-toggle',
-  }
-```
-
-It will minimize the amount of git conflicts, and keep the history a lot cleaner and more meaningful when using `git blame`.
+Learn more about it in the [documentation website][docs].
 
 ## Special Thanks 🙏
 
-This library wouldn't be the same without the early validation from my colleagues, and numerous improvements and bugfixes they contributed to it. Thanks for the support 😃
+This library wouldn't be the same without early validation from my colleagues, and numerous improvements and bugfixes they contributed to it. Thanks for the support 😃
 
 - [capybara]: Solid library to write integration tests in Ruby.
 

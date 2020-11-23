@@ -18,6 +18,94 @@ encapsulate and modularize the interactions with different pages or UI component
 
 Here's an example:
 
+## Integration Test
+
+```ruby
+RSpec.describe 'Cities', test_helpers: [:cities] do
+  let!(:nyc) { cities.given_there_is_a_city('NYC') }
+
+  before { cities.visit_page }
+
+  scenario 'valid inputs' do
+    cities.add(name: 'Minneapolis')
+    cities.should.have_city('Minneapolis')
+  end
+
+  scenario 'invalid inputs' do
+    cities.add(name: '') { |form|
+      form.should.have_error("Name can't be blank")
+    }
+  end
+
+  scenario 'editing a city' do
+    cities.edit(nyc, with: { name: 'New York City' })
+    cities.should_no_longer.have_city('NYC')
+    cities.should_now.have_city('New York City')
+  end
+
+  scenario 'deleting a city', screen_size: :phone do
+    cities.delete(nyc)
+    cities.should_no_longer.have_city('NYC')
+  end
+end
+```
+
+<details>
+  <summary>See this test <b>without</b> test helpers</summary>
+
+```ruby
+RSpec.describe 'Cities' do
+  let!(:nyc) { City.create!(name: 'NYC') }
+
+  before { visit(cities_path) }
+
+  scenario 'valid inputs' do
+    click_on('New City')
+    within('form') {
+      fill_in 'Name', with: 'Minneapolis'
+      click_button(type: 'submit')
+    }
+    within('table.cities') {
+      expect(page).to have_selector(:table_row, { 'Name' => 'Minneapolis' })
+    }
+  end
+
+  scenario 'invalid inputs' do
+    click_on('New City')
+    within('form') {
+      fill_in 'Name', with: ''
+      click_button(type: 'submit')
+      expect(page).to have_selector('#error_explanation', text: "Name can't be blank")
+    }
+  end
+
+  scenario 'editing a city' do
+    within('.table.cities') {
+      find(:table_row, { 'Name' => 'NYC' }).click_on('Edit')
+    }
+    within('form') {
+      fill_in 'Name', with: 'New York City'
+      click_button(type: 'submit')
+    }
+    within('table.cities') {
+      expect(page).not_to have_selector(:table_row, { 'Name' => 'NYC' })
+      expect(page).to have_selector(:table_row, { 'Name' => 'New York City' })
+    }
+  end
+
+  scenario 'deleting a city' do
+    within('.table.cities') {
+      nyc_row = find(:table_row, { 'Name' => 'NYC' })
+      accept_confirm { nyc_row.click_on('Destroy') }
+    }
+    within('table.cities') {
+      expect(page).not_to have_selector(:table_row, { 'Name' => 'NYC' })
+    }
+  end
+end
+```
+</details>
+
 ## Test Helper
 
 ```ruby
@@ -66,40 +154,6 @@ class CitiesTestHelper < Capybara::TestHelper
 # Background: Helpers to add/modify/delete data in the database or session.
   def given_there_is_a_city(name)
     City.create!(name: name)
-  end
-end
-```
-
-## Integration Test
-
-```ruby
-require 'rails_helper'
-
-RSpec.describe 'Cities', test_helpers: [:cities] do
-  let!(:nyc) { cities.given_there_is_a_city('NYC') }
-
-  before { cities.visit_page }
-
-  scenario 'valid inputs' do
-    cities.add(name: 'Minneapolis')
-    cities.should.have_city('Minneapolis')
-  end
-
-  scenario 'invalid inputs' do
-    cities.add(name: '') { |form|
-      form.should.have_error("Name can't be blank")
-    }
-  end
-
-  scenario 'editing a city' do
-    cities.edit(nyc, with: { name: 'New York City' })
-    cities.should_no_longer.have_city('NYC')
-    cities.should_now.have_city('New York City')
-  end
-
-  scenario 'deleting a city', screen_size: :phone do
-    cities.delete(nyc)
-    cities.should_no_longer.have_city('NYC')
   end
 end
 ```
