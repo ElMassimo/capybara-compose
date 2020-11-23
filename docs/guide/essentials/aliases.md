@@ -9,7 +9,7 @@
 # Locator Aliases 🔍
 
 You can encapsulate locators for commonly used elements to avoid hardcoding them
-in different tests.
+in different tests by defining `aliases`.
 
 As a result, if the UI changes there are less places that need to be updated in
 the tests 😃
@@ -43,18 +43,18 @@ form.within { form.should.have(:name_input, with: 'Jane') }
 
 In the [next section][el convention] we will learn about how `:el` plays a special role.
 
-## Getters
+## Aliases Shortcuts
 
-To avoid repetition, getters are available for every defined alias:
+To avoid repetition and to keep things concise, getters are available for every defined alias:
 
 ```ruby
 form.name_input
 # same as
-form.find(:name_input)
+form.find(:fillable_field, 'Name')
 
 form.error_summary(text: "Can't be blank")
 # same as
-form.find(:error_summary, text: "Can't be blank")
+form.find('#error_explanation', visible: true, text: "Can't be blank")
 ```
 
 ## Capybara Selectors

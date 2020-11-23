@@ -1,4 +1,4 @@
-## Unreleased
+## Capybara Test Helpers 1.0.2 (2020-11-23) ##
 
 *   Add `aliases` DSL to define `SELECTORS`.
 

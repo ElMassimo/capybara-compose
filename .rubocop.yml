@@ -4,6 +4,7 @@ AllCops:
   Exclude:
     - "examples/rails_app/**/*"
     - "vendor/bundle"
+    - "tmp/**/*"
 
 Style/DoubleNegation:
   Enabled: false

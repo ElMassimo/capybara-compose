@@ -52,7 +52,7 @@ require Rails.root.join('test_helpers/base_test_helper')
 
 [Check this example][cucumber_integration] to see how you can get started.
 
-Have in mind that RSpec is a much better fit, as Gherkin is very limited.
+Have in mind that RSpec is a much better fit, as Gherkin is very limited in its expresiveness.
 
 That said, test helpers do provide [a nice way to share code](https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/features/step_definitions/city_steps.rb) if you are migrating
 from Cucumber to RSpec. Check out the [migration guide] for more details.
