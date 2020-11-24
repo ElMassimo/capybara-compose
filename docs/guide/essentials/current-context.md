@@ -23,7 +23,7 @@ kim.click_link('Edit')
 
 Certain actions can only be performed on node elements, such as `hover` or `set`.
 
-Same with assertions such as `have_text` and `match_style`, or matchers as `has_ancestor?` and `has_sibling?`.
+Same with assertions such as `have_text` and `match_style`, or matchers like `has_ancestor?` and `has_sibling?`.
 
 If a test helper is not wrapping an element when these methods are called, then [an element will be obtained][to_capybara_node] by using an `:el` [alias] defined in the test helper.
 

@@ -21,8 +21,9 @@
     "https://capybara-test-helpers.netlify.app/guide/essentials/current-context.html",
     "https://capybara-test-helpers.netlify.app/guide/essentials/injection.html",
     "https://capybara-test-helpers.netlify.app/guide/advanced/assertions.html",
-    "https://capybara-test-helpers.netlify.app/guide/advanced/filtering.html",
+    "https://capybara-test-helpers.netlify.app/guide/advanced/composition.html",
     "https://capybara-test-helpers.netlify.app/guide/advanced/design-patterns.html",
+    "https://capybara-test-helpers.netlify.app/guide/advanced/filtering.html",
     "https://capybara-test-helpers.netlify.app/guide/migrating_from_cucumber/index.html"
   ],
   "selectors": {

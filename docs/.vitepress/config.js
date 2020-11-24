@@ -103,6 +103,10 @@ const config = {
             link: '/guide/advanced/filtering.html',
           },
           {
+            text: 'Advanced Composition',
+            link: '/guide/advanced/composition.html',
+          },
+          {
             text: 'Design Patterns',
             link: '/guide/advanced/design-patterns.html',
           },

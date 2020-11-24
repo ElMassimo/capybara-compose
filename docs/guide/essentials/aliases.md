@@ -45,13 +45,17 @@ In the [next section][el convention] we will learn about how `:el` plays a speci
 
 ## Aliases Shortcuts
 
-To avoid repetition and to keep things concise, getters are available for every defined alias:
+To avoid repetition and to keep things concise, getters are available for every defined alias.
 
 ```ruby
 form.name_input
 # same as
 form.find(:fillable_field, 'Name')
+```
 
+Any options in the alias will be merged with the keyword arguments provided when using it.
+
+```ruby
 form.error_summary(text: "Can't be blank")
 # same as
 form.find('#error_explanation', visible: true, text: "Can't be blank")
@@ -73,14 +77,6 @@ class ExampleTestHelper < BaseTestHelper
     contact_info: [:fieldset, legend: 'Contact Information'] ,
   )
 end
-```
-
-When passing options to an alias, any keyword arguments will be merged:
-
-```ruby
-example.city_input(with: 'Montevideo')
-# same as
-example.find(:field, 'City', readonly: false, with: 'Montevideo')
 ```
 
 ## Nested Aliases
