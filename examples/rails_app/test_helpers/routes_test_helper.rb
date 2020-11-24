@@ -8,7 +8,7 @@ class RoutesTestHelper < BaseTestHelper
   #
   # NOTE: It can handle sporadic timeout issues.
   def visit_page(page_alias, **options)
-    page.visit path_for(page_alias, **options)
+    visit path_for(page_alias, **options)
   end
 
 # Assertions: Check on element properties, used with `should` and `should_not`.

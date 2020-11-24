@@ -15,7 +15,7 @@ class DebugTestHelper < BaseTestHelper
   end
 
   def puts_page
-    puts_and_return page.body
+    puts_and_return body
   end
 
   def puts_html(element)
@@ -41,7 +41,7 @@ class DebugTestHelper < BaseTestHelper
   # NOTE: This is useful when you are doing something else while running the
   # test and the browser can't find a `visible` element.
   def refocus_window
-    page.driver.switch_to_window(page.current_window.handle)
+    driver.switch_to_window(current_window.handle)
   end
 
 # Assertions: Allow to check on element properties while keeping it DRY.

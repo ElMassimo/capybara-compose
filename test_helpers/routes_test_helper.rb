@@ -6,7 +6,7 @@ class RoutesTestHelper < BaseTestHelper
   #
   # NOTE: It can handle sporadic timeout issues.
   def visit_page(page_alias, **options)
-    page.visit path_for(page_alias, **options)
+    visit path_for(page_alias, **options)
   end
 
 # Assertions: Allow to check on element properties while keeping it DRY.
@@ -15,13 +15,6 @@ class RoutesTestHelper < BaseTestHelper
     path_options = options.except(*config_options)
     path_or_url = options[:url] ? path_or_url_for(page_alias, **path_options) : path_for(page_alias, **path_options)
     have_current_path(path_or_url, **options.slice(*config_options))
-  end
-
-  def match_url(page_alias, **options)
-    expected_path = path_for(page_alias, **options)
-    synchronize_expectation {
-      expect(page.current_url).to_or not_to, include(expected_path)
-    }
   end
 
 # Background: Helpers to add/modify/delete data in the database or session.

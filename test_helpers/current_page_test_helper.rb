@@ -24,7 +24,7 @@ class CurrentPageTestHelper < BaseTestHelper
 
   # Public: Returns true if the page is fullscreen.
   def fullscreen?
-    page.evaluate_script('!!(document.mozFullScreenElement || document.webkitFullscreenElement)')
+    evaluate_script('!!(document.mozFullScreenElement || document.webkitFullscreenElement)')
   end
 
 # Actions: Encapsulate complex actions to provide a cleaner interface.
@@ -42,8 +42,8 @@ class CurrentPageTestHelper < BaseTestHelper
   end
 
   def on_new_window(close_afterwards: true, &run_in_new_window)
-    new_window = page.open_new_window
-    page.within_window(new_window, &run_in_new_window)
+    new_window = open_new_window
+    within_window(new_window, &run_in_new_window)
   ensure
     new_window&.close if close_afterwards
   end
@@ -53,8 +53,8 @@ class CurrentPageTestHelper < BaseTestHelper
   def after_opening_new_tab(fn_that_opens_tab, close_afterwards: true, &run_in_new_window)
     raise ArgumentError, 'The first argument must be a lambda that opens a new window while executed' unless fn_that_opens_tab.respond_to?(:call)
 
-    new_window = page.window_opened_by { fn_that_opens_tab.call }
-    page.within_window(new_window) { run_in_new_window.call(new_window) }
+    new_window = window_opened_by { fn_that_opens_tab.call }
+    within_window(new_window) { run_in_new_window.call(new_window) }
   ensure
     new_window&.close if close_afterwards
   end
@@ -71,12 +71,8 @@ class CurrentPageTestHelper < BaseTestHelper
     routes.be_in_page(*args)
   end
 
-  def match_url(*args)
-    routes.match_url(*args)
-  end
-
   def be_external_url(website_url)
-    page.assert_current_path(website_url)
+    assert_current_path(website_url)
   end
 
   def be_fullscreen
