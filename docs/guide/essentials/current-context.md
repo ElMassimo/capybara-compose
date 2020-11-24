@@ -1,31 +1,33 @@
 [actions]: /guide/essentials/actions
 [alias]: /guide/essentials/aliases
 [finders]: /guide/essentials/finders
-[to_capybara_node]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/lib/capybara_test_helpers/test_helper.rb#L56-L58
+[to_capybara_node]: /api/#to-capybara-node
+[injection]: /guide/essentials/injection
 
 # Understanding the Context
 
-By default, a test helper wraps the current `page`.
+By default, [injected test helpers][injection] wrap the current `session` (aliased in Capybara as `page`).
 
-Both [finders] and [actions] will return new test helpers that wrap the resulting element.
-
-```ruby
-kim = users.find_user('Kim')
-```
-
-Any method call on the resulting helpers will be scoped to the inner element.
+[Finders] and certain [actions] will return a specific element, which will be wrapped with a new test helper.
 
 ```ruby
-kim.click_link('Edit')
+scenario 'edit user', test_helpers: [:users] do
+  user = users.find(:table_row, { 'Name' => 'Kim' })
+  user.click_link('Edit')
+end
 ```
+
+In this example, the __context__ for `users` is the entire `page`, because it was [injected][injection] in the test.
+
+On the other hand, the __context__ for `user` is the table row returned by `find`, which we say it's the __current element__ for that helper. Any methods will work with the table row, instead of the entire page.
 
 ## Current Element
 
-Certain actions can only be performed on node elements, such as `hover` or `set`.
+Certain actions can only be performed on node elements, such as `click`, `hover` or `set`.
 
 Same with assertions such as `have_text` and `match_style`, or matchers like `has_ancestor?` and `has_sibling?`.
 
-If a test helper is not wrapping an element when these methods are called, then [an element will be obtained][to_capybara_node] by using an `:el` [alias] defined in the test helper.
+When these methods are called in an [injected test helper][injection], an element will be [obtained][to_capybara_node] by using an `:el` [alias] defined in the test helper.
 
 ```ruby
 class CheckboxTestHelper < BaseTestHelper

@@ -14,6 +14,7 @@ sidebar: auto
 [launchy]: https://github.com/copiousfreetime/launchy
 [capybara api]: https://rubydoc.info/github/teamcapybara/capybara/master/Capybara/Session
 [current element]: /api/#to-capybara-node
+[capybara_node_code]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/lib/capybara_test_helpers/test_helper.rb#L56-L58
 [click]: /api/#click
 [wait]: https://github.com/teamcapybara/capybara#asynchronous-javascript-ajax-and-friends
 
@@ -66,6 +67,8 @@ Navigates to the given URL, which can either be relative or absolute.
   - If the test helper is wrapping an element, it will return it.
   - If the test helper is wrapping the page, it will find an element using the [`:el` alias][el convention].
 
+  [Source][capybara_node_code]
+
 - **Example**:
 
   ```ruby
@@ -113,7 +116,7 @@ Unlike `wrap_element`, it will not cast the context to an element using [`to_cap
 
 ## Element
 
-Some of the following methods will indicate that they are performed on the [current element], while other methods will use the current context (which by default is the top-level `session`).
+Some of the following methods will indicate that they are performed on the [current element], while other methods will use the [current context] (which by default is the current `page`).
 
 ### **[]**
 
@@ -299,42 +302,67 @@ Should be used over [`evaluate_script`](#evaluate_script) whenever a result is n
   ```
 
 ### **hover**
-⇒ Capybara::Node::Element
-Hover on the Element.
 
-### **initial_cache**
-⇒ Object private
+Hovers on the [current element].
 
-### **inspect**
-⇒ String
-A human-readable representation of the element.
+- **Returns**: `self`
+
+- **Example**:
+  ```ruby
+  def have_tooltip(title)
+    hover.have('.tooltip', text: title)
+  end
+  ```
 
 ### **multiple?**
-⇒ Boolean
-Whether or not the element supports multiple results.
+
+Whether or not the [current element] supports multiple results.
+
+- **Returns**: `Boolean`
+
+- **Example**:
+  ```ruby
+  def can_select_many?
+    select_input.multiple?
+  end
+  ```
 
 ### **native**
-⇒ Object
-The native element from the driver, this allows access to driver specific methods.
+
+The native element from the driver, this allows access to driver-specific methods.
+
+- **Returns**: `Object`
 
 ### **obscured?**
-⇒ Boolean
-Whether or not the element is currently in the viewport and it **
-(or descendants) would be considered clickable at the elements center point.
+
+Whether the [current element] is not currently in the viewport or it (or descendants) would not be considered clickable at the elements center point.
+
+- **Returns**: `Boolean`
 
 ### **path**
-⇒ String
+
 An XPath expression describing where on the page the element can be found.
 
+- **Returns**:  `String`
+
 ### **readonly?**
-⇒ Boolean
-Whether or not the element is readonly.
+
+Whether the [current element] is read-only.
+
+- **Returns**: `Boolean`
+
+- **Example**:
+  ```ruby
+  def optional_type_in(text)
+    input.set(text) unless input.readonly?
+  end
+  ```
 
 ### **rect**
-⇒ Object
 
-### **reload**
-⇒ Object private
+Returns size and position information for the [current element].
+
+- **Returns**: `{ x, y, height, width }`
 
 ### **right_click**
 
@@ -345,8 +373,36 @@ Right clicks the [current element].
 - **Returns**: `self`
 
 ### **scroll_to**
-(pos_or_el_or_x, y = nil, align: :top, offset: nil) ⇒ Capybara::Node::Element
-Scroll the page or element.
+
+- Scroll the page or element to its top, bottom or middle.
+  - `{:top | :bottom | :center | :current} position`
+
+  ```ruby
+  current_page.scroll_to(:top, offset: [0, 20])
+  ```
+
+- Scroll the page or current element into view until the given element is aligned as specified.
+   - `{Capybara::Node::Element | Capybara::TestHelper} element`: the element to be scrolled
+   - `{:top | :bottom | :center } :align`: where to align the element being scrolled into view with relation to the current page/element if possible.
+
+  ```ruby
+  def scroll_into_view
+    scroll_to(self, align: :top)
+  end
+  ```
+
+- Scroll horizontally or vertically.
+  - `{Integer} x`
+  - `{Integer} y`
+
+  ```ruby
+  current_page.scroll_to(100, 500)
+  ```
+
+- **Options**:
+  - `[x, y] :offset`
+
+- **Returns**: `self`
 
 ### **select_option**
 (wait: nil) ⇒ Capybara::Node::Element
