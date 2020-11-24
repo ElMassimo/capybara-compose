@@ -3,6 +3,7 @@ sidebar: auto
 ---
 
 [el convention]: /guide/essentials/current-context.html#el-convention
+[current context]: /guide/essentials/current-context.html#el-convention
 [actions]: /guide/essentials/actions
 [aliases]: /guide/essentials/aliases
 [assertions]: /guide/essentials/assertions
@@ -13,6 +14,7 @@ sidebar: auto
 [launchy]: https://github.com/copiousfreetime/launchy
 [capybara api]: https://rubydoc.info/github/teamcapybara/capybara/master/Capybara/Session
 [current element]: /api/#to-capybara-node
+[click]: /api/#click
 [wait]: https://github.com/teamcapybara/capybara#asynchronous-javascript-ajax-and-friends
 
 # API Reference
@@ -28,19 +30,19 @@ Have in mind that most of these methods support passing a [`wait`][wait] option,
 
 ### **go_back**
 
-Move back a single entry in the browser's history.
+Moves back a single entry in the browser's history.
 
 ### **go_forward**
 
-Move forward a single entry in the browser's history.
+Moves forward a single entry in the browser's history.
 
 ### **refresh**
 
-Refresh the current page.
+Refreshes the current page.
 
 ### **visit**
 
-Navigate to the given URL, which can either be relative or absolute.
+Navigates to the given URL, which can either be relative or absolute.
 
 - **Arguments**:
   - `visit_uri`: The URL to navigate to. The parameter will be cast to a `String`.
@@ -59,10 +61,9 @@ Navigate to the given URL, which can either be relative or absolute.
 
 - **Usage**:
 
-  Casts the current context as a `Capybara::Node::Element`.
+  Casts the [current context] as a `Capybara::Node::Element`.
 
   - If the test helper is wrapping an element, it will return it.
-
   - If the test helper is wrapping the page, it will find an element using the [`:el` alias][el convention].
 
 - **Example**:
@@ -112,18 +113,21 @@ Unlike `wrap_element`, it will not cast the context to an element using [`to_cap
 
 ## Element
 
-The following methods are always performed on the [current element].
+Some of the following methods will indicate that they are performed on the [current element], while other methods will use the current context (which by default is the top-level `session`).
 
 ### **[]**
 
-Retrieve the given HTML attribute of the [current element].
+Retrieves the given HTML attribute of the [current element].
 
 - **Arguments**:
   - `{String | Symbol} attribute` the name of the HTML attribute
 
 - **Returns**: `String` value of the attribute
 
-- **Example**:
+- **Examples**:
+  ```ruby
+  input[:value]
+  ```
   ```ruby
   # Public: Returns the HTML id of the element.
   def id
@@ -146,12 +150,14 @@ Whether or not the [current element] is checked.
 
 ### **click**
 
-Click the [current element].
+Clicks the [current element].
 
 - **Arguments**:
 
-  - `{Array[Symbol]} *modifier_keys (optional)`: modifier keys that should be held
+  - `{Symbol} *modifier_keys (optional)`: modifier keys that should be held during click
   - __Options__:
+
+    By default it will attempt to click the center of the element.
     - `{Numeric} :x`: the X coordinate to offset the click location
     - `{Numeric} :y`: the Y coordinate to offset the click location
 
@@ -178,32 +184,119 @@ Whether or not the [current element] is disabled.
   ```
 
 ### **double_click**
-(*modifier_keys, wait: nil, **offset) ⇒ Capybara::Node::Element
-Double Click the Element.
+
+Double clicks the [current element].
+
+- **Arguments**: Same as [`click`][click].
+
+- **Returns**: `self`
 
 ### **drag_to**
-(node, **options) ⇒ Capybara::Node::Element
-Drag the element to the given other element.
+
+Drags the [current element] to the given other element.
+
+- **Arguments**:
+
+  - `{Capybara::Node::Element | Capybara::TestHelper} node`: the destination to drag to
+  - __Options__:
+
+    Driver-specific, might not be supported by all drivers.
+
+    - `{Numeric} :delay`: the amount of seconds between each stage, defaults to `0.05`
+    - `{Boolean} :html5`: force the use of HTML5, otherwise auto-detected by the driver
+    - `{Array<Symbol>} :drop_modifiers`: Modifier keys which should be held while dragging
+
+- **Returns**: `self`
+
+- **Example**:
+  ```ruby
+  todo = pending_list.item_for('Water plants')
+  todo.drag_to(done_list)
+  ```
 
 ### **drop**
-(*args) ⇒ Capybara::Node::Element
-Drop items on the current element.
+
+Drops items on the [current element].
+
+- **Arguments**:
+
+  - `{String | #to_path | Hash} *path`: location(s) of the file(s) to drop on the element
+
+- **Returns**: `self`
+
+- **Example**:
+  ```ruby
+  file_input.drop('/some/path/file.csv')
+  file_input.drop({ 'text/url' => 'https://www.google.com', 'text/plain' => 'Website' })
+  ```
 
 ### **evaluate_async_script**
-(script, *args) ⇒ Object
-Evaluate the given JavaScript in the context of the element and obtain the result from a callback function which will be passed as the last argument to the script.
+
+Evaluates the given JavaScript in the [current context] of the element, and obtains the result from a callback function that is passed as the _last argument_ to the script.
+
+- **Arguments**:
+
+  - `{String} script`: a string of JavaScript to evaluate
+  - `{Object} *args`: parameters for the JavaScript function
+
+- **Returns**: `Object` result of the callback function
+
+- **Example**:
+  ```ruby
+  def delayed_value(delay: 0.1)
+    # Since we are passing only one argument (delay), the second argument will
+    # be the callback that will capture the value.
+    evaluate_async_script(<<~JS, delay)
+      const delay = arguments[0]
+      const callback = arguments[1]
+      setTimeout(() => callback(this.value), delay)
+    JS
+  end
+  ```
 
 ### **evaluate_script**
-(script, *args) ⇒ Object
-Evaluate the given JS in the context of the element and return the result.
+
+Evaluates the given JS in the [current context], and returns the result.
+
+If the test helper has a [current element], then `this` in the script will refer to that HTML node.
+
+Use [`execute_script`](#execute_script) instead when the script returns complex objects such as jQuery statements.
+
+- **Arguments**:
+
+  - `{String} script`: a string of JavaScript to evaluate
+  - `{Object} *args`: parameters for the JavaScript function
+
+- **Returns**: `Object` result of evaluating the script
+
+- **Example**:
+  ```ruby
+  def offset_height(padding: 5)
+    evaluate_script('this.offsetHeight - arguments[0]', padding)
+  end
+  ```
 
 ### **execute_script**
-(script, *args) ⇒ Object
-Execute the given JS in the context of the element not returning a result.
 
-### **flash**
-⇒ Capybara::Node::Element
-Toggle the elements background color between white and black for a period of time.
+Execute the given JS in the [current context] without returning a result.
+
+If the test helper has a [current element], then `this` in the script will refer to that HTML node.
+
+Should be used over [`evaluate_script`](#evaluate_script) whenever a result is not needed, specially for scripts that return complex objects, such as jQuery statements.
+
+- **Arguments**:
+
+  - `{String} script`: a string of JavaScript to evaluate
+  - `{Object} *args`: parameters for the JavaScript function
+
+- **Returns**: `self`
+
+- **Example**:
+  ```ruby
+  def blur
+    execute_script('this.blur()')
+  end
+  ```
 
 ### **hover**
 ⇒ Capybara::Node::Element
@@ -244,8 +337,12 @@ Whether or not the element is readonly.
 ⇒ Object private
 
 ### **right_click**
-(*modifier_keys, wait: nil, **offset) ⇒ Capybara::Node::Element
-Right Click the Element.
+
+Right clicks the [current element].
+
+- **Arguments**: Same as [`click`][click].
+
+- **Returns**: `self`
 
 ### **scroll_to**
 (pos_or_el_or_x, y = nil, align: :top, offset: nil) ⇒ Capybara::Node::Element
@@ -730,14 +827,17 @@ Get all opened windows.
 
 ## Debugging
 
+### **flash**
+
+Toggles the [current element] background color between white and black for a period of time.
+
 ### **inspect_node**
 
-Inspect the `Capybara::Node::Element` element the test helper is wrapping.
-
+Inspects the `Capybara::Node::Element` element the test helper is wrapping.
 
 ### **save_and_open_page**
 
-Save a snapshot of the page and open it in a browser for inspection. Requires [`launchy`][launchy].
+Saves a snapshot of the page and open it in a browser for inspection. Requires [`launchy`][launchy].
 
 
 - **Arguments**:
@@ -764,7 +864,7 @@ Save a screenshot of the page and open it for inspection. Requires [`launchy`][l
 
 ### **save_page**
 
-Save a snapshot of the page.
+Saves a snapshot of the page.
 
 - **Arguments**:
   - `{String} path (optional)`: the path to where it should be saved
@@ -774,7 +874,7 @@ Save a snapshot of the page.
 
 ### **save_screenshot**
 
-Save a screenshot of the page.
+Saves a screenshot of the page.
 
 - **Arguments**:
   - `{String} path (optional)`: the path to where it should be saved
@@ -785,7 +885,7 @@ Save a screenshot of the page.
 ## Page
 
 ### **have_title**
-Assert if the page has the given title.
+Asserts if the page has the given title.
 
 - **Arguments**:
   - `{String | Regexp} title`: string or regex that the title should match
@@ -799,7 +899,7 @@ Assert if the page has the given title.
 
 ### **has_title?**
 
-Check if the page has the given title.
+Checks if the page has the given title.
 
 - **Arguments**:
   - `{String | Regexp} title`: string or regex that the title should match

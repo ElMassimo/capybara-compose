@@ -24,6 +24,16 @@ class BaseTestHelper < Capybara::TestHelper
     routes.visit_page(friendly_name.to_sym)
   end
 
+  def delayed_value(delay: 0.1)
+    # Since we are passing only one argument (delay), the second argument will
+    # be the callback that will capture the value.
+    evaluate_async_script(<<~JS, delay)
+      const delay = arguments[0]
+      const callback = arguments[1]
+      setTimeout(() => callback(this.value), delay)
+    JS
+  end
+
 # Assertions: Check on element properties, used with `should` and `should_not`.
 
 # Background: Helpers to add/modify/delete data in the database or session.
