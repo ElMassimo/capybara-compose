@@ -30,6 +30,7 @@ a.sidebar-link:hover {
 .custom-block {
   border-bottom-right-radius: 2px;
   border-top-right-radius: 2px;
+  position: relative;
 }
 
 .custom-block.custom-block.tip {

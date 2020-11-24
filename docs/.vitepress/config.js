@@ -116,7 +116,7 @@ const config = {
           },
         ],
       },
-      { text: 'Migrating from Cucumber', link: '/guide/migrating_from_cucumber/index.html' },
+      { text: 'In Cucumber', link: '/guide/cucumber/index.html' },
     ],
   },
 }

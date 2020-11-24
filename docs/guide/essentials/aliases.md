@@ -2,7 +2,7 @@
 [actions]: /guide/essentials/actions
 [finders]: /guide/essentials/finders
 [assertions]: /guide/essentials/assertions
-[matchers]: /guide/essentials/matchers
+[matchers]: /guide/essentials/querying
 [capybara selectors]: https://www.rubydoc.info/github/teamcapybara/capybara/Capybara/Selector
 [trailing_commas]: https://maximomussini.com/posts/trailing-commas/
 

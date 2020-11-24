@@ -7,6 +7,7 @@
 [aliases]: /guide/essentials/aliases
 [assertions]: /guide/essentials/assertions
 [injection]: /guide/essentials/injection
+[debugging]: /guide/advanced/debugging
 
 # Introduction
 
@@ -23,8 +24,9 @@ Write integration tests that everyone can understand, and leverage your Ruby ski
 - Powerful syntax for [__assertions__][assertions] (without monkey patching)
 - [__Composability__][injection]: implement a flow or interaction once, and [focus on the tests][testing_robots]
 - Full access to the __[Capybara DSL]__
+- [__Debugging__][debugging] and tracking performance is easier
 
-[Get started](/installation), or check the [API reference](/api/).
+[Get started](/guide/), or check the [API reference](/api/).
 
 ## Why 🤔
 

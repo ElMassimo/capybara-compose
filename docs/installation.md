@@ -4,7 +4,8 @@
 [rspec-rails]: https://github.com/rspec/rspec-rails#installation
 [rails_integration]: https://github.com/ElMassimo/capybara_test_helpers/commit/c512e39987215e30227dad45e775480bc1348325
 [cucumber_integration]: https://github.com/ElMassimo/capybara_test_helpers/commit/68e20cb40ba409c50f88f8b745eb908fb067a0aa
-[migration guide]: /guide/migrating_from_cucumber/
+[using test helpers in Cucumber]: /guide/cucumber/
+[use test helpers in RSpec]: /guide/essentials/injection
 
 # Installation 💿
 
@@ -26,6 +27,8 @@ To use with [RSpec], require the following in `spec_helper.rb`:
 require 'capybara_test_helpers/rspec'
 ```
 
+Most of the examples in the guide will cover how to [use test helpers in RSpec].
+
 ### In Rails
 
 If using Rails, make sure you [follow the setup in `rspec-rails`][rspec-rails] first.
@@ -39,7 +42,7 @@ require 'capybara_test_helpers/rspec'
 require Rails.root.join('test_helpers/base_test_helper')
 ```
 
-[Check this example][rails_integration] to see how you can get started.
+[Example][rails_integration]
 
 ## Cucumber 🥒
 
@@ -50,10 +53,6 @@ require 'capybara_test_helpers/cucumber'
 require Rails.root.join('test_helpers/base_test_helper')
 ```
 
-[Check this example][cucumber_integration] to see how you can get started.
+[Example][cucumber_integration]
 
-Have in mind that RSpec is a much better fit, as Gherkin is very limited in its expresiveness.
-
-That said, test helpers do provide [a nice way to share code](https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/features/step_definitions/city_steps.rb) if you are migrating
-from Cucumber to RSpec. Check out the [migration guide] for more details.
-
+Read about [using test helpers in Cucumber] for more information.

@@ -17,6 +17,8 @@ RSpec.describe 'Cities', test_helpers: [:cities] do
 scenario 'submit the form', helpers: [:form, :users] do
 ```
 
+For Cucumber instructions, [read this section](/guide/cucumber/).
+
 ## Inside Test Helpers
 
 Using composition can help to keep your tests dry and make them easier to understand and update.
@@ -34,18 +36,6 @@ class CitiesTestHelper < BaseTestHelper
       form.save
     }
   end
-end
-```
-
-## In Cucumber
-
-When using Cucumber, you may call [`use_test_helpers`][cucumber_injection] in the step definitions.
-
-```ruby
-use_test_helpers(:cities)
-
-When('I edit the {string} city with:') do |name, table|
-  cities.edit(name, with: table.rows_hash.symbolize_keys)
 end
 ```
 
