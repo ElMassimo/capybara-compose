@@ -6,8 +6,14 @@ rvm:
 addons:
   chrome: stable
 
+cache:
+  bundler: true
+  yarn: true
+  directories:
+    - node_modules
+
 gemfile:
-  - Gemfile
+  - examples/rails_app/Gemfile
 
 env:
   global:

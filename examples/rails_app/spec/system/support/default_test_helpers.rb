@@ -11,8 +11,7 @@ module DefaultTestHelpers
     delegate :visit_page, to: :routes
 
     # Ensure we use a consistent screen size.
-    prepend_before(:each) do |example|
-      driven_by Capybara.javascript_driver
+    before(:each) do |example|
       current_page.resize_to(example.metadata[:screen_size] || :desktop)
     end
   end

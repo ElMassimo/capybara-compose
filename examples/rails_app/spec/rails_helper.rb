@@ -19,16 +19,13 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!
 
+  config.before(:each, type: :system) {
+    args = %w[headless disable-gpu disable-infobars no-sandbox disable-dev-shm-usage]
+    driven_by :selenium, using: :chrome, options: { args: args }
+  }
+
   # Make the default helpers available in all files.
   config.include(DefaultTestHelpers, type: :system)
-
-  config.before(:all, type: :system) {
-    driven_by(:selenium_chrome_headless)
-  }
-
-  config.before(:each, type: :system) {
-    driven_by(:selenium_chrome_headless)
-  }
 end
 
 begin
