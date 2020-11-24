@@ -11,7 +11,7 @@ class DebugTestHelper < BaseTestHelper
 
 # Actions: Encapsulate complex actions to provide a cleaner interface.
   def screenshot
-    Rails.env.ci? ? Capybara.save_screenshot : Capybara.save_and_open_screenshot
+    Rails.env.ci? ? save_screenshot : save_and_open_screenshot
   end
 
   def puts_page

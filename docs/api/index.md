@@ -2,9 +2,27 @@
 sidebar: auto
 ---
 
+[el convention]: /guide/essentials/current-context.html#el-convention
+[actions]: /guide/essentials/actions
+[aliases]: /guide/essentials/aliases
+[assertions]: /guide/essentials/assertions
+[matchers]: /guide/essentials/querying
+[finders]: /guide/essentials/finders
+[synchronization]: /guide/advanced/assertions
+[composition]: /guide/advanced/composition
+[launchy]: https://github.com/copiousfreetime/launchy
+[capybara api]: https://rubydoc.info/github/teamcapybara/capybara/master/Capybara/Session
+[current element]: /api/#to-capybara-node
+[wait]: https://github.com/teamcapybara/capybara#asynchronous-javascript-ajax-and-friends
+
 # API Reference
 
 All of the following methods can be called on a `Capybara::TestHelper` instance.
+
+Most of these methods are coming from the [Capybara API], except some of them
+have been extended to support [locator aliases][aliases].
+
+Have in mind that most of these methods support passing a [`wait`][wait] option, which will default to `Capybara.default_max_wait_time`, and determines how long the action will be retried before failing.
 
 ## Navigation
 
@@ -22,78 +40,142 @@ Refresh the current page.
 
 ### **visit**
 
-Navigate to the given URL.
+Navigate to the given URL, which can either be relative or absolute.
 
 - **Arguments**:
-  - `visit_uri`
+  - `visit_uri`: The URL to navigate to. The parameter will be cast to a `String`.
 
 - **Example**:
 
-```ruby
-def visit_page
-  visit cities_path
-end
-```
-
-## Session
-
-### **current_host**
- ⇒ String
-Host of the current page.
-
-### **current_path**
- ⇒ String
-Path of the current page, without any domain information.
-
-### **current_url**
- ⇒ String
-Fully qualified URL of the current page.
+  ```ruby
+  def visit_page
+    visit cities_path
+  end
+  ```
 
 ## Test Helper
 
 ### **to_capybara_node**
- ⇒ Object
 
-## Document
+- **Usage**:
 
-### **have_title**
-(title, **options) ⇒ Object
-Asserts if the page has the given title.
+  Casts the current context as a `Capybara::Node::Element`.
 
-### **has_title?**
-(title, **options) ⇒ Boolean
-Checks if the page has the given title.
+  - If the test helper is wrapping an element, it will return it.
 
-### **html**
- ⇒ String
-(also: #body, #source)
-A snapshot of the DOM of the current document, as it looks right now
-(potentially modified by JavaScript).
+  - If the test helper is wrapping the page, it will find an element using the [`:el` alias][el convention].
 
-### **title**
-⇒ String
-The title of the document.
+- **Example**:
+
+  ```ruby
+  def focus
+    to_capybara_node.execute_script('this.focus()')
+    self
+  end
+  ```
+
+### **wrap_element**
+
+Wraps an element or test helper, returning a new test helper instance.
+
+If passing a test helper it will previously be cast to an element using [`to_capybara_node`][current element].
+
+- **Arguments**:
+  - `{Capybara::Node::Element | Capybara::TestHelper} capybara_node`: the element or test helper to wrap
+
+- **Returns**:
+
+  A new `Capybara::TestHelper` of the same class the method was invoked in.
+
+### **wrap_test_helper**
+
+Wraps the [current context][el convention] of the specified helper.
+
+Unlike `wrap_element`, it will not cast the context to an element using [`to_capybara_node`][current element].
+
+- **Arguments**:
+  - `{Capybara::TestHelper} test_helper`: the test helper to wrap
+
+- **Returns**:
+
+  A new `Capybara::TestHelper` of the same class the method was invoked in.
+
+- **Example**:
+
+  ```ruby
+  def find_user(name)
+    wrap_test_helper table.row_for(name)
+  end
+  ```
+
+  Read the guide about [wrapping and composition][composition].
 
 ## Element
 
-### **[]**
-(attribute) ⇒ String
-Retrieve the given attribute.
+The following methods are always performed on the [current element].
 
-### **allow_reload!**
-(idx = nil) ⇒ Object
+### **[]**
+
+Retrieve the given HTML attribute of the [current element].
+
+- **Arguments**:
+  - `{String | Symbol} attribute` the name of the HTML attribute
+
+- **Returns**: `String` value of the attribute
+
+- **Example**:
+  ```ruby
+  # Public: Returns the HTML id of the element.
+  def id
+    self[:id]
+  end
+  ```
 
 ### **checked?**
-⇒ Boolean
-Whether or not the element is checked.
+
+Whether or not the [current element] is checked.
+
+- **Returns**: `Boolean`
+
+- **Example**:
+  ```ruby
+  def be_checked
+    expect(checked?).to_or not_to, eq(true)
+  end
+  ```
 
 ### **click**
-(*modifier_keys, wait: nil, **offset) ⇒ Capybara::Node::Element
-Click the Element.
+
+Click the [current element].
+
+- **Arguments**:
+
+  - `{Array[Symbol]} *modifier_keys (optional)`: modifier keys that should be held
+  - __Options__:
+    - `{Numeric} :x`: the X coordinate to offset the click location
+    - `{Numeric} :y`: the Y coordinate to offset the click location
+
+- **Returns**: `self`
+
+- **Example**:
+  ```ruby
+  def open_link_in_new_tab(text)
+    find_link(text).click(:control, x: 5, y: 5)
+  end
+  ```
 
 ### **disabled?**
-⇒ Boolean
-Whether or not the element is disabled.
+
+Whether or not the [current element] is disabled.
+
+- **Returns**: `Boolean`
+
+- **Example**:
+  ```ruby
+  def be_disabled
+    expect(disabled?).to_or not_to, eq(true)
+  end
+  ```
 
 ### **double_click**
 (*modifier_keys, wait: nil, **offset) ⇒ Capybara::Node::Element
@@ -215,6 +297,8 @@ Whether or not the element is visible.
 
 ## Actions
 
+Check the [guide][Actions] for a quick tour.
+
 ### **attach_file**
 (locator = nil, paths, make_visible: nil, **options) ⇒ Capybara::Node::Element
 Find a descendant file field on the page and attach a file given its path.
@@ -257,7 +341,11 @@ Find a select box on the page and unselect a particular option from it.
 
 ## Aliases
 
+Check the [guide][Aliases] for a quick tour.
+
 ## Assertions
+
+Check the [guide][Assertions] for a quick tour.
 
 ### **have_all_of_selectors**
 (*args, **kw_args, &optional_filter_block) ⇒ Object
@@ -345,6 +433,8 @@ RSpec matcher for whether the current element matches a given xpath selector.
 
 ## Finders
 
+Check the [guide][Finders] for a quick tour.
+
 ### **all**
 ([kind = Capybara.default_selector], locator = nil, **options) ⇒ Capybara::Result (also: #find_all)
 Find all elements on the page matching the given selector and options.
@@ -382,6 +472,8 @@ Find the first element on the page matching the given selector and options.
 Find an Element based on the given arguments that is also a sibling of the element called on.
 
 ## Matchers
+
+Check the [guide][Matchers] for a quick tour.
 
 ### **has_ancestor?**
 (*args, **options, &optional_filter_block) ⇒ Boolean
@@ -521,6 +613,8 @@ Checks if the current node does not match given XPath expression.
 
 ## Scoping
 
+Check the [guide][finders] for a quick tour.
+
 ### **within**
 (*args, **kw_args)
  ⇒ Object
@@ -556,6 +650,8 @@ This method does the following:
 
 
 ## Synchronization
+
+Check the [guide][Synchronization] for a quick tour.
 
 ### **synchronize**
 (seconds = nil, errors: nil) ⇒ Object
@@ -634,39 +730,116 @@ Get all opened windows.
 
 ## Debugging
 
+### **inspect_node**
+
+Inspect the `Capybara::Node::Element` element the test helper is wrapping.
+
+
 ### **save_and_open_page**
-(path = nil)
- ⇒ Object
-Save a snapshot of the page and open it in a browser for inspection.
+
+Save a snapshot of the page and open it in a browser for inspection. Requires [`launchy`][launchy].
+
+
+- **Arguments**:
+  - `{String} path (optional)`: the path to where it should be saved
 
 ### **save_and_open_screenshot**
-(path = nil, **options)
- ⇒ Object
-Save a screenshot of the page and open it for inspection.
+
+Save a screenshot of the page and open it for inspection. Requires [`launchy`][launchy].
+
+- **Arguments**:
+  - `{String} path (optional)`: the path to where it should be saved
+
+- **Returns**:
+  - `{String} path`: the path to which the file was saved
+
+- **Example**:
+  ```ruby
+  def have_city(name)
+    # Take a screenshot before the assertion runs.
+    save_and_open_screenshot('have_city.png')
+    have_content(name)
+  end
+  ```
 
 ### **save_page**
-(path = nil)
- ⇒ String
+
 Save a snapshot of the page.
 
-### **save_screenshot**
-(path = nil, **options)
- ⇒ String
-Save a screenshot of page.
+- **Arguments**:
+  - `{String} path (optional)`: the path to where it should be saved
 
-## Requests
+- **Returns**:
+  - `{String} path`: the path to which the file was saved
+
+### **save_screenshot**
+
+Save a screenshot of the page.
+
+- **Arguments**:
+  - `{String} path (optional)`: the path to where it should be saved
+
+- **Returns**:
+  - `{String} path`: the path to which the file was saved
+
+## Page
+
+### **have_title**
+Assert if the page has the given title.
+
+- **Arguments**:
+  - `{String | Regexp} title`: string or regex that the title should match
+  - __Options__:
+    - `{Boolean} :exact`: defaults to `false`, whether the provided string should be an exact match or just a substring
+
+- **Example**:
+  ```ruby
+  current_page.should.have_title('Capybara Test Helpers', exact: false)
+  ```
+
+### **has_title?**
+
+Check if the page has the given title.
+
+- **Arguments**:
+  - `{String | Regexp} title`: string or regex that the title should match
+  - __Options__:
+    - `{Boolean} :exact`: defaults to `false`, whether the provided string should be an exact match or just a substring
+
+- **Returns**: `Boolean`
+
+- **Example**:
+  ```ruby
+  current_page.has_title?('Capybara Test Helpers', wait: false)
+  ```
+
+### **page.html**
+- **Returns**: `String` snapshot of the DOM of the current document
+
+### **page.title**
+- **Returns**: `String` title of the document
+
+## Server
 
 ### **server_url**
- ⇒ Object
+- **Returns**: `String` url of the current server, including protocol and port
 
 ### **status_code**
- ⇒ Integer
-Returns the current HTTP status code as an integer.
+- **Returns**: `Integer` for the current HTTP status code
 
 ### **response_headers**
- ⇒ Hash<String, String>
-Returns a hash of response headers.
+- **Returns**: `Hash<String, String>` of response headers
 
-### **response_headers**
- ⇒ Hash<String, String>
-Returns a hash of response headers.
+## Session
+
+### **current_host**
+
+- **Returns**: `String` host of the current page
+
+### **current_path**
+
+- **Returns**: `String` path of the current page, without any domain information
+
+### **current_url**
+
+- **Returns**: `String` fully qualified URL of the current page.
