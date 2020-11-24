@@ -27,9 +27,35 @@ a.sidebar-link:hover {
   color: #cb4e00;
 }
 
+.custom-block {
+  border-bottom-right-radius: 2px;
+  border-top-right-radius: 2px;
+}
+
 .custom-block.custom-block.tip {
   background-color: #f7f5f3;
   border-color: #f38b54;
+}
+
+.custom-block:before {
+  position: absolute;
+  top: 19px;
+  left: -14px;
+  color: #fff;
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  text-align: center;
+  line-height: 20px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.custom-block.tip:before {
+  content: url(/icons/bulb.svg);
+  width: 25px;
+  height: 25px;
+  left: -16px;
 }
 
 details > summary {

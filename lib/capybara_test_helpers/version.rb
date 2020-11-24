@@ -2,5 +2,5 @@
 
 # Easily write fluent Page Objects for Capybara in Ruby.
 module CapybaraTestHelpers
-  VERSION = '1.0.2'
+  VERSION = '1.0.3'
 end

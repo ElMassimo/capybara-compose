@@ -1,3 +1,7 @@
+## Capybara Test Helpers 1.0.3 (2020-11-24) ##
+
+* Add `CapybaraTestHelpers::BenchmarkHelpers`
+
 ## Capybara Test Helpers 1.0.2 (2020-11-23) ##
 
 *   Add `aliases` DSL to define `SELECTORS`.

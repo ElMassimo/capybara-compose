@@ -5,7 +5,7 @@ require 'pry-rescue/rspec' unless ENV['CI']
 
 # Public: Provides the basic functionality to create simple test helpers.
 class BaseTestHelper < Capybara::TestHelper
-  include BenchmarkHelpers
+  include CapybaraTestHelpers::BenchmarkHelpers
 
   # Internal: These are used on most test helpers.
   use_test_helpers(:current_page, :routes)

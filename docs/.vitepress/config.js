@@ -107,6 +107,10 @@ const config = {
             link: '/guide/advanced/composition.html',
           },
           {
+            text: 'Debugging',
+            link: '/guide/advanced/debugging.html',
+          },
+          {
             text: 'Design Patterns',
             link: '/guide/advanced/design-patterns.html',
           },

@@ -4,16 +4,11 @@ require 'active_support/concern'
 require 'active_support/core_ext/numeric/time'
 require 'rainbow'
 
-begin
-  require 'amazing_print'
-rescue LoadError
-end
-
 # rubocop:disable Style/ClassVars
 
 # Public: Keeps track of the running time for user-defined helpers, useful as a
 # way to keep track of the executed methods, and to easily spot slow operations.
-module BenchmarkHelpers
+module CapybaraTestHelpers::BenchmarkHelpers
   extend ActiveSupport::Concern
 
   included do
@@ -45,10 +40,8 @@ private
 
   # Internal: Indents nested method calls, and adds color to make it readable.
   def _benchmark_str(method_name:, args:, kwargs:, time:)
+    args += [kwargs] unless kwargs.empty?
     args_str = args.map(&:inspect)
-    unless kwargs.empty?
-      args_str.push kwargs.respond_to?(:awesome_inspect) ? kwargs.awesome_inspect(multiline: false, ruby19_syntax: true)[2..-3] : kwargs.inspect
-    end
     [
       '  ' * @@indentation_level,
       Rainbow(self.class.name.chomp('TestHelper') + '#').slategray.rjust(40),
