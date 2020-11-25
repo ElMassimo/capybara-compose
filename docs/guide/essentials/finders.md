@@ -17,9 +17,37 @@ form.find_field('First Name')
 table.all(:table_row)
 ```
 
+## Scoping 🎯
+
+You can use [`within`][within] to restrict certain actions to a specific area of the page.
+
+Any operation inside the block will only target elements that are _within_ the specified selector or element.
+
+```ruby
+class UsersTestHelper < BaseTestHelper
+  def add_user(first_name:)
+    click_link('Add User')
+
+    within('.new-user-modal') {
+      fill_in 'First Name', with: first_name
+      click_button 'Save'
+    }
+  end
+end
+```
+In the example above, the _Add User_ link could be anywhere on the page, while using [`within`][within] ensures that the _First Name_ field and the _Save_ button are inside the `.new-user-modal` element.
+
+This is very helpful to make the test more explicit, and prevent interacting with similar fields in a different section of the page, which could cause ambiguity problems and race conditions.
+
+```ruby
+users.add_user(first_name: 'Alice')
+```
+
+Note that a lot of uses of [`within`][within] can be replaced more succinctly with **chaining**.
+
 ## Chaining 🔗
 
-All finders wrap the result with a test helper so that you can chain methods to work with the returned element, or find other elements within it.
+All finders wrap the result with a test helper so you can chain methods to work with the returned element, or find other elements within it.
 
 ```ruby
 class UsersTestHelper < BaseTestHelper
@@ -39,29 +67,3 @@ find('table.users').find(:table_row, ['Bob']).click_link('Edit')
 ```
 
 A way to make chaining even more terse is to use [aliases shortcuts][aliases].
-
-## Scoping 🎯
-
-You can use [`within`][within] to restrict certain actions to a specific area of the page.
-
-Any operation inside the block will only target elements that are _within_ the specified selector or element.
-
-```ruby
-class UsersTestHelper < BaseTestHelper
-  def add_user(first_name:)
-    click_link('Add User')
-
-    within('.new-user-modal') {
-      fill_in 'First Name', with: first_name
-      click_button 'Save'
-    }
-  end
-end
-```
-```ruby
-users.add_user(first_name: 'Alice')
-```
-
-In the example above, the _Add User_ link could be anywhere on the page, while using [`within`][within] ensures that the _First Name_ field and the _Save_ button are inside the `.new-user-modal` element.
-
-This is very helpful to make the test more explicit, and prevent interacting with similar fields in a different section of the page, which could cause ambiguity problems and race conditions.

@@ -6,19 +6,37 @@ sidebar: auto
 [current context]: /guide/essentials/current-context.html
 [actions]: /guide/essentials/actions
 [aliases]: /guide/essentials/aliases
+[aliases shortcuts]: /guide/essentials/aliases#aliases-shortcuts
 [assertions]: /guide/essentials/assertions
+[expectations]: /guide/essentials/assertions.html#using-the-assertion-state
+[assertion state]: /guide/essentials/assertions.html#understanding-the-assertion-state
 [matchers]: /guide/essentials/querying
+[api_matchers]: /api/#matchers
+[api_assertions]: /api/#assertions
+[api_finders]: /api/#finders
+[api_aliases]: /api/#aliases
+[api_actions]: /api/#actions
+[matcher caveats]: /guide/essentials/querying.html#query-caveats-⚠%EF%B8%8F
 [finders]: /guide/essentials/finders
-[synchronization]: /guide/advanced/assertions
+[scoping]: /guide/essentials/finders.html#scoping-🎯
+[filtering]: /guide/advanced/filtering
+[synchronization]: /guide/advanced/synchronization
 [composition]: /guide/advanced/composition
 [wrapping]: /guide/advanced/composition.html#wrapping-%F0%9F%8E%81
+[wrap]: /api/#wrap-element
+[find]: /api/#find
 [launchy]: https://github.com/copiousfreetime/launchy
 [capybara api]: https://rubydoc.info/github/teamcapybara/capybara/master/Capybara/Session
 [current element]: /api/#to-capybara-node
 [capybara_node_code]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/lib/capybara_test_helpers/test_helper.rb#L56-L58
 [click]: /api/#click
 [async]: https://github.com/teamcapybara/capybara#asynchronous-javascript-ajax-and-friends
-[using_wait_time]: /api/#using_wait_time
+[using_wait_time]: /api/#using-wait-time
+[should]: /api/#should
+[should_not]: /api/#should-not
+[within_frame]: /api/#within-frame
+[within_window]: /api/#within-window
+[capybara_synchronize]: https://rubydoc.info/github/jnicklas/capybara/master/Capybara/Node/Base#synchronize-instance_method
 
 # API Reference
 
@@ -33,11 +51,131 @@ Some methods can receive a `:wait` option, which determines how long an interact
 
 ### **aliases**
 
+Defines [locator aliases][aliases] that can be used by [actions][api_actions], [finders][api_finders], [matchers][api_matchers], and [assertions][api_assertions].
+
+A method with the alias name will be defined for each specified alias, as a [shortcut][aliases shortcuts] for `find`.
+
+Read the [aliases] guide for a quick overview.
+
+- **Arguments**:
+  - `{Hash} locator_aliases`:
+    - `{Symbol} key`: name of the alias
+    - `{String | Array}`: the locator
+
+- **Example**:
+
+  ```ruby
+  class FormTestHelper < Capybara::TestHelper
+    aliases(
+      el: 'form',
+      save_button: '.button[type=submit]',
+      save_loading_indicator: [:save_button, ' .loading-indicator'],
+    )
+
+    def save
+      within { save_button.click }
+    end
+
+    def be_saving
+      have(:save_loading_indicator)
+    end
+  end
+  ```
+
 ### **delegate_to_test_context**
+
+Makes the specified methods from the RSpec or Cucumber context available in the test helper instance.
+
+- **Arguments**:
+  - `{Symbol} *method_names`: the methods to delegate to the test context
+
+- **Example**:
+
+  ```ruby
+  class BaseTestHelper < Capybara::TestHelper
+    delegate_to_test_context(:support_file_path)
+
+    def drop_file(filename)
+      drop support_file_path(filename)
+    end
+  end
+  ```
 
 ### **use_test_helpers**
 
+Makes other test helpers available in the instance as methods.
+
+The defined methods can optionally receive an element to [wrap].
+
+Read the [composition] guide for a quick overview.
+
+- **Arguments**:
+  - `{Symbol} *helper_names`: the names of the test helpers to inject
+
+- **Example**:
+
+  ```ruby
+  class CitiesTestHelper < BaseTestHelper
+    use_test_helpers(:form, :table)
+
+    aliases(
+      cities_table: '.cities',
+    )
+
+    def edit(name, with:)
+      table(cities_table).row_for(name).click_link('Edit')
+      form.within {
+        fill_in('Name', with: with[:name])
+        form.save
+      }
+    end
+  end
+  ```
+
+
 ## Test Helper
+
+### **not_to**
+
+The current [assertion state] of the test helper. Also aliased as `or_should_not`.
+
+- **Example**:
+
+  ```ruby
+  def be_checked
+    expect(checked?).to_or not_to, eq(true)
+  end
+  ```
+
+### **should**
+
+Returns a test helper with a positive [assertion state], allowing any [assertions] to be chained after it.
+
+Also available as `should_still`, `should_now`, `and`, `and_instead`, `and_also`, `and_still`.
+
+- **Arguments**:
+  - `{Boolean} negated`: defaults to `false`, if truthy it will return a test helper with a negative assertion state.
+
+- **Examples**:
+  ```ruby
+  users.should.have_content('Jim')
+  ```
+  ```ruby
+  Then(/^there should( not)? be an? "(.+?)" city$/) do |or_should_not, name|
+    cities.should(or_should_not).have_city(name)
+  end
+  ```
+
+### **should_not**
+
+Returns a test helper with a negative [assertion state], allowing any [assertions] to be chained after it.
+
+Also available as `should_still_not`, `should_no_longer`, `nor`, `and_not`.
+
+- **Examples**:
+  ```ruby
+  users.should_not.have_content('Jim')
+  ```
 
 ### **to_capybara_node**
 
@@ -124,7 +262,7 @@ Clicks the [current element].
 
 - **Arguments**:
 
-  - `{Symbol} *modifier_keys (optional)`: modifier keys that should be held during click
+  - `{Symbol} *modifier_keys`: modifier keys that should be held during click
   - __Options__:
 
     By default it will attempt to click the center of the element.
@@ -465,13 +603,14 @@ Find a descendant check box and uncheck it.
 (value = nil, from: nil, **options) ⇒ Capybara::Node::Element
 Find a select box on the page and unselect a particular option from it.
 
-## Aliases
-
-Check the [guide][Aliases] for a quick tour.
 
 ## Assertions
 
 Check the [guide][Assertions] for a quick tour.
+
+To use an assertion, call [`should`][should] or [`should_not`][should_not], and then chain the assertion.
+
+Negated versions are available for most, such as `have_no_selector`, but are ommitted for brevity.
 
 ### **have_all_of_selectors**
 (*args, **kw_args, &optional_filter_block) ⇒ Object
@@ -559,7 +698,7 @@ RSpec matcher for whether the current element matches a given xpath selector.
 
 ## Finders
 
-Check the [guide][Finders] for a quick tour.
+Check the [guide][Finders] for a quick tour, or [learn how to filter with blocks][filtering].
 
 ### **all**
 ([kind = Capybara.default_selector], locator = nil, **options) ⇒ Capybara::Result (also: #find_all)
@@ -600,6 +739,8 @@ Find an Element based on the given arguments that is also a sibling of the eleme
 ## Matchers
 
 Check the [guide][Matchers] for a quick tour.
+
+Have in mind that matchers have some [caveats][matcher caveats], so prefer [assertions] when possible.
 
 ### **has_ancestor?**
 (*args, **options, &optional_filter_block) ⇒ Boolean
@@ -740,86 +881,186 @@ Checks if the current node does not match given XPath expression.
 
 ## Scoping
 
-Check the [guide][finders] for a quick tour.
+Check the [guide][scoping] for a quick tour.
 
 ### **within**
-(*args, **kw_args)
- ⇒ Object
-(also: #within_element)
-Executes the given block within the context of a node.
+
+Executes the given block within the context of the specified element.
+
+For the duration of the block, any command to Capybara will be scoped to the given element.
+
+When called without parameters the block will be scoped to the [current element].
+
+- **Arguments**: Same as [`find`], can also handle [aliases].
+
+- **Returns**: `Object`: The return value of the block.
+
+- **Examples**:
+  ```ruby
+  dropdown.within { click_link('Open') }
+  ```
+  ```ruby
+  users.find_user('Kim').within { click_link('Edit') }
+  ```
+  ```ruby
+  def add_user(first_name:)
+    click_link('Add User')
+
+    within('.new-user-modal') {
+      fill_in 'First Name', with: first_name
+      click_button 'Save'
+    }
+  end
+  ```
 
 ### **within_document**
 
 Unscopes the inner block from any previous `within` calls.
 
+For the duration of the block, any command to Capybara will be scoped to the entire `page`.
+
+Useful as a escape hatch to interact with content outside a previous `within` call, such as modals.
+
 ### **within_fieldset**
-(locator, &block)
- ⇒ Object
-Execute the given block within the a specific fieldset given the id or legend of that fieldset.
+
+Executes the given block within the specific fieldset.
+
+- **Arguments**:
+  -  `{String} locator`: id or legend of the fieldset
 
 ### **within_frame**
-(*args, **kw_args)
- ⇒ Object
-Execute the given block within the given iframe using given frame, frame name/id or index.
+
+Executes the given block within the given iframe.
+
+- **Arguments**:
+  -  `{String} frame`: frame, id, name, or index of the frame
 
 ### **within_table**
-(locator, &block)
- ⇒ Object
-Execute the given block within the a specific table given the id or caption of that table.
+
+Executes the given block within the a specific table.
+
+- **Arguments**:
+  -  `{String} locator`: id or caption of the table
 
 ### **within_window**
-(window_or_proc)
- ⇒ Object
-This method does the following:
-1. Switches to the given window (it can be located by window instance/lambda/string).
-2. Executes the given block (within window located at previous step).
-3. Switches back (this step will be invoked even if an exception occurs at the second step).
 
+Switches to the given window, executes the given block within that window, and then switches back to the original window.
+
+- **Arguments**:
+  -  `{Capybara::Window | Proc } window`: window to switch to
+
+  When passing a proc, it will be invoked once per existing window, choosing the first window where the `proc` returns true.
+
+- **Examples**:
+  ```ruby
+  checkout = window_opened_by { click_button('Checkout') }
+  within_window(checkout) { click_on('Confirm Purchase') }
+  ```
+  ```ruby
+  within_window(->{ page.title == 'New User' }) do
+    click_button 'Submit'
+  end
+  ```
 
 ## Synchronization
 
 Check the [guide][Synchronization] for a quick tour.
 
 ### **synchronize**
-(seconds = nil, errors: nil) ⇒ Object
-This method is Capybara's primary defence against asynchronicity problems.
+
+This method is Capybara's primary way to deal with asynchronicity.
+
+Learn more about it [in the documentation][capybara_synchronize].
+
+You should rarely need to use this directly, check `synchronize_expectation` instead.
+
+- **Options**:
+  -  `{Array} :errors`: exception classes that should be retried
+  -  `{Numeric} :wait`: amount of seconds to retry the block before it succeeds or times out
+
+- **Example**:
+  ```ruby
+  def have_created_user(name)
+    synchronize(wait: 3, errors: [ActiveRecord::RecordNotFound]) {
+      User.find_by(name: name)
+    }
+  end
+  ```
 
 ### **synchronize_expectation**
-(seconds = nil, errors: nil) ⇒ Object
-This method is Capybara's primary defence against asynchronicity problems.
+
+Allows to automatically retry [expectations][expectations] until they succeed or the [time out][synchronization] ellapses.
+
+It will automatically [reload][synchronization] the [current context] on each retry.
+
+- **Options**:
+  -  `{Array} :retry_on_errors`: additional exception classes that should be retried
+  -  `{Numeric} :wait`: amount of seconds to retry the block before it succeeds or times out
+
+- **Example**:
+  ```ruby
+  def be_visible
+    synchronize_expectation(wait: 2) {
+      expect(visible?).to_or not_to, eq(true)
+    }
+  end
+  ```
 
 ### **using_wait_time**
-(seconds, &block)
- ⇒ Object
-Yield a block using a specific maximum wait time.
+
+Changes the [default maximum wait time][synchronization] for all commands that are executed inside the block.
+
+Useful for changing the timeout for commands that do not take a `:wait` keyword argument.
+
+- **Arguments**:
+  -  `{Numeric} seconds`: the default maximum wait time for retried commands
+
+- **Example**:
+  ```ruby
+  def wait_and_hover
+    using_wait_time(10) { hover }
+  end
+  ```
 
 ## Modals
 
 ### **accept_alert**
-(text = nil, **options, &blk)
- ⇒ String
-Execute the block, accepting a alert.
+
+Executes the block, accepting an alert that is opened while it executes.
+
+- **Arguments**:
+  -  `{String | Regexp} text (optional)`: text that the modal should contain
 
 ### **accept_confirm**
-(text = nil, **options, &blk)
- ⇒ String
-Execute the block, accepting a confirm.
+
+Executes the block, accepting a confirmation dialog that is opened while it executes.
+
+- **Arguments**:
+  -  `{String | Regexp} text (optional)`: text that the modal should contain
+
+- **Example**:
+  ```ruby
+  def delete(city)
+    accept_confirm { row_for(city).click_on('Destroy') }
+  end
+  ```
 
 ### **accept_prompt**
-(text = nil, **options, &blk)
- ⇒ String
-Execute the block, accepting a prompt, optionally responding to the prompt.
 
+Executes the block, accepting a prompt, and optionally responding to it.
+
+- **Arguments**:
+  -  `{String | Regexp} text (optional)`: text that the prompt should contain
+  - __Options__:
+      - `{String} :with (optional)`: input for the prompt
 
 ### **dismiss_confirm**
-(text = nil, **options, &blk)
- ⇒ String
-Execute the block, dismissing a confirm.
+
+Like `accept_confirm`, but dismisses the confirmation dialog instead.
 
 ### **dismiss_prompt**
-(text = nil, **options, &blk)
- ⇒ String
-Execute the block, dismissing a prompt.
+
+Like `accept_prompt`, but dismisses the prompt instead.
 
 
 ## Navigation
@@ -840,6 +1081,8 @@ Refreshes the current page.
 
 Navigates to the given URL, which can either be relative or absolute.
 
+Path helpers can be easily [made available to test helpers](https://github.com/ElMassimo/capybara_test_helpers/blob/819ad283ba32468fbc67a4d45c929f4efac5a464/examples/rails_app/test_helpers/routes_test_helper.rb#L25-L43).
+
 - **Arguments**:
   - `visit_uri`: The URL to navigate to. The parameter will be cast to a `String`.
 
@@ -850,40 +1093,6 @@ Navigates to the given URL, which can either be relative or absolute.
     visit cities_path
   end
   ```
-
-## Window
-
-### **become_closed**
-(**options) ⇒ Object
-Wait for window to become closed.
-
-### **current_window**
- ⇒ Capybara::Window
-Current window.
-
-### **open_new_window**
-(kind = :tab)
- ⇒ Capybara::Window
-Open a new window.
-
-### **switch_to_frame**
-(frame)
- ⇒ Object
-Switch to the given frame.
-
-### **switch_to_window**
-(window = nil, **options, &window_locator)
- ⇒ Capybara::Window
-Switch to the given window.
-
-### **window_opened_by**
-(**options, &block)
- ⇒ Capybara::Window
-Get the window that has been opened by the passed block.
-
-### **windows**
- ⇒ Array<Capybara::Window>
-Get all opened windows.
 
 ## Debugging
 
@@ -945,7 +1154,7 @@ Saves a screenshot of the page.
 ## Page
 
 ### **have_title**
-Asserts if the page has the given title.
+[Asserts][api_assertions] if the page has the given title.
 
 - **Arguments**:
   - `{String | Regexp} title`: string or regex that the title should match
@@ -959,7 +1168,7 @@ Asserts if the page has the given title.
 
 ### **has_title?**
 
-Checks if the page has the given title.
+[Checks][api_matchers] if the page has the given title.
 
 - **Arguments**:
   - `{String | Regexp} title`: string or regex that the title should match
@@ -978,6 +1187,78 @@ Checks if the page has the given title.
 
 ### **page.title**
 - **Returns**: `String` title of the document
+
+## Window
+
+### **become_closed**
+
+Waits for a window to become closed.
+
+- **Example**:
+
+  ```ruby
+  expect(window).to become_closed(wait: 5)
+  ```
+
+### **current_window**
+
+- **Returns**: `Capybara::Window` the current window
+
+- **Example**:
+  ```ruby
+  def close_window
+    current_window.close
+  end
+  ```
+
+### **open_new_window**
+
+Opens a new window, __without__ switching to it.
+
+- **Arguments**: `{Symbol} kind` defaults to `:tab`
+
+- **Returns**: `Capybara::Window` a new window or tab
+
+- **Examples**:
+  ```ruby
+  def visit_in_new_tab(url)
+    new_tab = open_new_window(:tab)
+    within_window(new_tab) { visit(url) }
+  end
+  ```
+
+### **switch_to_frame**
+
+Switches to the specified frame permanently. Prefer to use [`within_frame`][within_frame] when possible.
+
+- **Arguments**: Same as [`within_frame`][within_frame]
+
+### **switch_to_window**
+
+Switches to the given window permanently. Prefer to use [`within_window`][within_window] when possible.
+
+- **Arguments**: Same as [`within_window`][within_window]
+
+### **window_opened_by**
+
+Captures a window that is opened while executing the given block.
+
+More reliable than using `windows.last`, as it will wait for the window to be opened.
+
+- **Options**: `{Numeric} :wait`: seconds to wait a new window to be opened
+
+- **Returns**: `Capybara::Window` opened in the block
+
+- **Examples**:
+  ```ruby
+  checkout_window = window_opened_by { click_button('Checkout') }
+  ```
+
+### **windows**
+
+All the windows that are currently open. The order depends on the driver, don't rely on it.
+
+ - **Returns**: `Array<Capybara::Window>`
 
 ## Server
 

@@ -1,8 +1,8 @@
 [api]: /api/#assertions
 [not_to]: /api/#not-to
 [synchronization]: /guide/advanced/synchronization
-[should]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/lib/capybara_test_helpers/assertions.rb#L10-L15
-[should_not]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/lib/capybara_test_helpers/assertions.rb#L17-L22
+[should]: /api/#should
+[should_not]: /api/#should-not
 [positive and negative assertions]: https://maximomussini.com/posts/cucumber-to_or_not_to/
 
 # Assertions ☑️
@@ -42,7 +42,7 @@ This is because [built-in assertions][api] like `have` already handle the __*ass
 
 ## Understanding the Assertion State
 
-When calling `should`, any assertion calls that follow will execute the positive expectation.
+When calling [`should`][should], any assertion calls that follow will execute the positive expectation.
 
 ```ruby
 users.should.have_selector('.user')
@@ -50,7 +50,7 @@ users.should.have_selector('.user')
 expect(users).to have_selector('.user')
 ```
 
-On the other hand, after calling `should_not` any assertions will execute the negated expectation.
+On the other hand, after calling [`should_not`][should_not] any assertions will execute the negated expectation.
 
 ```ruby
 users.should_not.have_selector('.user')
@@ -64,7 +64,7 @@ Sometimes [built-in assertions][api] are not enough, and you need to create your
 
 The _assertion state_ is exposed as [`not_to`][not_to] as syntax sugar.
 
-Use [`to_or not_to`][positive and negative assertions] to create an expectation that can be used with `should` or `should_not`.
+Use [`to_or not_to`][positive and negative assertions] to create an expectation that can be used with [`should`][should] or [`should_not`][should_not].
 
 ```ruby
 class CurrentPageTestHelper < BaseTestHelper

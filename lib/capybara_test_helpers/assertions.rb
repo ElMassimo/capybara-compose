@@ -5,8 +5,8 @@ require 'capybara_test_helpers/to_or_expectation_handler'
 # Internal: Wraps RSpec matchers to allow using them after calling `should` or
 # `should_not` to perform the assertion.
 module CapybaraTestHelpers::Assertions
-  # Public: Allows writing custom on-demand matchers, as well as chaining
-  # several assertions.
+  # Public: Returns a test helper with a positive assertion state.
+  # Any assertions called after it will execute as `expect(...).to ...`.
   def should(negated = false)
     negated = !!negated # Coerce to boolean.
     return self if negated == @negated
@@ -15,8 +15,8 @@ module CapybaraTestHelpers::Assertions
   end
   [:should_still, :should_now, :and, :and_instead, :and_also, :and_still].each { |should_alias| alias_method should_alias, :should }
 
-  # Public: Allows writing custom on-demand matchers, as well as chaining
-  # several assertions.
+  # Public: Returns a test helper with a negative assertion state.
+  # Any assertions called after it will execute as `expect(...).not_to ...`.
   def should_not
     @negated ? self : should(true)
   end
@@ -101,6 +101,8 @@ module CapybaraTestHelpers::Assertions
       have_selector(*args, **kwargs, &filter)
     end
   end
+
+  alias have_no have_no_selector
 
   # Public: Allows to check on any input value asynchronously.
   def have_value(expected_value, **options)

@@ -34,6 +34,9 @@ class HtmlPageTestHelper < BaseTestHelper
     title_or_paragraph: 'h1, p',
     simple_link: 'a.simple',
 
+    # Any of Selectors Spec
+    missing_element: 'h2#blah',
+
     # Have Table Spec
     horizontal_table: [:table, 'Horizontal Headers'],
   )

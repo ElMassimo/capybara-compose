@@ -1,5 +1,6 @@
 ## Unreleased
 
+* Allow to use aliases in `assert_` methods as well, for consistency.
 * Remove internal method `wrap_test_helper`.
 
 ## Capybara Test Helpers 1.0.3 (2020-11-24) ##
