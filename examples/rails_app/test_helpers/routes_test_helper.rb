@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class RoutesTestHelper < BaseTestHelper
-  delegate_to_test_context(:urls)
-
 # Actions: Encapsulate complex actions to provide a cleaner interface.
   # Public: Visits a page defined under the specified alias.
   #

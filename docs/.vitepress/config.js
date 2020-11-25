@@ -69,12 +69,12 @@ const config = {
             link: '/guide/essentials/finders.html',
           },
           {
-            text: 'Querying',
-            link: '/guide/essentials/querying.html',
-          },
-          {
             text: 'Assertions',
             link: '/guide/essentials/assertions.html',
+          },
+          {
+            text: 'Querying',
+            link: '/guide/essentials/querying.html',
           },
           {
             text: 'Locator Aliases',
@@ -85,7 +85,7 @@ const config = {
             link: '/guide/essentials/injection.html',
           },
           {
-            text: 'Current Context',
+            text: 'Understanding Context',
             link: '/guide/essentials/current-context.html',
           },
         ],
@@ -95,7 +95,7 @@ const config = {
         collapsable: false,
         children: [
           {
-            text: 'Composing with Helpers',
+            text: 'Composition and Injection',
             link: '/guide/advanced/composition.html',
           },
           {
@@ -107,8 +107,8 @@ const config = {
             link: '/guide/advanced/filtering.html',
           },
           {
-            text: 'Synchronizing Assertions',
-            link: '/guide/advanced/assertions.html',
+            text: 'Synchronization and Waiting',
+            link: '/guide/advanced/synchronization.html',
           },
         ],
       },

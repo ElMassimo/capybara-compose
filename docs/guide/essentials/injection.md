@@ -6,7 +6,7 @@
 [capybara_test_helpers_tests]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/spec
 [rspec matchers]: https://relishapp.com/rspec/rspec-expectations/docs/built-in-matchers
 [composition]: /guide/advanced/composition
-[use_test_helpers]: /api/#use_test_helpers
+[use_test_helpers]: /api/#use-test-helpers
 
 # Using Test Helpers
 
@@ -26,7 +26,7 @@ class CitiesTestHelper < BaseTestHelper
 end
 ```
 
-Read more about [composition] to keep your tests dry and make them easier to understand and update.
+For detailed usage, check out the [composition] section.
 
 ## Test Helpers in RSpec
 
@@ -72,7 +72,7 @@ end
 
 ## Naming Conventions 🔤
 
-The following convention is applied when injecting test helpers by using `use_test_helpers`, or the `test_helpers` option in RSpec scenarios:
+The following convention is applied when injecting test helpers:
 
 | Shorthand Name                 | Test Helper Class        | File Name                                |
 | ------------------------------ | ------------------------ | ---------------------------------------- |

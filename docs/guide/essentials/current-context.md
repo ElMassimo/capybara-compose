@@ -9,7 +9,7 @@
 
 By default, test helpers wrap the current `session`, aliased in Capybara as `page`.
 
-[Finders] and certain [actions] will return a specific element, which will be [wrapped][wrapping] with a new test helper.
+When [finders] and certain [actions] return an element, it will be [wrapped][wrapping] in a new test helper.
 
 ```ruby
 scenario 'edit user', test_helpers: [:users] do
@@ -26,9 +26,7 @@ On the other hand, the __context__ for `user` is the table row returned by `find
 
 Certain methods can only be performed on node elements, such as `click`, `hover` or `set`.
 
-When calling these methods on a test helper without a current element, an element will be [obtained][to_capybara_node] by using an `:el` [alias] defined in the test helper.
-
-`:el` should always be the top-level element that the test helper is encapsulating, which could be a small component, or an entire page.
+When a test helper is not wrapping an element, an element will be [obtained][to_capybara_node] by using an `:el` [alias] defined in the test helper.
 
 ```ruby
 class CheckboxTestHelper < BaseTestHelper
@@ -39,10 +37,12 @@ end
 
 checkbox.value
 # same as
-checkbox.el.value
+checkbox.find(:el).value
 # same as
 find('input[type=checkbox]').value
 ```
+
+`:el` should always be the top-level element that the test helper is encapsulating, which could be a small component, or an entire page.
 
 This convention makes it less cumbersome to extract and use test helpers for simple components.
 

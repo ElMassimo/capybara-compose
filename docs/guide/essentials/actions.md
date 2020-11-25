@@ -1,13 +1,14 @@
 [api]: /api/
 [capybara dsl]: https://github.com/teamcapybara/capybara#the-dsl
-[selectors]: /guide/essentials/aliases
+[aliases]: /guide/essentials/aliases
 [to_capybara_node]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/lib/capybara_test_helpers/test_helper.rb#L56-L58
+[wrap]: /api/#wrap-element
 
 # Actions 🖱⌨️
 
 All of the actions provided by the [Capybara DSL] are available to be used in test helpers.
 
-<!-- You can check the [API Reference][api] for information about the available actions and their return value. -->
+You can check the [API Reference][api] for information about the available actions and their return value.
 
 ```ruby
 users.click_link('Add')
@@ -33,7 +34,11 @@ class FormTestHelper < Capybara::TestHelper
     click_button('Save')
   end
 end
+```
 
+and then use it as:
+
+```ruby
 form.save
 ```
 
@@ -49,29 +54,12 @@ class UsersTestHelper < Capybara::TestHelper
     form.save
   end
 end
-
+```
+```ruby
 users.add_user(name: 'Alice')
 ```
 
-## Return Values ⏎
-
-In order to provide a consistent development experience, all actions will preserve
-the original return value from Capybara.
-
-For example, `click` returns the same element, while `fill_in` returns the specified field instead.
-
-```ruby
-save_button = form.find_button('Save').click
-name_field = form.fill_in('Name', with: name)
-```
-
-When the return value of the capybara method is an element, it will be
-_automatically wrapped_ so that other actions or selectors from the test helper
-can be chained.
-
-You may return `self` on your custom actions to achieve a more fluent API whenever the default behavior is not desirable.
-
-<!-- You can check the [API Reference][api] for information about the available actions and their return value. -->
+You may purposefully return `self` on some of your actions to allow chaining other methods.
 
 ## Finding the Right Balance ⚖️
 
@@ -79,4 +67,4 @@ Too many hardcoded labels can make tests brittle and time consuming to update. G
 
 On the other hand, too much abstraction can create unnecesary levels of __indirection__.
 
-It's up to you to figure out __the right balance__ between direct references to labels and selectors, and more specific actions that describe a use case or interaction.
+It's up to you to figure out __the right balance__ between using direct references to labels and selectors or creating more specific actions that describe a use case or interaction.

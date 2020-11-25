@@ -1,13 +1,14 @@
+[aliases]: /guide/essentials/aliases
 [injection]: /guide/essentials/injection
 [el convention]: /guide/essentials/current-context.html#current-element
 [assertion state]: /guide/essentials/assertions.html#understanding-the-assertion-state
 [current context]: /guide/essentials/current-context.html
 [current element]: /guide/essentials/current-context.html#current-element
 [wrapping]: /api/#wrap-element
-[use_test_helpers]: /api/#use_test_helpers
+[use_test_helpers]: /api/#use-test-helpers
 [to_capybara_node]: /api/#to-capybara-node
 
-# Composition 🧩
+# Composition and Injection 🧩
 
 As described in [_Using Test Helpers_][injection], it's possible to easily combine test helpers.
 
@@ -29,7 +30,7 @@ class TableTestHelper < BaseTestHelper
 end
 ```
 
-We will inject this helper by using [`use_test_helpers`][use_test_helpers].
+We will inject this helper with [`use_test_helpers`][use_test_helpers].
 
 ```ruby
 class UsersTestHelper < BaseTestHelper
@@ -56,7 +57,11 @@ end
 
 Every time we call `table`, an instance of `TableTestHelper` is returned.
 
-The returned instance will preserve the _[assertion state]_ of the `UsersTestHelper` instance, which means we can use any assertion without having to explicitly call `should` in the `table` helper.
+::: tip
+Returned test helpers will preserve the _[assertion state]_ of the current helper.
+:::
+
+We can use any assertion without having to explicitly call `should` in the `table` helper.
 
 ```ruby
 users.should.have_user('Jim').should_not.have_user('John')
@@ -97,15 +102,18 @@ We can workaround this by wrapping the result:
   end
 ```
 ```ruby
-users.find_user('Jim').click_to_edit # #<UsersTestHelper tag="a">
+users.find_user('Jim').click_to_edit
+# #<UsersTestHelper tag="a">
 ```
 
 ## Inheritance
 
-It is possible to avoid all of this wrapping and context switching by using inheritance.
+Another way to share functionality between test helpers is to use inheritance.
+
+Just like methods, any [aliases] defined in ancestors will also be available in the subclass.
 
 ```ruby
-Capybara.get_test_helper_class(:table)
+Capybara.get_test_helper_class(:table) # or require_relative './table_test_helper'
 
 class UsersTestHelper < TableTestHelper
   aliases(
@@ -121,10 +129,13 @@ class UsersTestHelper < TableTestHelper
   end
 end
 ```
-```ruby
-users.find_user('Jim').click_to_edit # #<UsersTestHelper tag="a">
-```
 
+Because we are using inheritance, we can skip all the wrapping and context switching from the previous examples.
+
+```ruby
+users.find_user('Jim').click_to_edit
+# #<UsersTestHelper tag="a">
+```
 Simple is better though, and composition should be preferred over inheritance in most cases.
 
 ## Using the Current Element
@@ -132,11 +143,10 @@ Simple is better though, and composition should be preferred over inheritance in
 You can leverage the [current element] as needed when creating your own actions or assertions by calling [`to_capybara_node`][to_capybara_node]:
 
 ```ruby
-# Public: Useful to natively give focus to an element.
 def focus
   to_capybara_node.execute_script('this.focus()')
   self
 end
 ```
 
-Have in mind that in most cases this is unnecessary, as the current element will be used implicitly when calling an action such as `click`, `hover`, or `set`.
+Have in mind that in most cases this is unnecessary, as many actions such as `click` already use the [current element].

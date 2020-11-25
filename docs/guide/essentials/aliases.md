@@ -8,11 +8,11 @@
 
 # Locator Aliases 🔍
 
-You can encapsulate locators for commonly used elements to avoid hardcoding them
-in different tests by defining `aliases`.
+You can encapsulate locators for commonly used elements by defining `aliases`.
 
-As a result, if the UI changes there are less places that need to be updated in
-the tests 😃
+These aliases can then be used on any of the [actions], [finders], [matchers], or [assertions].
+
+As a result, when the UI changes it will be significantly easier to update the tests, because selectors and labels are not hardcoded all over the place 😃
 
 ```ruby
 class FormTestHelper < BaseTestHelper
@@ -24,8 +24,6 @@ class FormTestHelper < BaseTestHelper
   )
 end
 ```
-
-You can then leverage these aliases on any of the [actions], [finders], [matchers], or [assertions]:
 
 ```ruby
 # Finding an element
@@ -41,7 +39,7 @@ form.has_selector?(:error_summary, text: "Can't be blank")
 form.within { form.should.have(:name_input, with: 'Jane') }
 ```
 
-In the [next section][el convention] we will learn about how `:el` plays a special role.
+In a [next section][el convention] we will learn about how `:el` plays a special role.
 
 ## Aliases Shortcuts
 
@@ -53,7 +51,7 @@ form.name_input
 form.find(:fillable_field, 'Name')
 ```
 
-Any options in the alias will be merged with the keyword arguments provided when using it.
+You may provide options to the getter, which will be merged with any options defined in the alias.
 
 ```ruby
 form.error_summary(text: "Can't be blank")
@@ -63,20 +61,26 @@ form.find('#error_explanation', visible: true, text: "Can't be blank")
 
 ## Capybara Selectors
 
-All [built-in selectors][capybara selectors] in Capybara can be used in the aliases.
+All [selectors][capybara selectors] defined in Capybara can be used in the aliases, including any custom ones you define.
 
-You can omit the selector when using the default one, which is usually `css` but [can be changed](https://github.com/teamcapybara/capybara#xpath-css-and-selectors).
+You can omit the selector when using the default one, which is [usually `css`](https://github.com/teamcapybara/capybara#xpath-css-and-selectors).
 
 ```ruby
-class ExampleTestHelper < BaseTestHelper
+class FormTestHelper < BaseTestHelper
   aliases(
-    popover_toggle: '.popover .popover-toggle',
-    parent: [:xpath, '../..'],
+    el: 'form',
     city_input: [:field, 'City', readonly: false],
-    back_button: [:link_or_button, 'Go Back'],
+    save_button: [:link_or_button, 'Save'],
     contact_info: [:fieldset, legend: 'Contact Information'] ,
+    parent: [:xpath, '../..'],
   )
 end
+```
+```ruby
+form.within(:contact_info) {
+  form.city_input.fill_in('Montevideo')
+  form.click_on(:save_button)
+}
 ```
 
 ## Nested Aliases
@@ -109,8 +113,7 @@ expect(page).to have_selector('.container + .container')
 
 ## Formatting 📏
 
-It's highly recommend to write one alias per line, sorting them alphabetically (most editors can do it for you), and
-[always using a trailing comma][trailing_commas].
+Writing one alias per line and [always using a trailing comma][trailing_commas] is highly recommended.
 
 ```ruby
 class DropdownTestHelper < BaseTestHelper

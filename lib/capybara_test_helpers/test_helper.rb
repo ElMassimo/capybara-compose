@@ -136,7 +136,7 @@ private
       delegate(*method_names, to: :test_context)
     end
 
-    # Public: Allows to define dependencies on other matchers.
+    # Public: Allows to make other test helpers available.
     #
     # NOTE: When you call a helper the "negated" state is preserved for assertions.
     #
