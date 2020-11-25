@@ -62,11 +62,11 @@ class CapybaraTestHelpers::TestHelper
 
   # Public: Wraps a Capybara::Node::Element or test helper with a test helper
   # object of this class.
-  def wrap_element(capybara_node)
-    if capybara_node.is_a?(Enumerable)
-      capybara_node.map { |node| wrap_element(node) }
+  def wrap_element(element)
+    if element.is_a?(Enumerable)
+      element.map { |node| wrap_element(node) }
     else
-      self.class.new(capybara_node.to_capybara_node, test_context: test_context)
+      self.class.new(element.to_capybara_node, test_context: test_context)
     end
   end
 
@@ -149,11 +149,7 @@ private
       helper_names.each do |helper_name|
         private define_method(helper_name) { |element = nil|
           test_helper = test_context.get_test_helper(helper_name)
-          if element
-            raise ArgumentError, "#{ element.inspect } must be a test helper or element." unless element.respond_to?(:to_capybara_node)
-
-            test_helper = test_helper.wrap_element(element.to_capybara_node)
-          end
+          test_helper = test_helper.wrap_element(element) if element
           @negated.nil? ? test_helper : test_helper.should(@negated)
         }
       end
