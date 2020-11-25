@@ -1,4 +1,4 @@
-[el convention]: /guide/essentials/current-context.html#el-convention
+[el convention]: /guide/essentials/current-context.html#current-element
 [actions]: /guide/essentials/actions
 [finders]: /guide/essentials/finders
 [assertions]: /guide/essentials/assertions

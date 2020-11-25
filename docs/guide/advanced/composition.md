@@ -1,8 +1,13 @@
 [injection]: /guide/essentials/injection
-[el convention]: /guide/essentials/current-context.html#el-convention
+[el convention]: /guide/essentials/current-context.html#current-element
 [assertion state]: /guide/essentials/assertions.html#understanding-the-assertion-state
+[current context]: /guide/essentials/current-context.html
+[current element]: /guide/essentials/current-context.html#current-element
+[wrapping]: /api/#wrap-element
+[use_test_helpers]: /api/#use_test_helpers
+[to_capybara_node]: /api/#to-capybara-node
 
-# Advanced Composition 🧩
+# Composition 🧩
 
 As described in [_Using Test Helpers_][injection], it's possible to easily combine test helpers.
 
@@ -24,7 +29,7 @@ class TableTestHelper < BaseTestHelper
 end
 ```
 
-We will inject this helper by using `use_test_helpers`.
+We will inject this helper by using [`use_test_helpers`][use_test_helpers].
 
 ```ruby
 class UsersTestHelper < BaseTestHelper
@@ -51,7 +56,7 @@ end
 
 Every time we call `table`, an instance of `TableTestHelper` is returned.
 
-The returned instance will preserve the _[assertion state]_ of the `UsersTestHelper` instance, which means we can use any assertion without having to explicitly call `table.should(or_should_not).have_row(name)`.
+The returned instance will preserve the _[assertion state]_ of the `UsersTestHelper` instance, which means we can use any assertion without having to explicitly call `should` in the `table` helper.
 
 ```ruby
 users.should.have_user('Jim').should_not.have_user('John')
@@ -59,19 +64,11 @@ users.should.have_user('Jim').should_not.have_user('John')
 
 ## Wrapping 🎁
 
-Any helper registered with `use_test_helper` can optionally take an element as a parameter.
+Any [injected helper][injection] can optionally take an element as a parameter, which will be [wrapped][wrapping] and used as the [initial context][current context] for the returned helper.
 
 ```ruby
   def find_user(name)
-    table(el).row_for(name) # same as: table.wrap_test_helper(el).row_for(name)
-  end
-```
-
-When passing a test helper, the [`:el` convention][el convention] will be used to obtain an element to wrap if there is no current element.
-
-```ruby
-  def find_user(name)
-    table(self).row_for(name) # same as: table.wrap_test_helper(to_capybara_node).row_for(name)
+    table(self).row_for(name) # same as: table.wrap_element(el).row_for(name)
   end
 ```
 
@@ -96,7 +93,7 @@ We can workaround this by wrapping the result:
 
 ```ruby
   def find_user(name)
-    wrap_test_helper table(self).row_for(name)
+    wrap_element table(self).row_for(name)
   end
 ```
 ```ruby
@@ -129,3 +126,17 @@ users.find_user('Jim').click_to_edit # #<UsersTestHelper tag="a">
 ```
 
 Simple is better though, and composition should be preferred over inheritance in most cases.
+
+## Using the Current Element
+
+You can leverage the [current element] as needed when creating your own actions or assertions by calling [`to_capybara_node`][to_capybara_node]:
+
+```ruby
+# Public: Useful to natively give focus to an element.
+def focus
+  to_capybara_node.execute_script('this.focus()')
+  self
+end
+```
+
+Have in mind that in most cases this is unnecessary, as the current element will be used implicitly when calling an action such as `click`, `hover`, or `set`.

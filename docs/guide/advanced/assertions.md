@@ -4,7 +4,7 @@
 [positive and negative assertions]: https://maximomussini.com/posts/cucumber-to_or_not_to/
 [assertion state]: /guide/essentials/assertions.html#understanding-the-assertion-state
 
-# Advanced Assertions ⚙️
+# Synchronizing Assertions ⚙️
 
 Sometimes built-in assertions are not enough, and you need to use an expectation
 directly.

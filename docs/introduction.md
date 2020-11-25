@@ -8,6 +8,8 @@
 [assertions]: /guide/essentials/assertions
 [injection]: /guide/essentials/injection
 [debugging]: /guide/advanced/debugging
+[testing_robots]: https://jakewharton.com/testing-robots/
+[page_objects]: https://martinfowler.com/bliki/PageObject.html
 
 # Introduction
 
@@ -47,5 +49,17 @@ to work with, but you are on your own to encapsulate code to avoid coupling
 tests to the current UI. Small changes to the UI should not require rewriting
 dozens of tests, but __without clear guidelines__ it's hard to achieve good tests.
 
+## Design 📐
+
 This library provides __a solid foundation__ of simple and repeatable patterns
 that can be used to write better tests.
+
+Its design is loosely based on the concepts of [Page Objects][page_objects] and [Testing Robots][testing_robots], with a healthy dose of [dependency injection](https://martinfowler.com/articles/injection.html).
+
+Capybara has a great DSL, so the focus of this library is to build upon it, by
+allowing you to create your own actions and assertions and call them just as
+fluidly as you would call `find` or `has_content?`.
+
+This library works best when encapsulating common UI patterns in separate helpers,
+such as a `FormTestHelper` or a `DropdownTestHelper`, and then reusing them in
+page-specific test helpers to write higher-level tests that are easier to read and maintain.

@@ -2,8 +2,8 @@
 sidebar: auto
 ---
 
-[el convention]: /guide/essentials/current-context.html#el-convention
-[current context]: /guide/essentials/current-context.html#el-convention
+[el convention]: /guide/essentials/current-context.html#current-element
+[current context]: /guide/essentials/current-context.html
 [actions]: /guide/essentials/actions
 [aliases]: /guide/essentials/aliases
 [assertions]: /guide/essentials/assertions
@@ -11,12 +11,14 @@ sidebar: auto
 [finders]: /guide/essentials/finders
 [synchronization]: /guide/advanced/assertions
 [composition]: /guide/advanced/composition
+[wrapping]: /guide/advanced/composition.html#wrapping-%F0%9F%8E%81
 [launchy]: https://github.com/copiousfreetime/launchy
 [capybara api]: https://rubydoc.info/github/teamcapybara/capybara/master/Capybara/Session
 [current element]: /api/#to-capybara-node
 [capybara_node_code]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/lib/capybara_test_helpers/test_helper.rb#L56-L58
 [click]: /api/#click
-[wait]: https://github.com/teamcapybara/capybara#asynchronous-javascript-ajax-and-friends
+[async]: https://github.com/teamcapybara/capybara#asynchronous-javascript-ajax-and-friends
+[using_wait_time]: /api/#using_wait_time
 
 # API Reference
 
@@ -25,36 +27,15 @@ All of the following methods can be called on a `Capybara::TestHelper` instance.
 Most of these methods are coming from the [Capybara API], except some of them
 have been extended to support [locator aliases][aliases].
 
-Have in mind that most of these methods support passing a [`wait`][wait] option, which will default to `Capybara.default_max_wait_time`, and determines how long the action will be retried before failing.
+Some methods can receive a `:wait` option, which determines how long an interaction will be [retried][async] before failing. For the actions that don't, it can still be configured with [`using_wait_time`][using_wait_time].
 
-## Navigation
+## Class DSL
 
-### **go_back**
+### **aliases**
 
-Moves back a single entry in the browser's history.
+### **delegate_to_test_context**
 
-### **go_forward**
-
-Moves forward a single entry in the browser's history.
-
-### **refresh**
-
-Refreshes the current page.
-
-### **visit**
-
-Navigates to the given URL, which can either be relative or absolute.
-
-- **Arguments**:
-  - `visit_uri`: The URL to navigate to. The parameter will be cast to a `String`.
-
-- **Example**:
-
-  ```ruby
-  def visit_page
-    visit cities_path
-  end
-  ```
+### **use_test_helpers**
 
 ## Test Helper
 
@@ -80,25 +61,13 @@ Navigates to the given URL, which can either be relative or absolute.
 
 ### **wrap_element**
 
-Wraps an element or test helper, returning a new test helper instance.
+[Wraps][wrapping] the given element with a new test helper instance.
 
-If passing a test helper it will previously be cast to an element using [`to_capybara_node`][current element].
-
-- **Arguments**:
-  - `{Capybara::Node::Element | Capybara::TestHelper} capybara_node`: the element or test helper to wrap
-
-- **Returns**:
-
-  A new `Capybara::TestHelper` of the same class the method was invoked in.
-
-### **wrap_test_helper**
-
-Wraps the [current context][el convention] of the specified helper.
-
-Unlike `wrap_element`, it will not cast the context to an element using [`to_capybara_node`][current element].
+When passing a test helper, it will wrap its [current element].
 
 - **Arguments**:
-  - `{Capybara::TestHelper} test_helper`: the test helper to wrap
+
+  `{Capybara::Node::Element | Capybara::TestHelper} element`: the element to wrap
 
 - **Returns**:
 
@@ -108,11 +77,9 @@ Unlike `wrap_element`, it will not cast the context to an element using [`to_cap
 
   ```ruby
   def find_user(name)
-    wrap_test_helper table.row_for(name)
+    wrap_element table.row_for(name)
   end
   ```
-
-  Read the guide about [wrapping and composition][composition].
 
 ## Element
 
@@ -163,13 +130,19 @@ Clicks the [current element].
     By default it will attempt to click the center of the element.
     - `{Numeric} :x`: the X coordinate to offset the click location
     - `{Numeric} :y`: the Y coordinate to offset the click location
+    - `{Numeric} :wait`: how long to wait to retry the action until the element becomes interactable
 
 - **Returns**: `self`
 
-- **Example**:
+- **Examples**:
   ```ruby
-  def open_link_in_new_tab(text)
-    find_link(text).click(:control, x: 5, y: 5)
+  def toggle_menu
+    find('#menu').click
+  end
+  ```
+  ```ruby
+  def open_in_new_tab
+    click(:control, x: 5, y: 5)
   end
   ```
 
@@ -764,6 +737,7 @@ Checks if the current node does not match given selector.
 (xpath, **options, &optional_filter_block) ⇒ Boolean
 Checks if the current node does not match given XPath expression.
 
+
 ## Scoping
 
 Check the [guide][finders] for a quick tour.
@@ -846,6 +820,36 @@ Execute the block, dismissing a confirm.
 (text = nil, **options, &blk)
  ⇒ String
 Execute the block, dismissing a prompt.
+
+
+## Navigation
+
+### **go_back**
+
+Moves back a single entry in the browser's history.
+
+### **go_forward**
+
+Moves forward a single entry in the browser's history.
+
+### **refresh**
+
+Refreshes the current page.
+
+### **visit**
+
+Navigates to the given URL, which can either be relative or absolute.
+
+- **Arguments**:
+  - `visit_uri`: The URL to navigate to. The parameter will be cast to a `String`.
+
+- **Example**:
+
+  ```ruby
+  def visit_page
+    visit cities_path
+  end
+  ```
 
 ## Window
 

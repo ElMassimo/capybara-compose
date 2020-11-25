@@ -1,3 +1,7 @@
+## Unreleased
+
+* Remove internal method `wrap_test_helper`.
+
 ## Capybara Test Helpers 1.0.3 (2020-11-24) ##
 
 * Add `CapybaraTestHelpers::BenchmarkHelpers`

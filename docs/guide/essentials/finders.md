@@ -5,7 +5,7 @@
 [assertions]: /guide/essentials/assertions
 [to_capybara_node]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/lib/capybara_test_helpers/test_helper.rb#L56-L58
 [adding a filter]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/spec/support/global_filters.rb#L6-L8
-[el convention]: /guide/essentials/current-context.html#el-convention
+[el convention]: /guide/essentials/current-context.html#current-element
 
 # Finders 🧭
 

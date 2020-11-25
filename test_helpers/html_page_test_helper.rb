@@ -47,7 +47,7 @@ class HtmlPageTestHelper < BaseTestHelper
   end
 
   def first_paragraph
-    wrap_test_helper headings(self).first(:paragraph)
+    wrap_element headings(self).first(:paragraph)
   end
 
 # Actions: Encapsulate complex actions to provide a cleaner interface.

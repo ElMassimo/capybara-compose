@@ -81,12 +81,12 @@ const config = {
             link: '/guide/essentials/aliases.html',
           },
           {
-            text: 'Current Context',
-            link: '/guide/essentials/current-context.html',
-          },
-          {
             text: 'Using Test Helpers',
             link: '/guide/essentials/injection.html',
+          },
+          {
+            text: 'Current Context',
+            link: '/guide/essentials/current-context.html',
           },
         ],
       },
@@ -95,15 +95,7 @@ const config = {
         collapsable: false,
         children: [
           {
-            text: 'Advanced Assertions',
-            link: '/guide/advanced/assertions.html',
-          },
-          {
-            text: 'Advanced Filtering',
-            link: '/guide/advanced/filtering.html',
-          },
-          {
-            text: 'Advanced Composition',
+            text: 'Composing with Helpers',
             link: '/guide/advanced/composition.html',
           },
           {
@@ -111,8 +103,12 @@ const config = {
             link: '/guide/advanced/debugging.html',
           },
           {
-            text: 'Design Patterns',
-            link: '/guide/advanced/design-patterns.html',
+            text: 'Filtering with Blocks',
+            link: '/guide/advanced/filtering.html',
+          },
+          {
+            text: 'Synchronizing Assertions',
+            link: '/guide/advanced/assertions.html',
           },
         ],
       },

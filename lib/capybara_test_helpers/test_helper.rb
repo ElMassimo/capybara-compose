@@ -60,18 +60,14 @@ class CapybaraTestHelpers::TestHelper
     raise_missing_element_error
   end
 
-  # Public: Wraps a Capybara::Node::Element with a test helper object.
+  # Public: Wraps a Capybara::Node::Element or test helper with a test helper
+  # object of this class.
   def wrap_element(capybara_node)
     if capybara_node.is_a?(Enumerable)
       capybara_node.map { |node| wrap_element(node) }
     else
-      self.class.new(capybara_node, test_context: test_context)
+      self.class.new(capybara_node.to_capybara_node, test_context: test_context)
     end
-  end
-
-  # Public: Wraps a CapybaraTestHelper with a different test helper object.
-  def wrap_test_helper(test_helper)
-    self.class.new(test_helper.query_context, test_context: test_context) if test_helper.query_context
   end
 
   # Public: Scopes the Capybara queries in the block to be inside the specified
