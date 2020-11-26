@@ -37,6 +37,7 @@ sidebar: auto
 [within_frame]: /api/#within-frame
 [within_window]: /api/#within-window
 [capybara_synchronize]: https://rubydoc.info/github/jnicklas/capybara/master/Capybara/Node/Base#synchronize-instance_method
+[keys]: https://www.rubydoc.info/github/teamcapybara/capybara/Capybara%2FNode%2FElement:send_keys
 
 # API Reference
 
@@ -147,6 +148,10 @@ The current [assertion state] of the test helper. Also aliased as `or_should_not
   end
   ```
 
+  ::: tip
+  Make sure to [manually synchronize][synchronization] when writing custom expectations.
+  :::
+
 ### **should**
 
 Returns a test helper with a positive [assertion state], allowing any [assertions] to be chained after it.
@@ -251,9 +256,7 @@ Whether or not the [current element] is checked.
 
 - **Example**:
   ```ruby
-  def be_checked
-    expect(checked?).to_or not_to, eq(true)
-  end
+  checkbox.checked?
   ```
 
 ### **click**
@@ -292,9 +295,7 @@ Whether or not the [current element] is disabled.
 
 - **Example**:
   ```ruby
-  def be_disabled
-    expect(disabled?).to_or not_to, eq(true)
-  end
+  form.name_input.disabled?
   ```
 
 ### **double_click**
@@ -473,7 +474,7 @@ Whether the [current element] is read-only.
 
 Returns size and position information for the [current element].
 
-- **Returns**: `{ x, y, height, width }`
+- **Returns**: `Struct { x, y, height, width }`
 
 ### **right_click**
 
@@ -485,6 +486,8 @@ Right clicks the [current element].
 
 ### **scroll_to**
 
+Supports three different ways to perform scrolling.
+
 - Scroll the page or element to its top, bottom or middle.
   - `{:top | :bottom | :center | :current} position`
 
@@ -492,7 +495,7 @@ Right clicks the [current element].
   current_page.scroll_to(:top, offset: [0, 20])
   ```
 
-- Scroll the page or current element into view until the given element is aligned as specified.
+- Scroll the page or element into view until the given element is aligned as specified.
    - `{Capybara::Node::Element | Capybara::TestHelper} element`: the element to be scrolled
    - `{:top | :bottom | :center } :align`: where to align the element being scrolled into view with relation to the current page/element if possible.
 
@@ -516,40 +519,95 @@ Right clicks the [current element].
 - **Returns**: `self`
 
 ### **select_option**
-(wait: nil) ⇒ Capybara::Node::Element
-Select this node if it is an option element inside a select tag.
+
+Selects the [current element] if it is an option inside a select tag.
+
+- **Returns**: `self`
 
 ### **selected?**
-⇒ Boolean
-Whether or not the element is selected.
+
+Whether or not the [current element] is selected.
+
+- **Returns**: `Boolean`
+
+- **Example**:
+  ```ruby
+  option.selected?
+  ```
 
 ### **send_keys**
-(keys, ...) ⇒ Capybara::Node::Element
-Send Keystrokes to the Element.
+
+Sends keystrokes to the [current element].
+
+You may use any of the [supported symbol keys][keys].
+
+- **Arguments**: `{String | Symbol} *keys` the [keys][keys] to type
+
+- **Returns**: `self`
+
+- **Example**:
+  ```ruby
+  input
+    .send_keys('fod', :left, 'o')       # value: 'food'
+    .send_keys([:control, 'a'], :space) # value: ' ' (assuming select all)
+    .send_keys(:tab)
+  ```
 
 ### **set**
-(value, **options) ⇒ Capybara::Node::Element
-Set the value of the form element to the given value.
+
+Sets the value of the [current element] to the specified value.
+
+- **Arguments**: `{Object} value` the new value
+  - __Options__:
+    - `:clear`: The method used to clear the previous value
+      - `nil` the default, clears the input using JS
+      - `:none` appends the new value to the previous value
+      - `:backspace` sends backspace keystrokes to clear the field
+
+- **Returns**: `self`
+
+- **Example**:
+  ```ruby
+  input.set('fo').set('od', clear: :none).should.have_value('food')
+  ```
 
 ### **style**
-(*styles) ⇒ Hash
-Retrieve the given CSS styles.
+
+Retrieves the specified CSS styles for the [current element].
+
+- **Arguments**: `{String} *styles` the style properties to retrieve
+
+- **Returns**: ` Hash` with the computed style properties
+
+- **Example**:
+  ```ruby
+    heading.style('color', 'font-size')
+  ```
 
 ### **tag_name**
-⇒ String
+- **Returns**: `String`
 The tag name of the element.
 
 ### **text**
-(type = nil, normalize_ws: false) ⇒ String
 Retrieve the text of the element.
 
+- **Arguments**: `(type = nil, normalize_ws: false)`
+
+- **Returns**: `String`
+
 ### **trigger**
-(event) ⇒ Capybara::Node::Element
 Trigger any event on the current element, for example mouseover or focus events.
 
+- **Arguments**: `(event)`
+
+- **Returns**: `Capybara::Node::Element`
+
 ### **unselect_option**
-(wait: nil) ⇒ Capybara::Node::Element
 Unselect this node if it is an option element inside a multiple select tag.
+
+- **Arguments**: `(wait: nil)`
+
+- **Returns**: `Capybara::Node::Element`
 
 ### **value**
  ⇒ String
@@ -564,43 +622,73 @@ Whether or not the element is visible.
 Check the [guide][Actions] for a quick tour.
 
 ### **attach_file**
-(locator = nil, paths, make_visible: nil, **options) ⇒ Capybara::Node::Element
+- **Arguments**: `(locator = nil, paths, make_visible: nil, **options)`
+
+- **Returns**: `Capybara::Node::Element`
+
 Find a descendant file field on the page and attach a file given its path.
 
 ### **check**
-([locator], **options) ⇒ Capybara::Node::Element
+- **Arguments**: `([locator], **options)`
+
+- **Returns**: `Capybara::Node::Element`
+
 Find a descendant check box and mark it as checked.
 
 ### **choose**
-([locator], **options) ⇒ Capybara::Node::Element
+- **Arguments**: `([locator], **options)`
+
+- **Returns**: `Capybara::Node::Element`
+
 Find a descendant radio button and mark it as checked.
 
 ### **click_button**
-([locator], **options) ⇒ Capybara::Node::Element
+- **Arguments**: `([locator], **options)`
+
+- **Returns**: `Capybara::Node::Element`
+
 Finds a button on the page and clicks it.
 
 ### **click_link**
-([locator], **options) ⇒ Capybara::Node::Element
+- **Arguments**: `([locator], **options)`
+
+- **Returns**: `Capybara::Node::Element`
+
 Finds a link by id, test_id attribute, text or title and clicks it.
 
 ### **click_on**
-([locator], **options) ⇒ Capybara::Node::Element (also: #click_on)
+- **Arguments**: `([locator], **options)`
+
+- **Returns**: `Capybara::Node::Element (also: #click_on)`
+
 Finds a button or link and clicks it.
 
 ### **fill_in**
-([locator], with: , **options) ⇒ Capybara::Node::Element
+- **Arguments**: `([locator], with: , **options)`
+
+- **Returns**: `Capybara::Node::Element`
+
 Locate a text field or text area and fill it in with the given text.
 
 ### **select**
-(value = nil, from: nil, **options) ⇒ Capybara::Node::Element
+- **Arguments**: `(value = nil, from: nil, **options)`
+
+- **Returns**: `Capybara::Node::Element`
+
 If from option is present, #select finds a select box, or text input with associated datalist, on the page and selects a particular option from it.
 
 ### **uncheck**
-([locator], **options) ⇒ Capybara::Node::Element
+- **Arguments**: `([locator], **options)`
+
+- **Returns**: `Capybara::Node::Element`
+
 Find a descendant check box and uncheck it.
 
 ### **unselect**
-(value = nil, from: nil, **options) ⇒ Capybara::Node::Element
+- **Arguments**: `(value = nil, from: nil, **options)`
+
+- **Returns**: `Capybara::Node::Element`
+
 Find a select box on the page and unselect a particular option from it.
 
 
@@ -612,129 +700,285 @@ To use an assertion, call [`should`][should] or [`should_not`][should_not], and 
 
 Negated versions are available for most, such as `have_no_selector`, but are ommitted for brevity.
 
-### **have_all_of_selectors**
-(*args, **kw_args, &optional_filter_block) ⇒ Object
-RSpec matcher for whether the element(s) matching a group of selectors exist.
 
 ### **have_ancestor**
-(*args, **kw_args, &optional_filter_block) ⇒ Object
+
 RSpec matcher for whether ancestor element(s) matching a given selector exist.
 
-### **have_any_of_selectors**
-(*args, **kw_args, &optional_filter_block) ⇒ Object
-RSpec matcher for whether the element(s) matching any of a group of selectors exist.
+- **Arguments**: `(*args, **kw_args, &optional_filter_block)`
+
+- **Returns**: `Object`
+
+
 
 ### **have_button**
-(locator = nil, **options, &optional_filter_block) ⇒ Object
+
 RSpec matcher for buttons.
 
+- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
+
+- **Returns**: `Object`
+
+
 ### **have_checked_field**
-(locator = nil, **options, &optional_filter_block) ⇒ Object
+
 RSpec matcher for checked fields.
 
+- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
+
+- **Returns**: `Object`
+
+
 ### **have_css**
-(css, **options, &optional_filter_block) ⇒ Object
+
 RSpec matcher for whether elements(s) matching a given css selector exist.
 
+- **Arguments**: `(css, **options, &optional_filter_block)`
+
+- **Returns**: `Object`
+
+
 ### **have_current_path**
-(path, **options, &optional_filter_block) ⇒ Object
+
 RSpec matcher for the current path.
 
+- **Arguments**: `(path, **options, &optional_filter_block)`
+
+- **Returns**: `Object`
+
+
 ### **have_field**
-(locator = nil, **options, &optional_filter_block) ⇒ Object
+
 RSpec matcher for form fields.
 
+- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
+
+- **Returns**: `Object`
+
+
 ### **have_link**
-(locator = nil, **options, &optional_filter_block) ⇒ Object
+
 RSpec matcher for links.
 
-### **have_none_of_selectors**
-(*args, **kw_args, &optional_filter_block) ⇒ Object
-RSpec matcher for whether no element(s) matching a group of selectors exist.
+- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
+
+- **Returns**: `Object`
+
 
 ### **have_select**
-(locator = nil, **options, &optional_filter_block) ⇒ Object
+
 RSpec matcher for select elements.
 
+- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
+
+- **Returns**: `Object`
+
+
 ### **have_selector**
-(*args, **kw_args, &optional_filter_block) ⇒ Object
+
 RSpec matcher for whether the element(s) matching a given selector exist.
 
+- **Arguments**: `(*args, **kw_args, &optional_filter_block)`
+
+- **Returns**: `Object`
+
+
 ### **have_sibling**
-(*args, **kw_args, &optional_filter_block) ⇒ Object
+
 RSpec matcher for whether sibling element(s) matching a given selector exist.
 
+- **Arguments**: `(*args, **kw_args, &optional_filter_block)`
+
+- **Returns**: `Object`
+
+
 ### **have_table**
-(locator = nil, **options, &optional_filter_block) ⇒ Object
+
 RSpec matcher for table elements.
 
+- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
+
+- **Returns**: `Object`
+
+
 ### **have_text**
-(text_or_type, *args, **options) ⇒ Object (also: #have_content)
+
 RSpec matcher for text content.
 
+- **Arguments**: `(text_or_type, *args, **options)`
+
+- **Returns**: `Object (also: #have_content)`
+
+
 ### **have_unchecked_field**
-(locator = nil, **options, &optional_filter_block) ⇒ Object
+
 RSpec matcher for unchecked fields.
 
+- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
+
+- **Returns**: `Object`
+
+
 ### **have_xpath**
-(xpath, **options, &optional_filter_block) ⇒ Object
+
 RSpec matcher for whether elements(s) matching a given xpath selector exist.
 
+- **Arguments**: `(xpath, **options, &optional_filter_block)`
+
+- **Returns**: `Object`
+
+
 ### **match_css**
-(css, **options, &optional_filter_block) ⇒ Object
+
 RSpec matcher for whether the current element matches a given css selector.
 
+- **Arguments**: `(css, **options, &optional_filter_block)`
+
+- **Returns**: `Object`
+
+
 ### **match_selector**
-(*args, **kw_args, &optional_filter_block) ⇒ Object
+
 RSpec matcher for whether the current element matches a given selector.
 
+- **Arguments**: `(*args, **kw_args, &optional_filter_block)`
+
+- **Returns**: `Object`
+
+
 ### **match_style**
-(styles = nil, **options) ⇒ Object
+
 RSpec matcher for element style.
 
+- **Arguments**: `(styles = nil, **options)`
+
+- **Returns**: `Object`
+
+
 ### **match_xpath**
-(xpath, **options, &optional_filter_block) ⇒ Object
+
 RSpec matcher for whether the current element matches a given xpath selector.
+
+- **Arguments**: `(xpath, **options, &optional_filter_block)`
+
+- **Returns**: `Object`
+
+
+
+### **have_all_of_selectors**
+
+Asserts that all of the provided selectors are descendants of the [current context].
+
+Aliases can be used, but you must provide a selector such as `:css` as the first argument.
+
+It will wait until all of the elements are found, until [timeout][synchronization].
+
+- **Examples**:
+  ```ruby
+  form.should.have_all_of_selectors(:css, :name_input, :last_name_input)
+  ```
+
+### **have_any_of_selectors**
+
+Asserts that at least of the provided selectors are descendants of the [current context].
+
+Aliases can be used, but you must provide a selector such as `:css` as the first argument.
+
+It will wait until one of the elements is found, until [timeout][synchronization].
+
+- **Examples**:
+  ```ruby
+  form.should.have_any_of_selectors(:css, :name_input, :last_name_input, wait: 2)
+  ```
+
+### **have_none_of_selectors**
+
+Asserts that none of the provided selectors are descendants of the [current context].
+
+Aliases can be used, but you must provide a selector such as `:css` as the first argument.
+
+It will wait until none of the elements are found, until [timeout][synchronization].
+
+- **Examples**:
+  ```ruby
+  form.should.have_none_of_selectors(:css, '.error', '.warning')
+  ```
 
 ## Finders
 
 Check the [guide][Finders] for a quick tour, or [learn how to filter with blocks][filtering].
 
 ### **all**
-([kind = Capybara.default_selector], locator = nil, **options) ⇒ Capybara::Result (also: #find_all)
-Find all elements on the page matching the given selector and options.
+Finds all elements on the page matching the given selector and options.
+
+- **Arguments**: `([kind = Capybara.default_selector], locator = nil, **options)`
+
+- **Returns**: `Capybara::Result (also: #find_all)`
+
 
 ### **ancestor**
-(*args, **options, &optional_filter_block) ⇒ Capybara::Node::Element
-Find an Element based on the given arguments that is also an ancestor of the element called on.
+Finds an Element based on the given arguments that is also an ancestor of the element called on.
+
+- **Arguments**: `(*args, **options, &optional_filter_block)`
+
+- **Returns**: `Capybara::Node::Element`
+
 
 ### **find**
-(*args, **options, &optional_filter_block) ⇒ Capybara::Node::Element
-Find an Element based on the given arguments.
+Finds an Element based on the given arguments.
+
+- **Arguments**: `(*args, **options, &optional_filter_block)`
+
+- **Returns**: `Capybara::Node::Element`
+
 
 ### **find_button**
-([locator], **options) ⇒ Capybara::Node::Element
-Find a button on the page.
+Finds a button on the page.
+
+- **Arguments**: `([locator], **options)`
+
+- **Returns**: `Capybara::Node::Element`
+
 
 ### **find_by_id**
-(id, **options, &optional_filter_block) ⇒ Capybara::Node::Element
-Find a element on the page, given its id.
+Finds a element on the page, given its id.
+
+- **Arguments**: `(id, **options, &optional_filter_block)`
+
+- **Returns**: `Capybara::Node::Element`
+
 
 ### **find_field**
-([locator], **options) ⇒ Capybara::Node::Element
-Find a form field on the page.
+Finds a form field on the page.
+
+- **Arguments**: `([locator], **options)`
+
+- **Returns**: `Capybara::Node::Element`
+
 
 ### **find_link**
-([locator], **options) ⇒ Capybara::Node::Element
-Find a link on the page.
+Finds a link on the page.
+
+- **Arguments**: `([locator], **options)`
+
+- **Returns**: `Capybara::Node::Element`
+
 
 ### **first**
-([kind], locator, options) ⇒ Capybara::Node::Element
-Find the first element on the page matching the given selector and options.
+Finds the first element on the page matching the given selector and options.
+
+- **Arguments**: `([kind], locator, options)`
+
+- **Returns**: `Capybara::Node::Element`
+
 
 ### **sibling**
-(*args, **options, &optional_filter_block) ⇒ Capybara::Node::Element
-Find an Element based on the given arguments that is also a sibling of the element called on.
+Finds an Element based on the given arguments that is also a sibling of the element called on.
+
+- **Arguments**: `(*args, **options, &optional_filter_block)`
+
+- **Returns**: `Capybara::Node::Element`
+
 
 ## Matchers
 
@@ -743,140 +987,139 @@ Check the [guide][Matchers] for a quick tour.
 Have in mind that matchers have some [caveats][matcher caveats], so prefer [assertions] when possible.
 
 ### **has_ancestor?**
-(*args, **options, &optional_filter_block) ⇒ Boolean
-
 Predicate version of #assert_ancestor.
 
+- **Arguments**: `(*args, **options, &optional_filter_block)`
+
+- **Returns**: `Boolean`
+
+
 ### **has_button?**
-(locator = nil, **options, &optional_filter_block) ⇒ Boolean
 Checks if the page or current node has a button with the given text, value or id.
 
+- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
+
+- **Returns**: `Boolean`
+
+
 ### **has_checked_field?**
-(locator = nil, **options, &optional_filter_block) ⇒ Boolean
 Checks if the page or current node has a radio button or checkbox with the given label, value, id, or test_id attribute that is currently checked.
 
+- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
+
+- **Returns**: `Boolean`
+
 ### **has_css?**
-(path, **options, &optional_filter_block) ⇒ Boolean
 Checks if a given CSS selector is on the page or a descendant of the current node.
 
+- **Arguments**: `(path, **options, &optional_filter_block)`
+
+- **Returns**: `Boolean`
+
+
 ### **has_field?**
-(locator = nil, **options, &optional_filter_block) ⇒ Boolean
 Checks if the page or current node has a form field with the given label, name or id.
 
+- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
+
+- **Returns**: `Boolean`
+
+
 ### **has_link?**
-(locator = nil, **options, &optional_filter_block) ⇒ Boolean
 Checks if the page or current node has a link with the given text or id.
 
-### **has_no_ancestor?**
-(*args, **options, &optional_filter_block) ⇒ Boolean
+- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
 
-Predicate version of #assert_no_ancestor.
+- **Returns**: `Boolean`
 
-### **has_no_button?**
-(locator = nil, **options, &optional_filter_block) ⇒ Boolean
-Checks if the page or current node has no button with the given text, value or id.
 
-### **has_no_checked_field?**
-(locator = nil, **options, &optional_filter_block) ⇒ Boolean
-Checks if the page or current node has no radio button or checkbox with the given label, value or id, or test_id attribute that is currently checked.
-
-### **has_no_css?**
-(path, **options, &optional_filter_block) ⇒ Boolean
-Checks if a given CSS selector is not on the page or a descendant of the current node.
-
-### **has_no_field?**
-(locator = nil, **options, &optional_filter_block) ⇒ Boolean
-Checks if the page or current node has no form field with the given label, name or id.
-
-### **has_no_link?**
-(locator = nil, **options, &optional_filter_block) ⇒ Boolean
-Checks if the page or current node has no link with the given text or id.
-
-### **has_no_select?**
-(locator = nil, **options, &optional_filter_block) ⇒ Boolean
-Checks if the page or current node has no select field with the given label, name or id.
-
-### **has_no_selector?**
-(*args, **options, &optional_filter_block) ⇒ Boolean
-Checks if a given selector is not on the page or a descendant of the current node.
-
-### **has_no_sibling?**
-(*args, **options, &optional_filter_block) ⇒ Boolean
-
-Predicate version of #assert_no_sibling.
-
-### **has_no_table?**
-(locator = nil, **options, &optional_filter_block) ⇒ Boolean
-Checks if the page or current node has no table with the given id or caption.
-
-### **has_no_text?**
-(*args, **options) ⇒ Boolean (also: #has_no_content?)
-Checks if the page or current node does not have the given text content, ignoring any HTML tags and normalizing whitespace.
-
-### **has_no_unchecked_field?**
-(locator = nil, **options, &optional_filter_block) ⇒ Boolean
-Checks if the page or current node has no radio button or checkbox with the given label, value or id, or test_id attribute that is currently unchecked.
-
-### **has_no_xpath?**
-(path, **options, &optional_filter_block) ⇒ Boolean
-Checks if a given XPath expression is not on the page or a descendant of the current node.
 
 ### **has_select?**
-(locator = nil, **options, &optional_filter_block) ⇒ Boolean
 Checks if the page or current node has a select field with the given label, name or id.
 
+- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
+
+- **Returns**: `Boolean`
+
+
 ### **has_selector?**
-(*args, **options, &optional_filter_block) ⇒ Boolean
 Checks if a given selector is on the page or a descendant of the current node.
 
-### **has_sibling?**
-(*args, **options, &optional_filter_block) ⇒ Boolean
+- **Arguments**: `(*args, **options, &optional_filter_block)`
 
+- **Returns**: `Boolean`
+
+
+### **has_sibling?**
 Predicate version of #assert_sibling.
 
+- **Arguments**: `(*args, **options, &optional_filter_block)`
+
+- **Returns**: `Boolean`
+
+
 ### **has_table?**
-(locator = nil, **options, &optional_filter_block) ⇒ Boolean
 Checks if the page or current node has a table with the given id or caption:.
 
+- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
+
+- **Returns**: `Boolean`
+
+
 ### **has_text?**
-(*args, **options) ⇒ Boolean (also: #has_content?)
 Checks if the page or current node has the given text content, ignoring any HTML tags.
 
+- **Arguments**: `(*args, **options)`
+
+- **Returns**: `Boolean (also: #has_content?)`
+
+
 ### **has_unchecked_field?**
-(locator = nil, **options, &optional_filter_block) ⇒ Boolean
+
 Checks if the page or current node has a radio button or checkbox with the given label, value or id, or test_id attribute that is currently unchecked.
 
+- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
+
+- **Returns**: `Boolean`
+
 ### **has_xpath?**
-(path, **options, &optional_filter_block) ⇒ Boolean
 Checks if a given XPath expression is on the page or a descendant of the current node.
 
+- **Arguments**: `(path, **options, &optional_filter_block)`
+
+- **Returns**: `Boolean`
+
+
 ### **matches_css?**
-(css, **options, &optional_filter_block) ⇒ Boolean
 Checks if the current node matches given CSS selector.
 
+- **Arguments**: `(css, **options, &optional_filter_block)`
+
+- **Returns**: `Boolean`
+
+
 ### **matches_selector?**
-(*args, **options, &optional_filter_block) ⇒ Boolean
 Checks if the current node matches given selector.
 
+- **Arguments**: `(*args, **options, &optional_filter_block)`
+
+- **Returns**: `Boolean`
+
+
 ### **matches_style?**
-(styles = nil, **options) ⇒ Boolean
 Checks if a an element has the specified CSS styles.
 
+- **Arguments**: `(styles = nil, **options)`
+
+- **Returns**: `Boolean`
+
+
 ### **matches_xpath?**
-(xpath, **options, &optional_filter_block) ⇒ Boolean
 Checks if the current node matches given XPath expression.
 
-### **not_matches_css?**
-(css, **options, &optional_filter_block) ⇒ Boolean
-Checks if the current node does not match given CSS selector.
+- **Arguments**: `(xpath, **options, &optional_filter_block)`
 
-### **not_matches_selector?**
-(*args, **options, &optional_filter_block) ⇒ Boolean
-Checks if the current node does not match given selector.
-
-### **not_matches_xpath?**
-(xpath, **options, &optional_filter_block) ⇒ Boolean
-Checks if the current node does not match given XPath expression.
+- **Returns**: `Boolean`
 
 
 ## Scoping
@@ -891,7 +1134,7 @@ For the duration of the block, any command to Capybara will be scoped to the giv
 
 When called without parameters the block will be scoped to the [current element].
 
-- **Arguments**: Same as [`find`], can also handle [aliases].
+- **Arguments**: Same as [`find`][find], can also handle [aliases].
 
 - **Returns**: `Object`: The return value of the block.
 
