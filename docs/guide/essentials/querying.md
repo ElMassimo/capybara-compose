@@ -10,7 +10,7 @@
 
 [Matchers][api] allow you to query the page or an element for the existence of certain elements.
 
-Unlike [assertions], they don't cause a test to fail, they instead return a `Boolean` value.
+Unlike [assertions], they **do not cause a test to fail**, they instead return a `Boolean` value.
 
 You can check the [API Reference][api] for information.
 

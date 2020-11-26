@@ -11,7 +11,6 @@
   "stop_urls": [
     "https://capybara-test-helpers.netlify.app/introduction.html",
     "https://capybara-test-helpers.netlify.app/installation.html",
-    "https://capybara-test-helpers.netlify.app/api/index.html",
     "https://capybara-test-helpers.netlify.app/guide/index.html",
     "https://capybara-test-helpers.netlify.app/guide/essentials/actions.html",
     "https://capybara-test-helpers.netlify.app/guide/essentials/finders.html",
@@ -53,11 +52,8 @@
         "global": true,
         "default_value": "API"
       },
-      "lvl1": ".content h1",
-      "lvl2": ".content h2",
-      "lvl3": ".content h3",
-      "lvl4": ".content h4",
-      "lvl5": ".content h5",
+      "lvl1": ".content h2",
+      "lvl2": ".content h3",
       "text": ".content p, .content li",
       "lang": {
         "selector": "/html/@lang",
@@ -66,7 +62,7 @@
       }
     }
   },
-  "scrape_start_urls": false,
+  "scrape_start_urls": true,
   "strip_chars": " .,;:#",
   "custom_settings": {
     "attributesForFaceting": [

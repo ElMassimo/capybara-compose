@@ -8,10 +8,12 @@ sidebar: auto
 [aliases]: /guide/essentials/aliases
 [aliases shortcuts]: /guide/essentials/aliases#aliases-shortcuts
 [assertions]: /guide/essentials/assertions
+[asserts]: /guide/essentials/assertions
 [expectations]: /guide/essentials/assertions.html#using-the-assertion-state
 [assertion state]: /guide/essentials/assertions.html#understanding-the-assertion-state
 [matchers]: /guide/essentials/querying
 [api_matchers]: /api/#matchers
+[predicate]: /guide/essentials/querying
 [api_assertions]: /api/#assertions
 [api_finders]: /api/#finders
 [api_aliases]: /api/#aliases
@@ -24,6 +26,7 @@ sidebar: auto
 [composition]: /guide/advanced/composition
 [wrapping]: /guide/advanced/composition.html#wrapping-%F0%9F%8E%81
 [wrap]: /api/#wrap-element
+[all]: /api/#all
 [find]: /api/#find
 [launchy]: https://github.com/copiousfreetime/launchy
 [capybara api]: https://rubydoc.info/github/teamcapybara/capybara/master/Capybara/Session
@@ -38,9 +41,6 @@ sidebar: auto
 [should_not]: /api/#should-not
 [within_frame]: /api/#within-frame
 [within_window]: /api/#within-window
-[have_text]: /api/#have-text
-[match_style]: /api/#match-style
-[have_value]: /api/#have-value
 [find_field]: /api/#find-field
 [find_link]: /api/#find-link
 [find_button]: /api/#find-button
@@ -51,6 +51,29 @@ sidebar: auto
 [keys]: https://www.rubydoc.info/github/teamcapybara/capybara/Capybara%2FNode%2FElement:send_keys
 [positive and negative]: https://maximomussini.com/posts/cucumber-to_or_not_to/
 [selectors]: https://www.rubydoc.info/github/teamcapybara/capybara/Capybara/Selector
+[have]: /api/#have
+[have_ancestor]: /api/#have-ancestor
+[have_button]: /api/#have-button
+[have_checked_field]: /api/#have-checked-field
+[have_css]: /api/#have-css
+[have_current_path]: /api/#have-current-path
+[have_field]: /api/#have-field
+[have_link]: /api/#have-link
+[have_select]: /api/#have-select
+[have_selector]: /api/#have-selector
+[have_sibling]: /api/#have-sibling
+[have_table]: /api/#have-table
+[have_text]: /api/#have-text
+[have_unchecked_field]: /api/#have-unchecked-field
+[have_value]: /api/#have-value
+[have_xpath]: /api/#have-xpath
+[match_css]: /api/#match-css
+[match_selector]: /api/#match-selector
+[match_style]: /api/#match-style
+[match_xpath]: /api/#match-xpath
+[have_all_of_selectors]: /api/#have-all-of-selectors
+[have_any_of_selectors]: /api/#have-any-of-selectors
+[have_none_of_selectors]: /api/#have-none-of-selectors
 
 # API Reference
 
@@ -455,6 +478,17 @@ Finds a file field in the [current context], and attaches a file to it.
     form.attach_file('/path/to/file.png') { form.click_link('Upload Image') }
   ```
 
+### **blur**
+
+Removes focus from the [current element] using JS.
+
+- **Returns**: `self`
+
+- **Example**:
+  ```ruby
+  form.search_input.blur
+  ```
+
 ### **check**
 
 Finds a check box in the [current context], and marks it as checked.
@@ -661,8 +695,8 @@ If the test helper has a [current element], then `this` in the script will refer
 
 - **Example**:
   ```ruby
-  def blur
-    execute_script('this.blur()')
+  def move_caret_to_the_beginning
+    execute_script('this.setSelectionRange(0, 0)')
   end
   ```
   ::: tip
@@ -689,6 +723,17 @@ Finds a text field or text area in the [current context], and fills it in with t
   ```
   ```ruby
   address_form.street_input.fill_in(with: 'Evergreen St.')
+  ```
+
+### **focus**
+
+Focuses the [current element] using JS.
+
+- **Returns**: `self`
+
+- **Example**:
+  ```ruby
+  form.find_field('Name').focus.move_caret_to_the_beginning
   ```
 
 ### **hover**
@@ -889,24 +934,38 @@ Check the [guide][Assertions] for a quick tour.
 
 To use an assertion, call [`should`][should] or [`should_not`][should_not], and then chain the assertion.
 
-Negated versions are available for most, such as `have_no_selector`, but are ommitted for brevity.
+Negated versions are available, such as `have_no_selector` and `not_match_selector`, but are omitted for brevity.
 
 ::: tip
 [Injected][composition] test helpers will preserve the _[assertion state]_ of the current helper.
 :::
 
-
 ### **have**
 
-RSpec matcher for whether the element(s) matching a given selector exist.
+[Asserts] that the [current context] contains an element with the given selector.
 
+You may specify any [Capybara selector][selectors], or a [locator alias][aliases].
+
+- **Arguments**:
+  - Same as [`find_all`][all]
+  - **Options**:
+    - `{Integer} :count`: of matching elements that should exist
+    - `{Integer} :minimum`: of matching elements that should exist
+    - `{Integer} :maximum`: of matching elements that should exist
+    - `{Range} :between`: range of matching elements that should exist
 - **Arguments**: `(*args, **kw_args, &optional_filter_block)`
 
-- **Returns**: `Object`
+- **Returns**: `self`
 
-- **Example**:
+- **Examples**:
   ```ruby
-  # TODO: Example
+  current_page
+    .should.have(:title, text: 'Using Test Helpers')
+    .should.have(:subtitle, count: 3)
+    .should.have('h3', text: 'Global Test Helpers', visible: true)
+  ```
+  ```ruby
+  table.should.have(:table_row, { 'Name' => 'Allen' })
   ```
 
 ### **have_ancestor**
@@ -1335,233 +1394,6 @@ Finds an Element based on the given arguments that is also a sibling of the elem
   ```
 
 
-## Matchers
-
-Check the [guide][Matchers] for a quick tour.
-
-Have in mind that matchers have some [caveats][matcher caveats], so prefer [assertions] when possible.
-
-### **has_ancestor?**
-Predicate version of #assert_ancestor.
-
-- **Arguments**: `(*args, **options, &optional_filter_block)`
-
-- **Returns**: `Boolean`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-
-### **has_button?**
-Checks if the page or current node has a button with the given text, value or id.
-
-- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
-
-- **Returns**: `Boolean`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-
-### **has_checked_field?**
-Checks if the page or current node has a radio button or checkbox with the given label, value, id, or test_id attribute that is currently checked.
-
-- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
-
-- **Returns**: `Boolean`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-### **has_css?**
-Checks if a given CSS selector is on the page or a descendant of the current node.
-
-- **Arguments**: `(path, **options, &optional_filter_block)`
-
-- **Returns**: `Boolean`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-
-### **has_field?**
-Checks if the page or current node has a form field with the given label, name or id.
-
-- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
-
-- **Returns**: `Boolean`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-
-### **has_link?**
-Checks if the page or current node has a link with the given text or id.
-
-- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
-
-- **Returns**: `Boolean`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-
-
-### **has_select?**
-Checks if the page or current node has a select field with the given label, name or id.
-
-- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
-
-- **Returns**: `Boolean`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-
-### **has_selector?**
-Checks if a given selector is on the page or a descendant of the current node.
-
-- **Arguments**: `(*args, **options, &optional_filter_block)`
-
-- **Returns**: `Boolean`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-
-### **has_sibling?**
-Predicate version of #assert_sibling.
-
-- **Arguments**: `(*args, **options, &optional_filter_block)`
-
-- **Returns**: `Boolean`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-
-### **has_table?**
-Checks if the page or current node has a table with the given id or caption:.
-
-- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
-
-- **Returns**: `Boolean`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-
-### **has_text?**
-Checks if the page or current node has the given text content, ignoring any HTML tags.
-
-- **Arguments**: `(*args, **options)`
-
-- **Returns**: `Boolean (also: #has_content?)`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-
-### **has_unchecked_field?**
-
-Checks if the page or current node has a radio button or checkbox with the given label, value or id, or test_id attribute that is currently unchecked.
-
-- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
-
-- **Returns**: `Boolean`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-### **has_xpath?**
-Checks if a given XPath expression is on the page or a descendant of the current node.
-
-- **Arguments**: `(path, **options, &optional_filter_block)`
-
-- **Returns**: `Boolean`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-
-### **matches_css?**
-Checks if the current node matches given CSS selector.
-
-- **Arguments**: `(css, **options, &optional_filter_block)`
-
-- **Returns**: `Boolean`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-
-### **matches_selector?**
-Checks if the current node matches given selector.
-
-- **Arguments**: `(*args, **options, &optional_filter_block)`
-
-- **Returns**: `Boolean`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-
-### **matches_style?**
-Checks if a an element has the specified CSS styles.
-
-- **Arguments**: `(styles = nil, **options)`
-
-- **Returns**: `Boolean`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-
-### **matches_xpath?**
-Checks if the current node matches given XPath expression.
-
-- **Arguments**: `(xpath, **options, &optional_filter_block)`
-
-- **Returns**: `Boolean`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-
 ## Scoping
 
 Check the [guide][scoping] for a quick tour.
@@ -1704,6 +1536,127 @@ Useful for changing the timeout for commands that do not take a `:wait` keyword 
     using_wait_time(10) { hover }
   end
   ```
+
+## Matchers
+
+Check the [guide][Matchers] for a quick tour.
+
+Unlike [assertions][api_assertions], matchers return a `Boolean` **instead of failing**.
+
+Negated versions are available for all of them, such as `has_no?` and `not_matches_selector?`, but are omitted for brevity.
+
+::: tip
+Have in mind that matchers have some [caveats][matcher caveats], so prefer [assertions] when possible.
+:::
+
+### **has?**
+
+[Predicate] version of [`have`][have].
+
+- **Returns**: `Boolean`
+
+### **has_ancestor?**
+
+[Predicate] version of [`have_ancestor`][have_ancestor].
+
+- **Returns**: `Boolean`
+
+### **has_button?**
+[Predicate] version of [`have_button`][have_button].
+
+- **Returns**: `Boolean`
+
+### **has_checked_field?**
+
+[Predicate] version of [`have_checked_field`][have_checked_field].
+
+- **Returns**: `Boolean`
+
+### **has_content?**
+[Predicate] version of [`have_text`][have_text].
+
+- **Returns**: `Boolean`
+
+### **has_css?**
+
+[Predicate] version of [`have_css`][have_css].
+
+- **Returns**: `Boolean`
+
+### **has_field?**
+
+[Predicate] version of [`have_field`][have_field].
+
+- **Returns**: `Boolean`
+
+### **has_link?**
+[Predicate] version of [`have_link`][have_link].
+
+- **Returns**: `Boolean`
+
+### **has_select?**
+[Predicate] version of [`have_select`][have_select].
+
+- **Returns**: `Boolean`
+
+### **has_selector?**
+[Predicate] version of [`have_selector`][have_selector].
+
+- **Returns**: `Boolean`
+
+
+### **has_sibling?**
+[Predicate] version of [`have_sibling`][have_sibling].
+
+- **Returns**: `Boolean`
+
+
+### **has_table?**
+[Predicate] version of [`have_table`][have_table].
+
+- **Returns**: `Boolean`
+
+
+### **has_text?**
+[Predicate] version of [`have_text`][have_text].
+
+- **Returns**: `Boolean`
+
+
+### **has_unchecked_field?**
+[Predicate] version of [`have_unchecked_field`][have_unchecked_field].
+
+- **Returns**: `Boolean`
+
+### **has_xpath?**
+[Predicate] version of [`have_xpath`][have_xpath].
+
+- **Returns**: `Boolean`
+
+
+### **matches_css?**
+[Predicate] version of [`match_css`][match_css].
+
+- **Returns**: `Boolean`
+
+
+### **matches_selector?**
+[Predicate] version of [`match_selector`][match_selector].
+
+- **Returns**: `Boolean`
+
+
+### **matches_style?**
+[Predicate] version of [`match_style`][match_style].
+
+- **Returns**: `Boolean`
+
+
+### **matches_xpath?**
+[Predicate] version of [`match_xpath`][match_xpath].
+
+- **Returns**: `Boolean`
+
 
 ## Modals
 
