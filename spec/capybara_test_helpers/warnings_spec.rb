@@ -28,7 +28,7 @@ RSpec.feature 'Development Warnings' do
     expect { get_test_helper(:invalid_selector_methods) }
       .to raise_error(LoadError, start_with(%(No 'invalid_selector_methods_test_helper.rb' file found in ["test_helpers"])))
 
-    expect { get_test_helper(:routes) }.not_to raise_error
+    expect { get_test_helper(:navigation) }.not_to raise_error
   end
 
   it 'warns when using Capybara selectors as locator aliases' do

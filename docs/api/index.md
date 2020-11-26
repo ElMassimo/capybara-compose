@@ -1762,7 +1762,7 @@ Refreshes the current page.
 
 Navigates to the given URL, which can either be relative or absolute.
 
-Path helpers can be easily [made available to test helpers](https://github.com/ElMassimo/capybara_test_helpers/blob/819ad283ba32468fbc67a4d45c929f4efac5a464/examples/rails_app/test_helpers/routes_test_helper.rb#L25-L43).
+Path helpers can be easily [made available to test helpers](https://github.com/ElMassimo/capybara_test_helpers/blob/819ad283ba32468fbc67a4d45c929f4efac5a464/examples/rails_app/test_helpers/navigation_test_helper.rb#L25-L43).
 
 - **Arguments**:
   - `visit_uri`: The URL to navigate to. The parameter will be cast to a `String`.

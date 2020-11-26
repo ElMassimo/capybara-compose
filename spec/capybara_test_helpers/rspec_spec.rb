@@ -2,8 +2,8 @@
 
 RSpec.describe 'CapybaraTestHelpers in RSpec' do
   context 'Type: Other', type: :other do
-    it 'should not include Capybara Test Helpers', helpers: [:routes] do
-      expect { routes }.to raise_error(NameError)
+    it 'should not include Capybara Test Helpers', helpers: [:navigation] do
+      expect { navigation }.to raise_error(NameError)
       expect { current_page }.to raise_error(NameError)
       expect { get_test_helper(:current_page) }.to raise_error(NoMethodError)
     end

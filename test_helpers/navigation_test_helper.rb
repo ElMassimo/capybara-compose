@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class RoutesTestHelper < BaseTestHelper
+class NavigationTestHelper < BaseTestHelper
 # Actions: Encapsulate complex actions to provide a cleaner interface.
   # Public: Visits a page defined under the specified alias.
   #
@@ -41,7 +41,7 @@ private
     when :scroll_page then '/scroll'
     when :windows_page then '/with_windows'
     else
-      raise NotImplementedError, "You need to add the path to :#{ page_alias } on path_for in ./test_helpers/routes_test_helper.rb"
+      raise NotImplementedError, "You need to add the path to :#{ page_alias } on path_for in ./test_helpers/navigation_test_helper.rb"
     end
   end
 

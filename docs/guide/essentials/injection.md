@@ -58,7 +58,7 @@ module GlobalTestHelpers
   extend ActiveSupport::Concern
 
   included do
-    use_test_helpers(:current_page, :routes)
+    use_test_helpers(:current_page, :navigation)
   end
 end
 

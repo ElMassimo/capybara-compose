@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CurrentPageTestHelper < BaseTestHelper
-  use_test_helpers(:routes)
+  use_test_helpers(:navigation)
 
 # Aliases: Semantic aliases for locators, can be used in most DSL methods.
   aliases(
@@ -68,7 +68,7 @@ class CurrentPageTestHelper < BaseTestHelper
 # Assertions: Allow to check on element properties while keeping it DRY.
   # Syntax Sugar: Asserts that the current page is the specified one.
   def be(*args)
-    routes.be_in_page(*args)
+    navigation.be_in_page(*args)
   end
 
   def be_external_url(website_url)
