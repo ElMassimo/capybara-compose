@@ -1,39 +1,40 @@
-[api]: /api/
-[capybara finding]: https://github.com/teamcapybara/capybara#finding
-[selectors]: /guide/essentials/aliases
-[actions]: /guide/essentials/actions
-[assertions]: /guide/essentials/assertions
-[to_capybara_node]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/lib/capybara_test_helpers/test_helper.rb#L56-L58
 [adding a filter]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/spec/support/global_filters.rb#L6-L8
-[el convention]: /guide/essentials/current-context.html#el-convention
 [finders]: /guide/essentials/finders
+[api]: /api/#finders
+[capybara selectors]: https://www.rubydoc.info/github/teamcapybara/capybara/Capybara/Selector
+[wrapping]: /api/#wrap-element
 
-# Advanced Filtering 🌪️
+# Filtering with Blocks 🌪️
 
-If you need to restrict the [found elements][finders] based on additional checks on the elements, you can do so by passing a __filter block__, which will be called once per element found.
+If you need to restrict the [found elements][finders] based on additional checks on the elements, you can do so by passing a __filter block__ to any of the [finders][api].
 
-The filter block should return a _truthy_ value if the element meets the condition, or _falsy_ to discard it from the results.
+The filter block will be invoked once per found element, and should return a _truthy_ value if the element meets the condition, or _falsy_ to discard it from the results.
 
-All methods defined in the test helper are available in the element inside the block.
+Elements passed to the block are [wrapped][wrapping], so you can call any of the test helper methods.
 
 ```ruby
 class UsersTestHelper < BaseTestHelper
-  def find_user(*name, &filter_block)
-    find('table.users').find(:table_row, name, &filter_block)
-  end
-
-  def find_admin(name)
-    find_user(name) { |user_row| user_row.admin? }
-  end
-
   def admin?
     has_content?('Admin')
   end
-end
 
+  def find_admin(name)
+    find('tr.user', text: name) { |user_row| user_row.admin? }
+  end
+end
+```
+```ruby
 users.find_admin('John')
+
 # same as
-find('table.users').find(:table_row, name) { |user_row| user_row.has_content?('Admin') }
+
+find('tr.user', text: 'John') { |row| row.has_content?('Admin') }
+
+# similar but with more guarantees around ambiguity than
+
+find_all('tr.user', text: 'John').select { |row| row.has_content?('Admin') }.first
 ```
 
-If you find yourself needing to use this a lot you may be better off adding a custom selector, or [adding a filter to an existing selector][adding a filter].
+Filter blocks provide a huge amount of flexibility, and can be an elegant solution in certain scenarios.
+
+Depending on the type of checks you perform in the block, you might be better off adding a [custom selector][capybara selectors], or [adding a filter to an existing selector][adding a filter], which you can then easily reuse.

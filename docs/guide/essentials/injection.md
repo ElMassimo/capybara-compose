@@ -1,29 +1,15 @@
-[capybara dsl]: https://github.com/teamcapybara/capybara#the-dsl
 [rspec_injection]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/spec/system/cities_spec.rb#L7
 [rspec_global_injection]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/spec/system/support/default_test_helpers.rb#L8
 [cucumber_injection]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/features/step_definitions/city_steps.rb#L3
 [example app]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app
 [capybara_test_helpers_tests]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/spec
 [rspec matchers]: https://relishapp.com/rspec/rspec-expectations/docs/built-in-matchers
+[composition]: /guide/advanced/composition
+[use_test_helpers]: /api/#use-test-helpers
 
 # Using Test Helpers
 
-To make a test helper available in an RSpec test you can use the [`test_helpers` option][rspec_injection]
-in a `describe`, `context` or `scenario`.
-
-```ruby
-RSpec.describe 'Cities', test_helpers: [:cities] do
-# or
-scenario 'submit the form', helpers: [:form, :users] do
-```
-
-For Cucumber instructions, [read this section](/guide/cucumber/).
-
-## Inside Test Helpers
-
-Using composition can help to keep your tests dry and make them easier to understand and update.
-
-`use_test_helpers` provides getters for other test helpers, making it convenient to extract and reuse common functionality, such as forms, buttons, and other components.
+[`use_test_helpers`][use_test_helpers] provides getters for other test helpers, making it convenient to extract and reuse common functionality, such as forms, buttons, and other components.
 
 ```ruby
 class CitiesTestHelper < BaseTestHelper
@@ -39,7 +25,31 @@ class CitiesTestHelper < BaseTestHelper
 end
 ```
 
-## Global Test Helpers
+For detailed usage, check out the [composition] section.
+
+## Test Helpers in RSpec
+
+To make a test helper available in an RSpec test you can use the [`test_helpers` option][rspec_injection]
+in `describe`, `context` or `scenario`.
+
+```ruby
+RSpec.describe 'Cities', test_helpers: [:cities] do
+  scenario 'visit cities' do
+    visit_page(:cities)
+    cities.should.have_no_cities
+  end
+
+  scenario 'add a city', helpers: [:current_page] do
+    visit_page(:cities)
+    cities.add(name: 'Montevideo')
+    current_page.should.be(:cities)
+  end
+end
+```
+
+For Cucumber instructions, [read this section](/guide/cucumber/).
+
+### Global Test Helpers
 
 You can call [`use_test_helpers`][rspec_global_injection] in an RSpec helper module to make them available globally.
 
@@ -48,7 +58,7 @@ module GlobalTestHelpers
   extend ActiveSupport::Concern
 
   included do
-    use_test_helpers(:current_page, :routes)
+    use_test_helpers(:current_page, :navigation)
   end
 end
 
@@ -61,7 +71,7 @@ end
 
 ## Naming Conventions 🔤
 
-The following convention is applied when injecting test helpers by using `use_test_helpers`, or the `test_helpers` option in RSpec scenarios:
+The following convention is applied when injecting test helpers:
 
 | Shorthand Name                 | Test Helper Class        | File Name                                |
 | ------------------------------ | ------------------------ | ---------------------------------------- |

@@ -1,8 +1,8 @@
 [docs]: https://capybara-test-helpers.netlify.app/
+[api]: https://capybara-test-helpers.netlify.app/api/
 [design patterns]: https://capybara-test-helpers.netlify.app/guide/advanced/design-patterns
 [installation]: https://capybara-test-helpers.netlify.app/installation
 [capybara]: https://github.com/teamcapybara/capybara
-[capybara dsl]: https://github.com/teamcapybara/capybara#the-dsl
 [capybara querying]: https://github.com/teamcapybara/capybara#querying
 [cucumber]: https://github.com/cucumber/cucumber-ruby
 [rspec]: https://github.com/rspec/rspec
@@ -51,7 +51,7 @@ Write tests that everyone can understand, and leverage your Ruby skills to keep 
 
 ## Documentation 📖
 
-[Visit the documentation website][docs] to check out the guides, API reference, and examples.
+[Visit the documentation website][docs] to check out the guides, [API reference][api], and examples.
 
 ## Installation 💿
 

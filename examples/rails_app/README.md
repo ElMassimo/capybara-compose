@@ -1,4 +1,5 @@
 [docs]: https://capybara-test-helpers.netlify.app/
+[api]: https://capybara-test-helpers.netlify.app/api/
 [library]: https://github.com/ElMassimo/capybara_test_helpers
 
 # Capybara Test Helpers in Rails 🛤
@@ -12,7 +13,7 @@ Write tests that everyone can understand, and leverage your Ruby skills to keep 
 
 ## Documentation 📖
 
-[Visit the documentation website][docs] to check out the guides, API reference, and examples.
+[Visit the documentation website][docs] to check out the guides, [API reference][api], and examples.
 
 ## Generators ⚙️
 

@@ -1,3 +1,4 @@
+[capybara]: https://github.com/teamcapybara/capybara
 [capybara dsl]: https://github.com/teamcapybara/capybara#the-dsl
 [rspec_injection]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/spec/system/cities_spec.rb#L7
 [rspec_global_injection]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/spec/system/support/default_test_helpers.rb#L8
@@ -10,15 +11,12 @@
 
 # Getting Started 🚀
 
-If you have used Capybara before, using Capybara Test Helpers should feel very natural.
+If you have used [Capybara] before, using Capybara Test Helpers should feel very natural.
 
-Every single method in the [Capybara DSL] is available inside test helpers, as
-well as the [built-in RSpec matchers][rspec matchers].
+Every single method in the [Capybara DSL] is available in test helpers, check the [API Reference][api].
 
 The advantage is that when we add test helpers to the mix, it becomes easier to
 encapsulate and modularize the interactions with different pages or UI components.
-
-<!-- A complete [API Reference][api] is available. -->
 
 ## A Small Example 🌆
 

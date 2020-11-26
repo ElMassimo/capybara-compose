@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
-class RoutesTestHelper < BaseTestHelper
-  delegate_to_test_context(:urls)
-
+class NavigationTestHelper < BaseTestHelper
 # Actions: Encapsulate complex actions to provide a cleaner interface.
   # Public: Visits a page defined under the specified alias.
   #
   # NOTE: It can handle sporadic timeout issues.
   def visit_page(page_alias, **options)
-    page.visit path_for(page_alias, **options)
+    visit path_for(page_alias, **options)
   end
 
 # Assertions: Check on element properties, used with `should` and `should_not`.
@@ -38,7 +36,7 @@ private
     when :new_city then urls.new_city_path
     when :edit_city then urls.new_city_path(options.fetch(:city))
     else
-      raise NotImplementedError, "You need to add the path to :#{ page_alias } on path_for in ./test_helpers/routes_test_helper.rb"
+      raise NotImplementedError, "You need to add the path to :#{ page_alias } on path_for in ./test_helpers/navigation_test_helper.rb"
     end
   end
 

@@ -1,9 +1,9 @@
 env:
   RUBY_VERSION: 2.7
 
-name: cucumber
+name: rails
 
-on: [push, pull_request]
+on: [push]
 
 defaults:
   run:
@@ -11,7 +11,7 @@ defaults:
 
 jobs:
   build:
-    name: Cucumber
+    name: Cucumber & RSpec
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
@@ -39,3 +39,5 @@ jobs:
         run: bin/bundle exec rake webpacker:compile
       - name: Run Cucumber
         run: bin/bundle exec cucumber
+      - name: Run RSpec
+        run: bin/bundle exec rspec

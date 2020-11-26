@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-use_test_helpers(:routes)
+use_test_helpers(:navigation)
 
 Given(/I visit the (.+) page$/) do |page|
-  routes.visit_page(page.to_sym)
+  navigation.visit_page(page.to_sym)
 end

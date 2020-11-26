@@ -53,5 +53,27 @@ module CapybaraTestHelpers::Matchers
     CapybaraTestHelpers.define_helper_method(self, method_name, target: :to_capybara_node)
   end
 
+  %i[
+    assert_selector
+    assert_all_of_selectors
+    assert_none_of_selectors
+    assert_any_of_selectors
+    assert_no_selector
+  ].each do |method_name|
+    CapybaraTestHelpers.define_helper_method(self, method_name)
+  end
+
+  %i[
+    assert_matches_selector
+    assert_not_matches_selector
+    assert_ancestor
+    assert_no_ancestor
+    assert_sibling
+    assert_no_sibling
+  ].each do |method_name|
+    CapybaraTestHelpers.define_helper_method(self, method_name, target: :to_capybara_node)
+  end
+
   alias has? has_selector?
+  alias has_no? has_no_selector?
 end

@@ -21,6 +21,13 @@ RSpec.describe 'Capybara::Node', driver: :chrome_headless, type: :feature do
         .should.have_value('')
         .type_in('ocean').type_in(:shift, :space, 'side')
         .should_now.have_value('ocean SIDE')
+
+      form_page.address_city_input
+        .send_keys([:control, 'c'], :space).should.have_value('ocean SIDE ')
+        .send_keys('re').should.have_value('ocean SIDE re')
+        .send_keys('sot', :left, 'r').should.have_value('ocean SIDE resort')
+
+      form_page.address_city_input.set('fo').set('od', clear: :none).should.have_value('food')
     end
   end
 

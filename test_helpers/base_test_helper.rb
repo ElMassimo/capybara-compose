@@ -8,7 +8,7 @@ class BaseTestHelper < Capybara::TestHelper
   include CapybaraTestHelpers::BenchmarkHelpers
 
   # Internal: These are used on most test helpers.
-  use_test_helpers(:current_page, :routes)
+  use_test_helpers(:current_page, :navigation)
 
   # Internal: Make debug available inside test helpers:
   use_test_helpers(:debug) unless ENV['CI']
@@ -33,12 +33,12 @@ class BaseTestHelper < Capybara::TestHelper
 
 # Actions: Encapsulate complex actions to provide a cleaner interface.
   # Public: Allows to visit the page that matches the test helper name, as
-  # defined in routes helper.
+  # defined in the navigation helper.
   #
   # NOTE: This is just an example to show how you may organize routes, and
   # create simple conventions to streamline your tests.
   def visit_page
-    routes.visit_page(friendly_name.to_sym)
+    navigation.visit_page(friendly_name.to_sym)
   end
 
 # Assertions: Allow to check on element properties while keeping it DRY.

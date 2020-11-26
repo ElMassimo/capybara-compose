@@ -8,6 +8,17 @@ RSpec.feature 'assertions', test_helpers: [:form_page] do
 
     given(:form) { form_page.get_form }
 
+    it 'should allow using aliases in assertions' do
+      form_page.assert_selector(:locale_select)
+      form_page.assert_no_selector('#random')
+
+      expect { form_page.assert_no_selector(:locale_select) }
+        .to raise_error(Capybara::ExpectationNotMet)
+
+      expect { form_page.assert_selector('#random') }
+        .to raise_error(Capybara::ExpectationNotMet)
+    end
+
     it 'should assert on the current input value' do
       middle_name = form.find_field('Middle Name')
         .should.have_value('Darren')

@@ -5,10 +5,10 @@ module DefaultTestHelpers
   extend ActiveSupport::Concern
 
   included do
-    use_test_helpers(:current_page, :routes)
+    use_test_helpers(:current_page, :navigation)
 
     # We delegate this method because it's used extremely often (on every test!)
-    delegate :visit_page, to: :routes
+    delegate :visit_page, to: :navigation
 
     # Ensure we use a consistent screen size.
     before(:each) do |example|

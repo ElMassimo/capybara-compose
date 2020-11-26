@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CurrentPageTestHelper < BaseTestHelper
-  use_test_helpers(:routes)
+  use_test_helpers(:navigation)
 
   SCREEN_SIZES = {
     phone: { width: 375, height: 667 },
@@ -26,7 +26,7 @@ class CurrentPageTestHelper < BaseTestHelper
 # Assertions: Allow to check on element properties while keeping it DRY.
   # Syntax Sugar: Asserts that the current page is the specified one.
   def be(*args)
-    routes.be_in_page(*args)
+    navigation.be_in_page(*args)
   end
 
 # Background: Helpers to add/modify/delete data in the database or session.

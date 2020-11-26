@@ -25,6 +25,7 @@
     "https://capybara-test-helpers.netlify.app/guide/advanced/debugging.html",
     "https://capybara-test-helpers.netlify.app/guide/advanced/design-patterns.html",
     "https://capybara-test-helpers.netlify.app/guide/advanced/filtering.html",
+    "https://capybara-test-helpers.netlify.app/guide/advanced/synchronization.html",
     "https://capybara-test-helpers.netlify.app/guide/cucumber/index.html"
   ],
   "selectors": {

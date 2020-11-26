@@ -34,6 +34,9 @@ class HtmlPageTestHelper < BaseTestHelper
     title_or_paragraph: 'h1, p',
     simple_link: 'a.simple',
 
+    # Any of Selectors Spec
+    missing_element: 'h2#blah',
+
     # Have Table Spec
     horizontal_table: [:table, 'Horizontal Headers'],
   )
@@ -47,7 +50,7 @@ class HtmlPageTestHelper < BaseTestHelper
   end
 
   def first_paragraph
-    wrap_test_helper headings(self).first(:paragraph)
+    wrap_element headings(self).first(:paragraph)
   end
 
 # Actions: Encapsulate complex actions to provide a cleaner interface.
