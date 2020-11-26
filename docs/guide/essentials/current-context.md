@@ -4,10 +4,13 @@
 [to_capybara_node]: /api/#to-capybara-node
 [injection]: /guide/essentials/injection
 [wrapping]: /api/#wrap-element
+[test context]: /api/#delegate-to-test-context
 
 # Understanding the Context
 
 By default, test helpers wrap the current `session`, aliased in Capybara as `page`.
+
+They also have access to the [test context].
 
 When [finders] and certain [actions] return an element, it will be [wrapped][wrapping] in a new test helper.
 

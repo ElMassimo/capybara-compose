@@ -58,7 +58,7 @@ end
 Every time we call `table`, an instance of `TableTestHelper` is returned.
 
 ::: tip
-Returned test helpers will preserve the _[assertion state]_ of the current helper.
+Injected test helpers will preserve the _[assertion state]_ of the current helper.
 :::
 
 We can use any assertion without having to explicitly call `should` in the `table` helper.

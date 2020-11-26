@@ -36,8 +36,11 @@ sidebar: auto
 [should_not]: /api/#should-not
 [within_frame]: /api/#within-frame
 [within_window]: /api/#within-window
+[test_context]: /api/#test-context
+[delegate_to_test_context]: /api/#delegate-to-test-context
 [capybara_synchronize]: https://rubydoc.info/github/jnicklas/capybara/master/Capybara/Node/Base#synchronize-instance_method
 [keys]: https://www.rubydoc.info/github/teamcapybara/capybara/Capybara%2FNode%2FElement:send_keys
+[positive and negative]: https://maximomussini.com/posts/cucumber-to_or_not_to/
 
 # API Reference
 
@@ -86,6 +89,10 @@ Read the [aliases] guide for a quick overview.
 ### **delegate_to_test_context**
 
 Makes the specified methods from the RSpec or Cucumber context available in the test helper instance.
+
+This is useful when defining custom logic in support files.
+
+For one-off usages, you may call [`test_context`][test_context] manually in the instance.
 
 - **Arguments**:
   - `{Symbol} *method_names`: the methods to delegate to the test context
@@ -138,7 +145,11 @@ Read the [composition] guide for a quick overview.
 
 ### **not_to**
 
-The current [assertion state] of the test helper. Also aliased as `or_should_not`.
+The current [assertion state] of the test helper.
+
+Intended to be used along with `to_or` to create [positive and negative] assertions at once.
+
+Also available as `or_should_not`, for syntax sugar: `should(or_should_not)`, but usually not needed because [injected][composition] test helpers preserve the assertion state.
 
 - **Example**:
 
@@ -154,7 +165,7 @@ The current [assertion state] of the test helper. Also aliased as `or_should_not
 
 ### **should**
 
-Returns a test helper with a positive [assertion state], allowing any [assertions] to be chained after it.
+Returns a test helper with a positive [assertion state], allowing any [assertions][api_assertions] to be chained after it.
 
 Also available as `should_still`, `should_now`, `and`, `and_instead`, `and_also`, `and_still`.
 
@@ -173,13 +184,29 @@ Also available as `should_still`, `should_now`, `and`, `and_instead`, `and_also`
 
 ### **should_not**
 
-Returns a test helper with a negative [assertion state], allowing any [assertions] to be chained after it.
+Returns a test helper with a negative [assertion state], allowing any [assertions][api_assertions] to be chained after it.
 
 Also available as `should_still_not`, `should_no_longer`, `nor`, `and_not`.
 
 - **Examples**:
   ```ruby
   users.should_not.have_content('Jim')
+  ```
+
+### **test_context**
+
+The test context in which the test helper was instantiated.
+
+Set implicitly to the RSpec example or Cucumber world when using [injected][composition] test helpers.
+
+[`delegate_to_test_context`][delegate_to_test_context] allows you to expose methods in the test helper as needed.
+
+- **Examples**:
+  ```ruby
+  # Internal: Quick way to grab the current user being used on the test.
+  def user
+    test_context.instance_variable_get('@user') || test_context.current_user
+  end
   ```
 
 ### **to_capybara_node**
@@ -700,6 +727,9 @@ To use an assertion, call [`should`][should] or [`should_not`][should_not], and 
 
 Negated versions are available for most, such as `have_no_selector`, but are ommitted for brevity.
 
+::: tip
+[Injected][composition] test helpers will preserve the _[assertion state]_ of the current helper.
+:::
 
 ### **have_ancestor**
 
