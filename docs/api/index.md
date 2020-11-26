@@ -42,13 +42,15 @@ sidebar: auto
 [match_style]: /api/#match-style
 [have_value]: /api/#have-value
 [find_field]: /api/#find-field
+[find_link]: /api/#find-link
+[find_button]: /api/#find-button
 [test_context]: /api/#test-context
 [delegate_to_test_context]: /api/#delegate-to-test-context
 [synchronize_expectation]: /api/#synchronize-expectation
 [capybara_synchronize]: https://rubydoc.info/github/jnicklas/capybara/master/Capybara/Node/Base#synchronize-instance_method
 [keys]: https://www.rubydoc.info/github/teamcapybara/capybara/Capybara%2FNode%2FElement:send_keys
 [positive and negative]: https://maximomussini.com/posts/cucumber-to_or_not_to/
-
+[selectors]: https://www.rubydoc.info/github/teamcapybara/capybara/Capybara/Selector
 
 # API Reference
 
@@ -261,7 +263,7 @@ When passing a test helper, it will wrap its [current element].
 
 ## Element
 
-Some of the following methods will indicate that they are performed on the [current element], while other methods will use the [current context] (which by default is the current `page`).
+All of the following methods will be performed on the [current element].
 
 ### **[]**
 
@@ -294,6 +296,195 @@ Whether or not the [current element] is checked.
   checkbox.checked?
   ```
 
+### **disabled?**
+
+Whether or not the [current element] is disabled.
+
+- **Returns**: `Boolean`
+
+- **Example**:
+  ```ruby
+  form.name_input.disabled?
+  ```
+
+### **multiple?**
+
+Whether or not the [current element] supports multiple results.
+
+- **Returns**: `Boolean`
+
+- **Example**:
+  ```ruby
+  def can_select_many?
+    select_input.multiple?
+  end
+  ```
+
+### **native**
+
+The native element from the driver, this allows access to driver-specific methods.
+
+- **Returns**: `Object`
+
+### **obscured?**
+
+Whether the [current element] is not currently in the viewport or it (or descendants) would not be considered clickable at the elements center point.
+
+- **Returns**: `Boolean`
+
+### **path**
+
+An XPath expression describing where on the page the element can be found.
+
+- **Returns**:  `String`
+
+### **readonly?**
+
+Whether the [current element] is read-only.
+
+- **Returns**: `Boolean`
+
+- **Example**:
+  ```ruby
+  def optional_type_in(text)
+    input.set(text) unless input.readonly?
+  end
+  ```
+
+### **rect**
+
+Returns size and position information for the [current element].
+
+- **Returns**: `Struct { x, y, height, width }`
+
+
+### **selected?**
+
+Whether or not the [current element] is selected.
+
+- **Returns**: `Boolean`
+
+- **Example**:
+  ```ruby
+  option.selected?
+  ```
+
+### **tag_name**
+
+The tag name of the [current element].
+
+- **Returns**: `String`
+
+- **Example**:
+  ```ruby
+  users.click_link('Add User').tag_name == 'a'
+  ```
+
+### **text**
+
+Retrieves the text of the [current element].
+
+- **Arguments**: `{ :all | :visible } type`: defaults to `:visible` text
+
+- **Returns**: `String`
+
+- **Example**:
+  ```ruby
+  find_link('Home').text == 'Home'
+  find_link('Hidden', visible: false).text(:all) == 'Hidden'
+  ```
+
+  ::: tip
+  Use [`have_text`][have_text] instead when making assertions, or pass `:text` or `:exact_text` to [finders][api_finders] to restrict the results.
+  :::
+
+### **value**
+
+Retrieves the value of the [current element].
+
+- **Returns**: `{ String | Array<String> }`
+
+- **Example**:
+  ```ruby
+  city_input.value == 'Montevideo'
+  languages_input.value == ['English', 'Spanish']
+  ```
+  ::: tip
+  Use [`have_value`][have_value] instead when making assertions, or pass `:with` to [`find_field`][find_field].
+  :::
+
+### **visible?**
+
+Whether or not the [current element] is visible.
+
+- **Returns**: `Boolean`
+
+- **Example**:
+  ```ruby
+  find_link('Sign in with SSO', visible: :all).visible?
+  ```
+
+  ::: tip
+  Prefer to pass `:visible` to the [finders], or [create an assertion][synchronize_expectation].
+  :::
+
+## Actions
+
+Check the [guide][Actions] for a quick tour.
+
+Some of the following methods will be performed on the [current element], while other methods will use the [current context] (which by default is the current `page`).
+
+### **attach_file**
+
+Finds a file field in the [current context], and attaches a file to it.
+
+- **Arguments**:
+  - `locator (optional)`: uses the [`:file_field` selector][selectors]
+  - `{String | Array<String>} paths` the path(s) of the file(s) to attach
+
+- **Returns**: the file field
+
+- **Example**:
+  ```ruby
+    form.csv_file_input.attach_file('/path/to/example.csv')
+    # same as
+    form.attach_file('CSV File', '/path/to/example.csv')
+  ```
+  ```ruby
+    # attach file to any file input triggered by the block
+    form.attach_file('/path/to/file.png') { form.click_link('Upload Image') }
+  ```
+
+### **check**
+
+Finds a check box in the [current context], and marks it as checked.
+
+- **Arguments**:
+  - `locator (optional)`: uses the [`:checkbox` selector][selectors]
+
+- **Returns**: the element checked or the label clicked
+
+- **Example**:
+  ```ruby
+  form.terms_and_conditions.check
+  form.language.check('German')
+  ```
+
+### **choose**
+
+Finds a radio button in the [current context], and checks it.
+
+- **Arguments**:
+  - `locator (optional)`: uses the [`:radio_button` selector][selectors]
+
+- **Returns**: the element chosen or the label clicked
+
+- **Example**:
+  ```ruby
+  form.preferred_menu.check('Vegetarian')
+  form.check('menu', option: 'Vegetarian')
+  ```
+
 ### **click**
 
 Clicks the [current element].
@@ -322,15 +513,43 @@ Clicks the [current element].
   end
   ```
 
-### **disabled?**
+### **click_button**
 
-Whether or not the [current element] is disabled.
+Finds a button in the [current context] and clicks it.
 
-- **Returns**: `Boolean`
+- **Arguments**: same as [`find_button`][find_button]
+
+- **Returns**: the clicked button
 
 - **Example**:
   ```ruby
-  form.name_input.disabled?
+  form.click_button('Save')
+  ```
+
+### **click_link**
+
+Finds a link in the [current context] and clicks it.
+
+- **Arguments**: same as [`find_link`][find_link]
+
+- **Returns**: the clicked link
+
+- **Example**:
+  ```ruby
+  current_page.click_link('Back to Home')
+  ```
+
+### **click_on**
+
+Finds a link or button in the [current context] and clicks it.
+
+- **Arguments**: same as [`find_button`][find_button] and [`find_link`][find_link].
+
+- **Returns**: the clicked link or button
+
+- **Example**:
+  ```ruby
+  purchase_page.click_on('Checkout')
   ```
 
 ### **double_click**
@@ -448,6 +667,28 @@ Should be used over [`evaluate_script`](#evaluate_script) whenever a result is n
   end
   ```
 
+### **fill_in**
+
+Finds a text field or text area in the [current context], and fills it in with the given text.
+
+- **Arguments**:
+  - `locator (optional)`: uses the [`:fillable_field` selector][selectors]
+  - __Options__:
+    - `{String} :with`: the value to fill in
+
+- **Returns**: the element that was filled in
+
+- **Example**:
+  ```ruby
+  def add_user(name:)
+    fill_in('Name', with: name)
+    click_on('Submit')
+  end
+  ```
+  ```ruby
+  address_form.street_input.fill_in(with: 'Evergreen St.')
+  ```
+
 ### **hover**
 
 Hovers on the [current element].
@@ -460,56 +701,6 @@ Hovers on the [current element].
     hover.have('.tooltip', text: title)
   end
   ```
-
-### **multiple?**
-
-Whether or not the [current element] supports multiple results.
-
-- **Returns**: `Boolean`
-
-- **Example**:
-  ```ruby
-  def can_select_many?
-    select_input.multiple?
-  end
-  ```
-
-### **native**
-
-The native element from the driver, this allows access to driver-specific methods.
-
-- **Returns**: `Object`
-
-### **obscured?**
-
-Whether the [current element] is not currently in the viewport or it (or descendants) would not be considered clickable at the elements center point.
-
-- **Returns**: `Boolean`
-
-### **path**
-
-An XPath expression describing where on the page the element can be found.
-
-- **Returns**:  `String`
-
-### **readonly?**
-
-Whether the [current element] is read-only.
-
-- **Returns**: `Boolean`
-
-- **Example**:
-  ```ruby
-  def optional_type_in(text)
-    input.set(text) unless input.readonly?
-  end
-  ```
-
-### **rect**
-
-Returns size and position information for the [current element].
-
-- **Returns**: `Struct { x, y, height, width }`
 
 ### **right_click**
 
@@ -553,6 +744,27 @@ Supports three different ways to perform scrolling.
 
 - **Returns**: `self`
 
+
+### **select**
+
+Finds an option inside the [current context] and selects it.
+
+If the select box is a multiple select, it can be called multiple times to select more than
+one option.
+
+- **Arguments**:
+  - `{String} value`: the value to select
+  - `:from (optional)`: uses the [`:select` or `:datalist_input` selectors][selectors]
+
+- **Returns**: the selected option element
+
+- **Example**:
+  ```ruby
+    form.month_input.select('March')
+    # same as
+    form.select('March', from: 'Month')
+  ```
+
 ### **select_option**
 
 Selects the [current element] if it is an option inside a select tag.
@@ -564,17 +776,6 @@ Used implicitly when calling [`select`][select], which should be preferred.
 - **Example**:
   ```ruby
   option.select_option
-  ```
-
-### **selected?**
-
-Whether or not the [current element] is selected.
-
-- **Returns**: `Boolean`
-
-- **Example**:
-  ```ruby
-  option.selected?
   ```
 
 ### **send_keys**
@@ -630,34 +831,40 @@ Retrieves the specified CSS styles for the [current element].
   Use [`match_style`][match_style] instead when making assertions.
   :::
 
-### **tag_name**
+### **uncheck**
 
-The tag name of the [current element].
+Finds a check box in the [current context], and unchecks it.
 
-- **Returns**: `String`
+- **Arguments**:
+  - `locator (optional)`: uses the [`:checkbox` selector][selectors]
 
-- **Example**:
-  ```ruby
-  users.click_link('Add User').tag_name == 'a'
-  ```
-
-### **text**
-
-Retrieves the text of the [current element].
-
-- **Arguments**: `{ :all | :visible } type`: defaults to `:visible` text
-
-- **Returns**: `String`
+- **Returns**: the element checked or the label clicked
 
 - **Example**:
   ```ruby
-  find_link('Home').text == 'Home'
-  find_link('Hidden', visible: false).text(:all) == 'Hidden'
+  form.uncheck('Email Notifications')
+  form.terms_and_conditions.uncheck
   ```
 
-  ::: tip
-  Use [`have_text`][have_text] instead when making assertions, or pass `:text` or `:exact_text` to [finders][api_finders] to restrict the results.
-  :::
+### **unselect**
+
+Finds an option inside the [current context] and unselects it.
+
+If the select box is a multiple select, it can be called multiple times to unselect more than
+one option.
+
+- **Arguments**:
+  - `{String} value`: the value to select
+  - `:from (optional)`: uses the [`:select` or `:datalist_input` selectors][selectors]
+
+- **Returns**: the unselected option element
+
+- **Example**:
+  ```ruby
+    form.locale_select.unselect('English')
+    # same as
+    form.unselect('English', from: 'form_locale')
+  ```
 
 ### **unselect_option**
 
@@ -673,161 +880,6 @@ Used implicitly when calling [`unselect`][unselect], which should be preferred.
   ```ruby
   option.unselect_option
   ```
-
-### **value**
-
-Retrieves the value of the [current element].
-
-- **Returns**: `{ String | Array<String> }`
-
-- **Example**:
-  ```ruby
-  city_input.value == 'Montevideo'
-  languages_input.value == ['English', 'Spanish']
-  ```
-  ::: tip
-  Use [`have_value`][have_value] instead when making assertions, or pass `:with` to [`find_field`][find_field].
-  :::
-
-### **visible?**
-
-Whether or not the element is visible.
-
-- **Returns**: `Boolean`
-
-- **Example**:
-  ```ruby
-  find_link('Sign in with SSO', visible: :all).visible?
-  ```
-
-  ::: tip
-  Prefer to pass `:visible` to the [finders], or [create an assertion][synchronize_expectation].
-  :::
-
-## Actions
-
-Check the [guide][Actions] for a quick tour.
-
-### **attach_file**
-- **Arguments**: `(locator = nil, paths, make_visible: nil, **options)`
-
-- **Returns**: `Capybara::Node::Element`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-Find a descendant file field on the page and attach a file given its path.
-
-### **check**
-- **Arguments**: `([locator], **options)`
-
-- **Returns**: `Capybara::Node::Element`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-Find a descendant check box and mark it as checked.
-
-### **choose**
-- **Arguments**: `([locator], **options)`
-
-- **Returns**: `Capybara::Node::Element`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-Find a descendant radio button and mark it as checked.
-
-### **click_button**
-- **Arguments**: `([locator], **options)`
-
-- **Returns**: `Capybara::Node::Element`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-Finds a button on the page and clicks it.
-
-### **click_link**
-- **Arguments**: `([locator], **options)`
-
-- **Returns**: `Capybara::Node::Element`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-Finds a link by id, test_id attribute, text or title and clicks it.
-
-### **click_on**
-- **Arguments**: `([locator], **options)`
-
-- **Returns**: `Capybara::Node::Element (also: #click_on)`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-Finds a button or link and clicks it.
-
-### **fill_in**
-- **Arguments**: `([locator], with: , **options)`
-
-- **Returns**: `Capybara::Node::Element`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-Locate a text field or text area and fill it in with the given text.
-
-### **select**
-- **Arguments**: `(value = nil, from: nil, **options)`
-
-- **Returns**: `Capybara::Node::Element`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-If from option is present, #select finds a select box, or text input with associated datalist, on the page and selects a particular option from it.
-
-### **uncheck**
-- **Arguments**: `([locator], **options)`
-
-- **Returns**: `Capybara::Node::Element`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-Find a descendant check box and uncheck it.
-
-### **unselect**
-- **Arguments**: `(value = nil, from: nil, **options)`
-
-- **Returns**: `Capybara::Node::Element`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-Find a select box on the page and unselect a particular option from it.
-
 
 ## Assertions
 

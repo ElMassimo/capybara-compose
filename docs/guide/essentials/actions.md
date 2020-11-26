@@ -1,12 +1,11 @@
-[api]: /api/
-[capybara dsl]: https://github.com/teamcapybara/capybara#the-dsl
+[api]: /api/#actions
 [aliases]: /guide/essentials/aliases
 [to_capybara_node]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/lib/capybara_test_helpers/test_helper.rb#L56-L58
 [wrap]: /api/#wrap-element
 
 # Actions 🖱⌨️
 
-All of the actions provided by the [Capybara DSL] are available to be used in test helpers.
+All of the actions provided by the [Capybara DSL][api] are available to be used in test helpers.
 
 You can check the [API Reference][api] for information about the available actions and their return value.
 
