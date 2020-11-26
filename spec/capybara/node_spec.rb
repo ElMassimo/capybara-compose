@@ -64,6 +64,7 @@ RSpec.feature 'node', test_helpers: [:html_page, :form_page, :js_page] do
 
     it 'should return multiple style values' do
       expect(html_page.find('#first').style('display', :'line-height')).to eq('display' => 'block', 'line-height' => '25px')
+      expect(html_page.find('#first').style(:color, 'font-size')).to eq('color' => 'rgba(0, 0, 0, 1)', 'font-size' => '16px')
     end
   end
 

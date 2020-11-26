@@ -32,15 +32,23 @@ sidebar: auto
 [click]: /api/#click
 [async]: https://github.com/teamcapybara/capybara#asynchronous-javascript-ajax-and-friends
 [using_wait_time]: /api/#using-wait-time
+[select]: /api/#select
+[unselect]: /api/#unselect
 [should]: /api/#should
 [should_not]: /api/#should-not
 [within_frame]: /api/#within-frame
 [within_window]: /api/#within-window
+[have_text]: /api/#have-text
+[match_style]: /api/#match-style
+[have_value]: /api/#have-value
+[find_field]: /api/#find-field
 [test_context]: /api/#test-context
 [delegate_to_test_context]: /api/#delegate-to-test-context
+[synchronize_expectation]: /api/#synchronize-expectation
 [capybara_synchronize]: https://rubydoc.info/github/jnicklas/capybara/master/Capybara/Node/Base#synchronize-instance_method
 [keys]: https://www.rubydoc.info/github/teamcapybara/capybara/Capybara%2FNode%2FElement:send_keys
 [positive and negative]: https://maximomussini.com/posts/cucumber-to_or_not_to/
+
 
 # API Reference
 
@@ -549,7 +557,14 @@ Supports three different ways to perform scrolling.
 
 Selects the [current element] if it is an option inside a select tag.
 
+Used implicitly when calling [`select`][select], which should be preferred.
+
 - **Returns**: `self`
+
+- **Example**:
+  ```ruby
+  option.select_option
+  ```
 
 ### **selected?**
 
@@ -608,41 +623,86 @@ Retrieves the specified CSS styles for the [current element].
 
 - **Example**:
   ```ruby
-    heading.style('color', 'font-size')
+    heading.style(:color, 'font-size')
   ```
 
+  ::: tip
+  Use [`match_style`][match_style] instead when making assertions.
+  :::
+
 ### **tag_name**
+
+The tag name of the [current element].
+
 - **Returns**: `String`
-The tag name of the element.
+
+- **Example**:
+  ```ruby
+  users.click_link('Add User').tag_name == 'a'
+  ```
 
 ### **text**
-Retrieve the text of the element.
 
-- **Arguments**: `(type = nil, normalize_ws: false)`
+Retrieves the text of the [current element].
+
+- **Arguments**: `{ :all | :visible } type`: defaults to `:visible` text
 
 - **Returns**: `String`
 
-### **trigger**
-Trigger any event on the current element, for example mouseover or focus events.
+- **Example**:
+  ```ruby
+  find_link('Home').text == 'Home'
+  find_link('Hidden', visible: false).text(:all) == 'Hidden'
+  ```
 
-- **Arguments**: `(event)`
-
-- **Returns**: `Capybara::Node::Element`
+  ::: tip
+  Use [`have_text`][have_text] instead when making assertions, or pass `:text` or `:exact_text` to [finders][api_finders] to restrict the results.
+  :::
 
 ### **unselect_option**
+
 Unselect this node if it is an option element inside a multiple select tag.
 
-- **Arguments**: `(wait: nil)`
+Unselects the [current element] if it is an option inside a multiple select tag.
 
-- **Returns**: `Capybara::Node::Element`
+Used implicitly when calling [`unselect`][unselect], which should be preferred.
+
+- **Returns**: `self`
+
+- **Example**:
+  ```ruby
+  option.unselect_option
+  ```
 
 ### **value**
- ⇒ String
-The value of the form element.
+
+Retrieves the value of the [current element].
+
+- **Returns**: `{ String | Array<String> }`
+
+- **Example**:
+  ```ruby
+  city_input.value == 'Montevideo'
+  languages_input.value == ['English', 'Spanish']
+  ```
+  ::: tip
+  Use [`have_value`][have_value] instead when making assertions, or pass `:with` to [`find_field`][find_field].
+  :::
 
 ### **visible?**
- ⇒ Boolean
+
 Whether or not the element is visible.
+
+- **Returns**: `Boolean`
+
+- **Example**:
+  ```ruby
+  find_link('Sign in with SSO', visible: :all).visible?
+  ```
+
+  ::: tip
+  Prefer to pass `:visible` to the [finders], or [create an assertion][synchronize_expectation].
+  :::
 
 ## Actions
 
@@ -653,12 +713,22 @@ Check the [guide][Actions] for a quick tour.
 
 - **Returns**: `Capybara::Node::Element`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 Find a descendant file field on the page and attach a file given its path.
 
 ### **check**
 - **Arguments**: `([locator], **options)`
 
 - **Returns**: `Capybara::Node::Element`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 Find a descendant check box and mark it as checked.
 
@@ -667,12 +737,22 @@ Find a descendant check box and mark it as checked.
 
 - **Returns**: `Capybara::Node::Element`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 Find a descendant radio button and mark it as checked.
 
 ### **click_button**
 - **Arguments**: `([locator], **options)`
 
 - **Returns**: `Capybara::Node::Element`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 Finds a button on the page and clicks it.
 
@@ -681,12 +761,22 @@ Finds a button on the page and clicks it.
 
 - **Returns**: `Capybara::Node::Element`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 Finds a link by id, test_id attribute, text or title and clicks it.
 
 ### **click_on**
 - **Arguments**: `([locator], **options)`
 
 - **Returns**: `Capybara::Node::Element (also: #click_on)`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 Finds a button or link and clicks it.
 
@@ -695,12 +785,22 @@ Finds a button or link and clicks it.
 
 - **Returns**: `Capybara::Node::Element`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 Locate a text field or text area and fill it in with the given text.
 
 ### **select**
 - **Arguments**: `(value = nil, from: nil, **options)`
 
 - **Returns**: `Capybara::Node::Element`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 If from option is present, #select finds a select box, or text input with associated datalist, on the page and selects a particular option from it.
 
@@ -709,12 +809,22 @@ If from option is present, #select finds a select box, or text input with associ
 
 - **Returns**: `Capybara::Node::Element`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 Find a descendant check box and uncheck it.
 
 ### **unselect**
 - **Arguments**: `(value = nil, from: nil, **options)`
 
 - **Returns**: `Capybara::Node::Element`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 Find a select box on the page and unselect a particular option from it.
 
@@ -731,6 +841,20 @@ Negated versions are available for most, such as `have_no_selector`, but are omm
 [Injected][composition] test helpers will preserve the _[assertion state]_ of the current helper.
 :::
 
+
+### **have**
+
+RSpec matcher for whether the element(s) matching a given selector exist.
+
+- **Arguments**: `(*args, **kw_args, &optional_filter_block)`
+
+- **Returns**: `Object`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 ### **have_ancestor**
 
 RSpec matcher for whether ancestor element(s) matching a given selector exist.
@@ -738,6 +862,11 @@ RSpec matcher for whether ancestor element(s) matching a given selector exist.
 - **Arguments**: `(*args, **kw_args, &optional_filter_block)`
 
 - **Returns**: `Object`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 
 
@@ -749,6 +878,11 @@ RSpec matcher for buttons.
 
 - **Returns**: `Object`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 
 ### **have_checked_field**
 
@@ -757,6 +891,11 @@ RSpec matcher for checked fields.
 - **Arguments**: `(locator = nil, **options, &optional_filter_block)`
 
 - **Returns**: `Object`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 
 ### **have_css**
@@ -767,6 +906,11 @@ RSpec matcher for whether elements(s) matching a given css selector exist.
 
 - **Returns**: `Object`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 
 ### **have_current_path**
 
@@ -775,6 +919,11 @@ RSpec matcher for the current path.
 - **Arguments**: `(path, **options, &optional_filter_block)`
 
 - **Returns**: `Object`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 
 ### **have_field**
@@ -785,6 +934,11 @@ RSpec matcher for form fields.
 
 - **Returns**: `Object`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 
 ### **have_link**
 
@@ -793,6 +947,11 @@ RSpec matcher for links.
 - **Arguments**: `(locator = nil, **options, &optional_filter_block)`
 
 - **Returns**: `Object`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 
 ### **have_select**
@@ -803,6 +962,11 @@ RSpec matcher for select elements.
 
 - **Returns**: `Object`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 
 ### **have_selector**
 
@@ -811,6 +975,11 @@ RSpec matcher for whether the element(s) matching a given selector exist.
 - **Arguments**: `(*args, **kw_args, &optional_filter_block)`
 
 - **Returns**: `Object`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 
 ### **have_sibling**
@@ -821,6 +990,11 @@ RSpec matcher for whether sibling element(s) matching a given selector exist.
 
 - **Returns**: `Object`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 
 ### **have_table**
 
@@ -829,6 +1003,11 @@ RSpec matcher for table elements.
 - **Arguments**: `(locator = nil, **options, &optional_filter_block)`
 
 - **Returns**: `Object`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 
 ### **have_text**
@@ -839,6 +1018,11 @@ RSpec matcher for text content.
 
 - **Returns**: `Object (also: #have_content)`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 
 ### **have_unchecked_field**
 
@@ -848,6 +1032,23 @@ RSpec matcher for unchecked fields.
 
 - **Returns**: `Object`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
+### **have_value**
+
+RSpec matcher for whether the value of the [current element] matches the provided value.
+
+- **Arguments**: `(*args, **kw_args, &optional_filter_block)`
+
+- **Returns**: `Object`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 ### **have_xpath**
 
@@ -856,6 +1057,11 @@ RSpec matcher for whether elements(s) matching a given xpath selector exist.
 - **Arguments**: `(xpath, **options, &optional_filter_block)`
 
 - **Returns**: `Object`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 
 ### **match_css**
@@ -866,6 +1072,11 @@ RSpec matcher for whether the current element matches a given css selector.
 
 - **Returns**: `Object`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 
 ### **match_selector**
 
@@ -874,6 +1085,11 @@ RSpec matcher for whether the current element matches a given selector.
 - **Arguments**: `(*args, **kw_args, &optional_filter_block)`
 
 - **Returns**: `Object`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 
 ### **match_style**
@@ -884,6 +1100,11 @@ RSpec matcher for element style.
 
 - **Returns**: `Object`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 
 ### **match_xpath**
 
@@ -892,6 +1113,11 @@ RSpec matcher for whether the current element matches a given xpath selector.
 - **Arguments**: `(xpath, **options, &optional_filter_block)`
 
 - **Returns**: `Object`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 
 
@@ -945,6 +1171,11 @@ Finds all elements on the page matching the given selector and options.
 
 - **Returns**: `Capybara::Result (also: #find_all)`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 
 ### **ancestor**
 Finds an Element based on the given arguments that is also an ancestor of the element called on.
@@ -952,6 +1183,11 @@ Finds an Element based on the given arguments that is also an ancestor of the el
 - **Arguments**: `(*args, **options, &optional_filter_block)`
 
 - **Returns**: `Capybara::Node::Element`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 
 ### **find**
@@ -961,6 +1197,11 @@ Finds an Element based on the given arguments.
 
 - **Returns**: `Capybara::Node::Element`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 
 ### **find_button**
 Finds a button on the page.
@@ -968,6 +1209,11 @@ Finds a button on the page.
 - **Arguments**: `([locator], **options)`
 
 - **Returns**: `Capybara::Node::Element`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 
 ### **find_by_id**
@@ -977,6 +1223,11 @@ Finds a element on the page, given its id.
 
 - **Returns**: `Capybara::Node::Element`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 
 ### **find_field**
 Finds a form field on the page.
@@ -984,6 +1235,11 @@ Finds a form field on the page.
 - **Arguments**: `([locator], **options)`
 
 - **Returns**: `Capybara::Node::Element`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 
 ### **find_link**
@@ -993,6 +1249,11 @@ Finds a link on the page.
 
 - **Returns**: `Capybara::Node::Element`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 
 ### **first**
 Finds the first element on the page matching the given selector and options.
@@ -1001,6 +1262,11 @@ Finds the first element on the page matching the given selector and options.
 
 - **Returns**: `Capybara::Node::Element`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 
 ### **sibling**
 Finds an Element based on the given arguments that is also a sibling of the element called on.
@@ -1008,6 +1274,11 @@ Finds an Element based on the given arguments that is also a sibling of the elem
 - **Arguments**: `(*args, **options, &optional_filter_block)`
 
 - **Returns**: `Capybara::Node::Element`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 
 ## Matchers
@@ -1023,6 +1294,11 @@ Predicate version of #assert_ancestor.
 
 - **Returns**: `Boolean`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 
 ### **has_button?**
 Checks if the page or current node has a button with the given text, value or id.
@@ -1030,6 +1306,11 @@ Checks if the page or current node has a button with the given text, value or id
 - **Arguments**: `(locator = nil, **options, &optional_filter_block)`
 
 - **Returns**: `Boolean`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 
 ### **has_checked_field?**
@@ -1039,12 +1320,22 @@ Checks if the page or current node has a radio button or checkbox with the given
 
 - **Returns**: `Boolean`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 ### **has_css?**
 Checks if a given CSS selector is on the page or a descendant of the current node.
 
 - **Arguments**: `(path, **options, &optional_filter_block)`
 
 - **Returns**: `Boolean`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 
 ### **has_field?**
@@ -1054,6 +1345,11 @@ Checks if the page or current node has a form field with the given label, name o
 
 - **Returns**: `Boolean`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 
 ### **has_link?**
 Checks if the page or current node has a link with the given text or id.
@@ -1061,6 +1357,11 @@ Checks if the page or current node has a link with the given text or id.
 - **Arguments**: `(locator = nil, **options, &optional_filter_block)`
 
 - **Returns**: `Boolean`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 
 
@@ -1071,6 +1372,11 @@ Checks if the page or current node has a select field with the given label, name
 
 - **Returns**: `Boolean`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 
 ### **has_selector?**
 Checks if a given selector is on the page or a descendant of the current node.
@@ -1078,6 +1384,11 @@ Checks if a given selector is on the page or a descendant of the current node.
 - **Arguments**: `(*args, **options, &optional_filter_block)`
 
 - **Returns**: `Boolean`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 
 ### **has_sibling?**
@@ -1087,6 +1398,11 @@ Predicate version of #assert_sibling.
 
 - **Returns**: `Boolean`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 
 ### **has_table?**
 Checks if the page or current node has a table with the given id or caption:.
@@ -1095,6 +1411,11 @@ Checks if the page or current node has a table with the given id or caption:.
 
 - **Returns**: `Boolean`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 
 ### **has_text?**
 Checks if the page or current node has the given text content, ignoring any HTML tags.
@@ -1102,6 +1423,11 @@ Checks if the page or current node has the given text content, ignoring any HTML
 - **Arguments**: `(*args, **options)`
 
 - **Returns**: `Boolean (also: #has_content?)`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 
 ### **has_unchecked_field?**
@@ -1112,12 +1438,22 @@ Checks if the page or current node has a radio button or checkbox with the given
 
 - **Returns**: `Boolean`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 ### **has_xpath?**
 Checks if a given XPath expression is on the page or a descendant of the current node.
 
 - **Arguments**: `(path, **options, &optional_filter_block)`
 
 - **Returns**: `Boolean`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 
 ### **matches_css?**
@@ -1127,6 +1463,11 @@ Checks if the current node matches given CSS selector.
 
 - **Returns**: `Boolean`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 
 ### **matches_selector?**
 Checks if the current node matches given selector.
@@ -1134,6 +1475,11 @@ Checks if the current node matches given selector.
 - **Arguments**: `(*args, **options, &optional_filter_block)`
 
 - **Returns**: `Boolean`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 
 ### **matches_style?**
@@ -1143,6 +1489,11 @@ Checks if a an element has the specified CSS styles.
 
 - **Returns**: `Boolean`
 
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
+
 
 ### **matches_xpath?**
 Checks if the current node matches given XPath expression.
@@ -1150,6 +1501,11 @@ Checks if the current node matches given XPath expression.
 - **Arguments**: `(xpath, **options, &optional_filter_block)`
 
 - **Returns**: `Boolean`
+
+- **Example**:
+  ```ruby
+  # TODO: Example
+  ```
 
 
 ## Scoping
