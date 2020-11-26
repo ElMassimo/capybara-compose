@@ -629,8 +629,6 @@ Evaluates the given JS in the [current context], and returns the result.
 
 If the test helper has a [current element], then `this` in the script will refer to that HTML node.
 
-Use [`execute_script`](#execute_script) instead when the script returns complex objects such as jQuery statements.
-
 - **Arguments**:
 
   - `{String} script`: a string of JavaScript to evaluate
@@ -644,14 +642,15 @@ Use [`execute_script`](#execute_script) instead when the script returns complex 
     evaluate_script('this.offsetHeight - arguments[0]', padding)
   end
   ```
+  ::: tip
+  Use [`execute_script`](#execute_script) instead when the script returns complex objects such as jQuery statements.
+  :::
 
 ### **execute_script**
 
 Execute the given JS in the [current context] without returning a result.
 
 If the test helper has a [current element], then `this` in the script will refer to that HTML node.
-
-Should be used over [`evaluate_script`](#evaluate_script) whenever a result is not needed, specially for scripts that return complex objects, such as jQuery statements.
 
 - **Arguments**:
 
@@ -666,6 +665,9 @@ Should be used over [`evaluate_script`](#evaluate_script) whenever a result is n
     execute_script('this.blur()')
   end
   ```
+  ::: tip
+  Should be used over [`evaluate_script`](#evaluate_script) whenever a result is not needed, specially for scripts that return complex objects, such as jQuery statements.
+  :::
 
 ### **fill_in**
 

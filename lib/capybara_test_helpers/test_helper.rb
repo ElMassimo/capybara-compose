@@ -67,6 +67,7 @@ class CapybaraTestHelpers::TestHelper
       element.map { |node| wrap_element(node) }
     else
       raise ArgumentError, "#{ element.inspect } must be a test helper or element." unless element.respond_to?(:to_capybara_node)
+
       self.class.new(element.to_capybara_node, test_context: test_context)
     end
   end
