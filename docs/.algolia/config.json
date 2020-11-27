@@ -2,11 +2,22 @@
   "index_name": "capybara_test_helpers",
   "start_urls": [
     {
+      "url": "https://capybara-test-helpers.netlify.app/api/selectors.html",
+      "selectors_key": "capybara_selectors",
+      "tags": ["capybara_selectors"],
+      "page_rank": 1
+    },
+    {
       "url": "https://capybara-test-helpers.netlify.app/api/",
       "selectors_key": "api",
-      "tags": ["api"]
+      "tags": ["api"],
+      "page_rank": 2
     },
-    { "url": "https://capybara-test-helpers.netlify.app/" }
+    {
+      "url": "https://capybara-test-helpers.netlify.app/",
+      "tags": ["guide"],
+      "page_rank": 3
+    }
   ],
   "stop_urls": [
     "https://capybara-test-helpers.netlify.app/introduction.html",
@@ -54,6 +65,21 @@
       },
       "lvl1": ".content h2",
       "lvl2": ".content h3",
+      "text": ".content p, .content li",
+      "lang": {
+        "selector": "/html/@lang",
+        "type": "xpath",
+        "global": true
+      }
+    },
+    "capybara_selectors": {
+      "lvl0": {
+        "selector": "p.sidebar-heading.open",
+        "global": true,
+        "default_value": "Selectors"
+      },
+      "lvl1": ".content h2",
+      "lvl2": ".content ul li code",
       "text": ".content p, .content li",
       "lang": {
         "selector": "/html/@lang",

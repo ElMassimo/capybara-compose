@@ -126,6 +126,10 @@ RSpec.describe 'Capybara::Session', driver: :chrome_headless, type: :feature, he
       form_page
         .fill_in(:first_name_input, with: 'Harry', fill_options: { clear: [[:shift, 'abc'], :backspace] })
         .should.have_value('JohnABHarry')
+
+      form_page
+        .fill_in(currently_with: 'JohnABHarry', with: 'Harry')
+        .should.have_value('Harry')
     end
   end
 

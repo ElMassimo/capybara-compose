@@ -3,7 +3,6 @@
 [design patterns]: https://capybara-test-helpers.netlify.app/guide/advanced/design-patterns
 [installation]: https://capybara-test-helpers.netlify.app/installation
 [capybara]: https://github.com/teamcapybara/capybara
-[capybara querying]: https://github.com/teamcapybara/capybara#querying
 [cucumber]: https://github.com/cucumber/cucumber-ruby
 [rspec]: https://github.com/rspec/rspec
 [rspec matchers]: https://relishapp.com/rspec/rspec-expectations/docs/built-in-matchers

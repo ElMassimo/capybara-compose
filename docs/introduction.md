@@ -1,6 +1,6 @@
 [library]: https://github.com/ElMassimo/capybara_test_helpers
 [capybara]: https://github.com/teamcapybara/capybara
-[capybara dsl]: https://github.com/teamcapybara/capybara#the-dsl
+[capybara dsl]: /api/
 [testing_robots]: https://jakewharton.com/testing-robots/
 [cucumber]: https://github.com/cucumber/cucumber-ruby
 [rspec]: https://github.com/rspec/rspec

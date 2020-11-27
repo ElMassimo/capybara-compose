@@ -2,6 +2,7 @@
 [find]: /api/#find
 [all]: /api/#all
 [within]: /api/#within
+[selectors]: /api/selectors
 [aliases]: /guide/essentials/aliases
 [actions]: /guide/essentials/actions
 
@@ -9,7 +10,7 @@
 
 Finder methods such as [`find`][find] and [`all`][all] allow you to obtain specific elements in the page. They return a test helper wrapping the element found by Capybara.
 
-You can check the [API Reference][api] for more information.
+You can check the [API Reference][api] for more information, or learn about [selectors].
 
 ```ruby
 users.find('table.users').find(:table_row)

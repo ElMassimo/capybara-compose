@@ -62,3 +62,11 @@ a.sidebar-link:hover {
 details > summary {
   cursor: pointer;
 }
+
+h2 {
+  margin-block-start: 1em;
+}
+
+h3 {
+  margin-block-start: 1.5em;
+}

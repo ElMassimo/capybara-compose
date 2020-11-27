@@ -38,3 +38,15 @@ def be_checked
   synchronize_expectation { expect(checked?).to_or not_to, eq(true) }
 end
 ```
+
+::: tip
+Using strict settings will prevent flaky tests and save you time in the long run.
+
+```ruby
+Capybara.configure do |config|
+  config.match = :smart
+  config.exact = true
+  config.ignore_hidden_elements = true
+end
+```
+:::

@@ -1,4 +1,4 @@
-[adding a filter]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/spec/support/global_filters.rb#L6-L8
+[adding a filter]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/spec/support/global_filters.rb#L10-L19
 [finders]: /guide/essentials/finders
 [api]: /api/#finders
 [capybara selectors]: https://www.rubydoc.info/github/teamcapybara/capybara/Capybara/Selector

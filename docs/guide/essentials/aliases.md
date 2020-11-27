@@ -3,7 +3,7 @@
 [finders]: /guide/essentials/finders
 [assertions]: /guide/essentials/assertions
 [matchers]: /guide/essentials/querying
-[capybara selectors]: https://www.rubydoc.info/github/teamcapybara/capybara/Capybara/Selector
+[capybara selectors]: /api/selectors
 [trailing_commas]: https://maximomussini.com/posts/trailing-commas/
 
 # Locator Aliases 🔍

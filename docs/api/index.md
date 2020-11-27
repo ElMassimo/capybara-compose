@@ -6,6 +6,7 @@ sidebar: auto
 [current context]: /guide/essentials/current-context.html
 [actions]: /guide/essentials/actions
 [aliases]: /guide/essentials/aliases
+[capybara selectors]: https://www.rubydoc.info/github/teamcapybara/capybara/Capybara/Selector
 [aliases shortcuts]: /guide/essentials/aliases#aliases-shortcuts
 [assertions]: /guide/essentials/assertions
 [asserts]: /guide/essentials/assertions
@@ -50,7 +51,7 @@ sidebar: auto
 [capybara_synchronize]: https://rubydoc.info/github/jnicklas/capybara/master/Capybara/Node/Base#synchronize-instance_method
 [keys]: https://www.rubydoc.info/github/teamcapybara/capybara/Capybara%2FNode%2FElement:send_keys
 [positive and negative]: https://maximomussini.com/posts/cucumber-to_or_not_to/
-[selectors]: https://www.rubydoc.info/github/teamcapybara/capybara/Capybara/Selector
+[selectors]: /api/selectors
 [have]: /api/#have
 [have_ancestor]: /api/#have-ancestor
 [have_button]: /api/#have-button
@@ -74,6 +75,9 @@ sidebar: auto
 [have_all_of_selectors]: /api/#have-all-of-selectors
 [have_any_of_selectors]: /api/#have-any-of-selectors
 [have_none_of_selectors]: /api/#have-none-of-selectors
+[matching strategy]: https://github.com/teamcapybara/capybara#strategy
+[filters]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/spec/support/global_filters.rb#L10-L19
+[test_id]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/spec/support/global_filters.rb#L6-L8
 
 # API Reference
 
@@ -84,7 +88,10 @@ have been extended to support [locator aliases][aliases].
 
 Some methods can receive a `:wait` option, which determines how long an interaction will be [retried][async] before failing. For the actions that don't, it can still be configured with [`using_wait_time`][using_wait_time].
 
+
 ## Class DSL
+
+The following methods are available at the class scope in any `Capybara::TestHelper` subclass.
 
 ### **aliases**
 
@@ -175,6 +182,8 @@ Read the [composition] guide for a quick overview.
 
 
 ## Test Helper
+
+The following instance methods are available in `Capybara::TestHelper` subclasses.
 
 ### **not_to**
 
@@ -286,7 +295,7 @@ When passing a test helper, it will wrap its [current element].
 
 ## Element
 
-All of the following methods will be performed on the [current element].
+The following methods are always performed on the [current element].
 
 ### **[]**
 
@@ -462,7 +471,7 @@ Some of the following methods will be performed on the [current element], while 
 Finds a file field in the [current context], and attaches a file to it.
 
 - **Arguments**:
-  - `locator (optional)`: uses the [`:file_field` selector][selectors]
+  - `locator (optional)`: uses the [`:file_field` selector](/api/selectors#file-field)
   - `{String | Array<String>} paths` the path(s) of the file(s) to attach
 
 - **Returns**: the file field
@@ -494,7 +503,7 @@ Removes focus from the [current element] using JS.
 Finds a check box in the [current context], and marks it as checked.
 
 - **Arguments**:
-  - `locator (optional)`: uses the [`:checkbox` selector][selectors]
+  - `locator (optional)`: uses the [`:checkbox` selector](/api/selectors#checkbox)
 
 - **Returns**: the element checked or the label clicked
 
@@ -509,7 +518,7 @@ Finds a check box in the [current context], and marks it as checked.
 Finds a radio button in the [current context], and checks it.
 
 - **Arguments**:
-  - `locator (optional)`: uses the [`:radio_button` selector][selectors]
+  - `locator (optional)`: uses the [`:radio_button` selector](/api/selectors#radio-button)
 
 - **Returns**: the element chosen or the label clicked
 
@@ -708,9 +717,10 @@ If the test helper has a [current element], then `this` in the script will refer
 Finds a text field or text area in the [current context], and fills it in with the given text.
 
 - **Arguments**:
-  - `locator (optional)`: uses the [`:fillable_field` selector][selectors]
+  - `locator (optional)`: uses the [`:fillable_field` selector](/api/selectors#fillable-field)
   - __Options__:
     - `{String} :with`: the value to fill in
+    - `{String} :currently_with`: the current value of the field to fill in
 
 - **Returns**: the element that was filled in
 
@@ -801,7 +811,7 @@ one option.
 
 - **Arguments**:
   - `{String} value`: the value to select
-  - `:from (optional)`: uses the [`:select` or `:datalist_input` selectors][selectors]
+  - `:from (optional)`: uses the [`:select` or `:datalist_input` selectors](/api/selectors#select)
 
 - **Returns**: the selected option element
 
@@ -883,7 +893,7 @@ Retrieves the specified CSS styles for the [current element].
 Finds a check box in the [current context], and unchecks it.
 
 - **Arguments**:
-  - `locator (optional)`: uses the [`:checkbox` selector][selectors]
+  - `locator (optional)`: uses the [`:checkbox` selector](/api/selectors#checkbox)
 
 - **Returns**: the element checked or the label clicked
 
@@ -902,7 +912,7 @@ one option.
 
 - **Arguments**:
   - `{String} value`: the value to select
-  - `:from (optional)`: uses the [`:select` or `:datalist_input` selectors][selectors]
+  - `:from (optional)`: uses the [`:select` or `:datalist_input` selectors](/api/selectors#select)
 
 - **Returns**: the unselected option element
 
@@ -944,16 +954,9 @@ Negated versions are available, such as `have_no_selector` and `not_match_select
 
 [Asserts] that the [current context] contains an element with the given selector.
 
-You may specify any [Capybara selector][selectors], or a [locator alias][aliases].
+You may specify a [locator alias][aliases] or use any [selector][selectors].
 
-- **Arguments**:
-  - Same as [`find_all`][all]
-  - **Options**:
-    - `{Integer} :count`: of matching elements that should exist
-    - `{Integer} :minimum`: of matching elements that should exist
-    - `{Integer} :maximum`: of matching elements that should exist
-    - `{Range} :between`: range of matching elements that should exist
-- **Arguments**: `(*args, **kw_args, &optional_filter_block)`
+- **Arguments**: same as [`find_all`][all]
 
 - **Returns**: `self`
 
@@ -1275,49 +1278,117 @@ It will wait until none of the elements are found, until [timeout][synchronizati
 
 ## Finders
 
-Check the [guide][Finders] for a quick tour, or [learn how to filter with blocks][filtering].
+Check the [guide][Finders] for a quick tour.
+
+You can locate elements with different strategies by specifying a [selector][selectors].
+
+Additionally, you can use [locator aliases][aliases], and may provide [an optional block to filter results][filtering].
+
+::: tip
+All finders will [automatically retry][synchronization] until the element is found, or the timeout ellapses.
+:::
 
 ### **all**
-Finds all elements on the page matching the given selector and options.
 
-- **Arguments**: `([kind = Capybara.default_selector], locator = nil, **options)`
+Finds all elements in the [current context] that match the given selector and options.
 
-- **Returns**: `Capybara::Result (also: #find_all)`
+Also available as `find_all`.
 
-- **Example**:
+- **Arguments**:
+  - `locator`: a [locator alias][aliases], or a [capybara selector][selectors].
+
+  **Options**: same as [`find`][find], plus:
+    - `{Integer} :count`: of matching elements that should exist
+    - `{Integer} :minimum`: of matching elements that should exist
+    - `{Integer} :maximum`: of matching elements that should exist
+    - `{Range} :between`: range of matching elements that should exist
+
+- **Raises**: `Capybara::ExpectationNotMet` if the number of elements doesn't match the conditions
+- **Returns**: a collection of found elements, which **may be empty**
+
+  ::: tip
+  If no elements are found, it will wait until timeout and return an empty collection.
+
+  If you want it to fail, you can pass `minimum: 1`, or to avoid waiting `wait: false`.
+  :::
+
+- **Examples**:
   ```ruby
-  # TODO: Example
+  table.all('tr', minimum: 1)
+  form.all(:fillable_field, count: 3)
   ```
-
+  ```ruby
+  def unselect_all_items
+    all(:selected_option).each(&:click)
+  end
+  ```
+  ```ruby
+  def find_by_index(locator, index:, **options)
+    all(locator, minimum: index + 1, **options)[index]
+  end
+  ```
 
 ### **ancestor**
-Finds an Element based on the given arguments that is also an ancestor of the element called on.
 
-- **Arguments**: `(*args, **options, &optional_filter_block)`
+Finds an element that matches the given arguments and is an ancestor of the [current context].
 
-- **Returns**: `Capybara::Node::Element`
+- **Arguments**: same as [`find`][find].
 
-- **Example**:
+- **Returns**: the ancestor element
+
+- **Examples**:
   ```ruby
-  # TODO: Example
+  def group_with_name(group)
+    find(:group_name, text: group).ancestor(:group)
+  end
   ```
-
+  ```ruby
+  list_item.ancestor('ul', text: 'Pending')
+  ```
 
 ### **find**
-Finds an Element based on the given arguments.
+Finds an element in the [current context] based on the given arguments.
 
-- **Arguments**: `(*args, **options, &optional_filter_block)`
+- **Arguments**:
+  - `locator`: a [locator alias][aliases], or a [capybara selector][selectors].
 
-- **Returns**: `Capybara::Node::Element`
+  **Options**: any filters in the specified [selector][selectors], plus:
 
-- **Example**:
+  - `{String | Regexp} text`: only elements which contain or match this text
+  - `{String | Boolean} exact_text`: only elements that exactly match this text
+  - `{Boolean | Symbol} visible`:
+    - `true` or `:visible`: only find visible elements
+    - `false` or `:all`: find invisible _and_ visible elements
+    - `:hidden`: only find invisible elements
+  - `{Boolean} obscured`:
+    - `true`: only elements whose centerpoint is not in the viewport or is obscured
+    - `false`: only elements whose centerpoint is in the viewport and is not obscured
+  - `{String | Regexp} id`: only elements with the specified id
+  - `{String | Array<String> | Regexp} class`: only elements with matching class(es)
+    - Absence of a class can be checked by prefixing the class name with `!`
+  - `{String | Regexp | Hash} style`: only elements with matching style
+  - `{Symbol} match`: the [matching strategy] to use
+
+- **Returns**: the found element, [wrapped][wrap] in a test helper
+
+- **Examples**:
   ```ruby
-  # TODO: Example
+  table.find('tr', match: :first).find('td', text: 'Bond')
+  ```
+  ```ruby
+  form.find(:first_name_input, disabled: true)
+  ```
+  ```ruby
+  container.find(:xpath, '../..')
+  ```
+  ```ruby
+  def find_admin(name)
+    find('tr.user', text: name) { |row| row.admin? }
+  end
   ```
 
-
 ### **find_button**
-Finds a button on the page.
+Finds a button in the [current context].
 
 - **Arguments**: `([locator], **options)`
 
@@ -1330,7 +1401,7 @@ Finds a button on the page.
 
 
 ### **find_by_id**
-Finds a element on the page, given its id.
+Finds a element in the [current context], given its id.
 
 - **Arguments**: `(id, **options, &optional_filter_block)`
 
@@ -1343,7 +1414,7 @@ Finds a element on the page, given its id.
 
 
 ### **find_field**
-Finds a form field on the page.
+Finds a form field in the [current context].
 
 - **Arguments**: `([locator], **options)`
 
@@ -1356,7 +1427,7 @@ Finds a form field on the page.
 
 
 ### **find_link**
-Finds a link on the page.
+Finds a link in the [current context].
 
 - **Arguments**: `([locator], **options)`
 
@@ -1369,7 +1440,7 @@ Finds a link on the page.
 
 
 ### **first**
-Finds the first element on the page matching the given selector and options.
+Finds the first element in the [current context] matching the given selector and options.
 
 - **Arguments**: `([kind], locator, options)`
 
@@ -1382,7 +1453,7 @@ Finds the first element on the page matching the given selector and options.
 
 
 ### **sibling**
-Finds an Element based on the given arguments that is also a sibling of the element called on.
+Finds an element in the [current context] based on the given arguments that is also a sibling of the element called on.
 
 - **Arguments**: `(*args, **options, &optional_filter_block)`
 
@@ -1392,7 +1463,6 @@ Finds an Element based on the given arguments that is also a sibling of the elem
   ```ruby
   # TODO: Example
   ```
-
 
 ## Scoping
 
@@ -1404,7 +1474,9 @@ Executes the given block within the context of the specified element.
 
 For the duration of the block, any command to Capybara will be scoped to the given element.
 
+::: tip
 When called without parameters the block will be scoped to the [current element].
+:::
 
 - **Arguments**: Same as [`find`][find], can also handle [aliases].
 
@@ -1434,7 +1506,9 @@ Unscopes the inner block from any previous `within` calls.
 
 For the duration of the block, any command to Capybara will be scoped to the entire `page`.
 
-Useful as a escape hatch to interact with content outside a previous `within` call, such as modals.
+::: tip
+Use as a escape hatch to interact with content outside a previous `within` call, such as modals.
+:::
 
 ### **within_fieldset**
 
