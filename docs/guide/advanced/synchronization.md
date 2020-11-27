@@ -13,7 +13,7 @@ In order to prevent race conditions and avoid flaky tests, it's important that a
 
 Most capybara methods will automatically [retry][async] until they succeed or a certain [timeout][using_wait_time] ellapses.
 
-All [finders], [assertions], [matchers], and some [actions] allow passing a `:wait` keyword to specify how many seconds it should be retried before failing or returning control.
+All [finders], [assertions], [matchers], and some [actions] allow passing a `:wait` keyword to specify how many seconds the command should be retried before failing or returning control.
 
 ## Manual Synchronization ⏱
 

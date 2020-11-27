@@ -1105,10 +1105,18 @@ RSpec.feature 'node', test_helpers: [:html_page, :form_page, :js_page] do
 
     it 'should reload elements found via sibling' do
       js_page.visit_page
-      html_page.find('#the-list li', text: 'Item 1').sibling('li')
+      first_item = js_page.find('#the-list li', text: 'Item 1')
+
+      first_item.sibling('li')
         .should.have_text('Item 2')
         .reload
         .should.have_text('Item 2')
+
+      first_item.sibling(:list_item, below: first_item)
+        .should.have_text('Item 2')
+
+      expect { first_item.sibling(:list_item, above: first_item) }
+        .to raise_error(Capybara::ElementNotFound, /"li" above/)
     end
 
     context 'without automatic reload' do

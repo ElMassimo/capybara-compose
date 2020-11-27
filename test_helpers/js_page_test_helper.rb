@@ -16,6 +16,9 @@ class JsPageTestHelper < BaseTestHelper
     change_event: '.change_event_triggered',
     input_event: [:xpath, '//p[@class="input_event_triggered"]'],
     input_with_focus_listener: '#with_focus_event',
+
+    # Sibling Spec
+    list_item: 'li',
   )
 
 # Finders: A convenient way to get related data or nested elements.

@@ -28,7 +28,9 @@ sidebar: auto
 [wrapping]: /guide/advanced/composition.html#wrapping-%F0%9F%8E%81
 [wrap]: /api/#wrap-element
 [all]: /api/#all
+[ancestor]: /api/#ancestor
 [find]: /api/#find
+[sibling]: /api/#sibling
 [launchy]: https://github.com/copiousfreetime/launchy
 [capybara api]: https://rubydoc.info/github/teamcapybara/capybara/master/Capybara/Session
 [current element]: /api/#to-capybara-node
@@ -83,10 +85,9 @@ sidebar: auto
 
 All of the following methods can be called on a `Capybara::TestHelper` instance.
 
-Most of these methods are coming from the [Capybara API], except some of them
-have been extended to support [locator aliases][aliases].
+Many of these methods are coming from the [Capybara API] and can be used exactly the same, except they have been extended to support [locator aliases][aliases].
 
-Some methods can receive a `:wait` option, which determines how long an interaction will be [retried][async] before failing. For the actions that don't, it can still be configured with [`using_wait_time`][using_wait_time].
+Most methods that find or interact with an element can receive a `:wait` option, which determines how long the command will be [retried][async] before failing. For the ones that don't, it can still be configured with [`using_wait_time`][using_wait_time].
 
 
 ## Test Helper Class
@@ -102,9 +103,9 @@ A method with the alias name will be defined for each specified alias, as a [sho
 Read the [aliases] guide for a quick overview.
 
 - **Arguments**:
-  - `{Hash} locator_aliases`:
-    - `{Symbol} key`: name of the alias
-    - `{String | Array}`: the locator
+  - `locator_aliases {Hash}`:
+    - `key {Symbol}`: name of the alias
+    - `value {String | Array}`: the locator
 
 - **Example**:
 
@@ -135,7 +136,7 @@ This is useful when defining custom logic in support files.
 For one-off usages, you may call [`test_context`][test_context] manually in the instance.
 
 - **Arguments**:
-  - `{Symbol} *method_names`: the methods to delegate to the test context
+  - `*method_names {Symbol}`: the methods to delegate to the test context
 
 - **Example**:
 
@@ -158,7 +159,7 @@ The defined methods can optionally receive an element to [wrap].
 Read the [composition] guide for a quick overview.
 
 - **Arguments**:
-  - `{Symbol} *helper_names`: the names of the test helpers to inject
+  - `*helper_names {Symbol}`: the names of the test helpers to inject
 
 - **Example**:
 
@@ -212,7 +213,7 @@ Returns a test helper with a positive [assertion state], allowing any [assertion
 Also available as `should_still`, `should_now`, `and`, `and_instead`, `and_also`, `and_still`.
 
 - **Arguments**:
-  - `{Boolean} negated`: defaults to `false`, if truthy it will return a test helper with a negative assertion state.
+  - `negated {Boolean}`: defaults to `false`, if truthy it will return a test helper with a negative assertion state.
 
 - **Examples**:
   ```ruby
@@ -279,7 +280,7 @@ When passing a test helper, it will wrap its [current element].
 
 - **Arguments**:
 
-  `{Capybara::Node::Element | Capybara::TestHelper} element`: the element to wrap
+  `element {Capybara::Node::Element | Capybara::TestHelper}`: the element to wrap
 
 - **Returns**:
 
@@ -306,7 +307,7 @@ Finds a file field in the [current context], and attaches a file to it.
 
 - **Arguments**:
   - `locator (optional)`: uses the [`:file_field` selector](/api/selectors#file-field)
-  - `{String | Array<String>} paths` the path(s) of the file(s) to attach
+  - `paths {String | Array<String>}`: the path(s) of the file(s) to attach
 
 - **Returns**: the file field
 
@@ -336,8 +337,7 @@ Removes focus from the [current element] using JS.
 
 Finds a check box in the [current context], and marks it as checked.
 
-- **Arguments**:
-  - `locator (optional)`: uses the [`:checkbox` selector](/api/selectors#checkbox)
+- **Arguments**: `locator (optional)`: uses the [`:checkbox` selector](/api/selectors#checkbox)
 
 - **Returns**: the element checked or the label clicked
 
@@ -351,8 +351,7 @@ Finds a check box in the [current context], and marks it as checked.
 
 Finds a radio button in the [current context], and checks it.
 
-- **Arguments**:
-  - `locator (optional)`: uses the [`:radio_button` selector](/api/selectors#radio-button)
+- **Arguments**: `locator (optional)`: uses the [`:radio_button` selector](/api/selectors#radio-button)
 
 - **Returns**: the element chosen or the label clicked
 
@@ -368,13 +367,13 @@ Clicks the [current element].
 
 - **Arguments**:
 
-  - `{Symbol} *modifier_keys`: modifier keys that should be held during click
-  - __Options__:
+  - `*modifier_keys {Symbol}`: modifier keys that should be held during click
+
+  __Options__:
 
     By default it will attempt to click the center of the element.
-    - `{Numeric} :x`: the X coordinate to offset the click location
-    - `{Numeric} :y`: the Y coordinate to offset the click location
-    - `{Numeric} :wait`: how long to wait to retry the action until the element becomes interactable
+    - `:x {Numeric}`: the X coordinate to offset the click location
+    - `:y {Numeric}`: the Y coordinate to offset the click location
 
 - **Returns**: `self`
 
@@ -420,7 +419,7 @@ Finds a link in the [current context] and clicks it.
 
 Finds a link or button in the [current context] and clicks it.
 
-- **Arguments**: same as [`find_button`][find_button] and [`find_link`][find_link].
+- **Arguments**: same as [`find_button`][find_button] and [`find_link`][find_link]
 
 - **Returns**: the clicked link or button
 
@@ -443,14 +442,15 @@ Drags the [current element] to the given other element.
 
 - **Arguments**:
 
-  - `{Capybara::Node::Element | Capybara::TestHelper} node`: the destination to drag to
-  - __Options__:
+  - `node {Capybara::Node::Element | Capybara::TestHelper}`: the destination to drag to
+
+  __Options__:
 
     Driver-specific, might not be supported by all drivers.
 
-    - `{Numeric} :delay`: the amount of seconds between each stage, defaults to `0.05`
-    - `{Boolean} :html5`: force the use of HTML5, otherwise auto-detected by the driver
-    - `{Array<Symbol>} :drop_modifiers`: Modifier keys which should be held while dragging
+    - `:delay {Numeric}`: the amount of seconds between each stage, defaults to `0.05`
+    - `:html5 {Boolean}`: force the use of HTML5, otherwise auto-detected by the driver
+    - `:drop_modifiers {Array<Symbol>}`: Modifier keys which should be held while dragging
 
 - **Returns**: `self`
 
@@ -466,7 +466,7 @@ Drops items on the [current element].
 
 - **Arguments**:
 
-  - `{String | #to_path | Hash} *path`: location(s) of the file(s) to drop on the element
+  - `*path {String | #to_path | Hash}`: location(s) of the file(s) to drop on the element
 
 - **Returns**: `self`
 
@@ -482,8 +482,8 @@ Evaluates the given JavaScript in the [current context] of the element, and obta
 
 - **Arguments**:
 
-  - `{String} script`: a string of JavaScript to evaluate
-  - `{Object} *args`: parameters for the JavaScript function
+  - `script {String}`: a string of JavaScript to evaluate
+  - `*args {Object}`: parameters for the JavaScript function
 
 - **Returns**: `Object` result of the callback function
 
@@ -508,8 +508,8 @@ If the test helper has a [current element], then `this` in the script will refer
 
 - **Arguments**:
 
-  - `{String} script`: a string of JavaScript to evaluate
-  - `{Object} *args`: parameters for the JavaScript function
+  - `script {String}`: a string of JavaScript to evaluate
+  - `*args {Object}`: parameters for the JavaScript function
 
 - **Returns**: `Object` result of evaluating the script
 
@@ -531,8 +531,8 @@ If the test helper has a [current element], then `this` in the script will refer
 
 - **Arguments**:
 
-  - `{String} script`: a string of JavaScript to evaluate
-  - `{Object} *args`: parameters for the JavaScript function
+  - `script {String}`: a string of JavaScript to evaluate
+  - `*args {Object}`: parameters for the JavaScript function
 
 - **Returns**: `self`
 
@@ -552,9 +552,10 @@ Finds a text field or text area in the [current context], and fills it in with t
 
 - **Arguments**:
   - `locator (optional)`: uses the [`:fillable_field` selector](/api/selectors#fillable-field)
-  - __Options__:
-    - `{String} :with`: the value to fill in
-    - `{String} :currently_with`: the current value of the field to fill in
+
+  __Options__:
+    - `:with {String}`: the value to fill in
+    - `:currently_with {String}`: the current value of the field to fill in
 
 - **Returns**: the element that was filled in
 
@@ -606,15 +607,15 @@ Right clicks the [current element].
 Supports three different ways to perform scrolling.
 
 - Scroll the page or element to its top, bottom or middle.
-  - `{:top | :bottom | :center | :current} position`
+  - `position {:top | :bottom | :center | :current}`
 
   ```ruby
   current_page.scroll_to(:top, offset: [0, 20])
   ```
 
 - Scroll the page or element into view until the given element is aligned as specified.
-   - `{Capybara::Node::Element | Capybara::TestHelper} element`: the element to be scrolled
-   - `{:top | :bottom | :center } :align`: where to align the element being scrolled into view with relation to the current page/element if possible.
+   - `element {Capybara::Node::Element | Capybara::TestHelper}`: the element to be scrolled
+   - `:align {:top | :bottom | :center }`: where to align the element being scrolled into view with relation to the current page/element if possible.
 
   ```ruby
   def scroll_into_view
@@ -623,8 +624,8 @@ Supports three different ways to perform scrolling.
   ```
 
 - Scroll horizontally or vertically.
-  - `{Integer} x`
-  - `{Integer} y`
+  - `x {Integer}`
+  - `y {Integer}`
 
   ```ruby
   current_page.scroll_to(100, 500)
@@ -644,7 +645,7 @@ If the select box is a multiple select, it can be called multiple times to selec
 one option.
 
 - **Arguments**:
-  - `{String} value`: the value to select
+  - `value {String}`: the value to select
   - `:from (optional)`: uses the [`:select` or `:datalist_input` selectors](/api/selectors#select)
 
 - **Returns**: the selected option element
@@ -675,7 +676,7 @@ Sends keystrokes to the [current element].
 
 You may use any of the [supported symbol keys][keys].
 
-- **Arguments**: `{String | Symbol} *keys` the [keys][keys] to type
+- **Arguments**: `*keys {String | Symbol}` the [keys][keys] to type
 
 - **Returns**: `self`
 
@@ -691,8 +692,9 @@ You may use any of the [supported symbol keys][keys].
 
 Sets the value of the [current element] to the specified value.
 
-- **Arguments**: `{Object} value` the new value
-  - __Options__:
+- **Arguments**: `value {Object}` the new value
+
+  __Options__:
     - `:clear`: The method used to clear the previous value
       - `nil` the default, clears the input using JS
       - `:none` appends the new value to the previous value
@@ -709,7 +711,7 @@ Sets the value of the [current element] to the specified value.
 
 Retrieves the specified CSS styles for the [current element].
 
-- **Arguments**: `{String} *styles` the style properties to retrieve
+- **Arguments**: `*styles {String}` the style properties to retrieve
 
 - **Returns**: ` Hash` with the computed style properties
 
@@ -745,7 +747,7 @@ If the select box is a multiple select, it can be called multiple times to unsel
 one option.
 
 - **Arguments**:
-  - `{String} value`: the value to select
+  - `value {String}`: the value to select
   - `:from (optional)`: uses the [`:select` or `:datalist_input` selectors](/api/selectors#select)
 
 - **Returns**: the unselected option element
@@ -805,24 +807,26 @@ You may specify a [locator alias][aliases] or use any [capybara selector][select
 
 ### **have_ancestor**
 
-RSpec matcher for whether ancestor element(s) matching a given selector exist.
+[Asserts] that the [current element] has an ancestor with the given selector.
 
-- **Arguments**: `(*args, **kw_args, &optional_filter_block)`
+- **Arguments**: same as [`ancestor`][ancestor]
 
-- **Returns**: `Object`
+- **Returns**: `self`
 
 - **Example**:
   ```ruby
-  # TODO: Example
+  list_item
+    .should.have_ancestor('ul', text: 'Pending')
+    .should_not.have_ancestor('ul', text: 'Done')
   ```
 
 ### **have_button**
 
-RSpec matcher for buttons.
+[Asserts] that the [current context] contains a button with the given selector.
 
 - **Arguments**: `(locator = nil, **options, &optional_filter_block)`
 
-- **Returns**: `Object`
+- **Returns**: `self`
 
 - **Example**:
   ```ruby
@@ -832,53 +836,42 @@ RSpec matcher for buttons.
 
 ### **have_checked_field**
 
-RSpec matcher for checked fields.
+[Asserts] that the [current context] contains a checked field with the given selector.
 
 - **Arguments**: `(locator = nil, **options, &optional_filter_block)`
 
-- **Returns**: `Object`
+- **Returns**: `self`
 
 - **Example**:
   ```ruby
   # TODO: Example
   ```
+
+### **have_content**
+
+Alias for [`have_text`][have_text].
 
 
 ### **have_css**
 
-RSpec matcher for whether elements(s) matching a given css selector exist.
+[Asserts] that the [current context] contains an element with the given CSS selector.
 
 - **Arguments**: `(css, **options, &optional_filter_block)`
 
-- **Returns**: `Object`
+- **Returns**: `self`
 
 - **Example**:
   ```ruby
   # TODO: Example
   ```
-
-
-### **have_current_path**
-
-RSpec matcher for the current path.
-
-- **Arguments**: `(path, **options, &optional_filter_block)`
-
-- **Returns**: `Object`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
 
 ### **have_field**
 
-RSpec matcher for form fields.
+[Asserts] for form fields.
 
 - **Arguments**: `(locator = nil, **options, &optional_filter_block)`
 
-- **Returns**: `Object`
+- **Returns**: `self`
 
 - **Example**:
   ```ruby
@@ -888,11 +881,11 @@ RSpec matcher for form fields.
 
 ### **have_link**
 
-RSpec matcher for links.
+[Asserts] for links.
 
 - **Arguments**: `(locator = nil, **options, &optional_filter_block)`
 
-- **Returns**: `Object`
+- **Returns**: `self`
 
 - **Example**:
   ```ruby
@@ -902,11 +895,11 @@ RSpec matcher for links.
 
 ### **have_select**
 
-RSpec matcher for select elements.
+[Asserts] for select elements.
 
 - **Arguments**: `(locator = nil, **options, &optional_filter_block)`
 
-- **Returns**: `Object`
+- **Returns**: `self`
 
 - **Example**:
   ```ruby
@@ -916,25 +909,16 @@ RSpec matcher for select elements.
 
 ### **have_selector**
 
-RSpec matcher for whether the element(s) matching a given selector exist.
-
-- **Arguments**: `(*args, **kw_args, &optional_filter_block)`
-
-- **Returns**: `Object`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
+Alias for [`have`][have].
 
 
 ### **have_sibling**
 
-RSpec matcher for whether sibling element(s) matching a given selector exist.
+[Asserts] whether sibling element(s) matching a given selector exist.
 
 - **Arguments**: `(*args, **kw_args, &optional_filter_block)`
 
-- **Returns**: `Object`
+- **Returns**: `self`
 
 - **Example**:
   ```ruby
@@ -944,11 +928,11 @@ RSpec matcher for whether sibling element(s) matching a given selector exist.
 
 ### **have_table**
 
-RSpec matcher for table elements.
+[Asserts] for table elements.
 
 - **Arguments**: `(locator = nil, **options, &optional_filter_block)`
 
-- **Returns**: `Object`
+- **Returns**: `self`
 
 - **Example**:
   ```ruby
@@ -958,7 +942,7 @@ RSpec matcher for table elements.
 
 ### **have_text**
 
-RSpec matcher for text content.
+[Asserts] for text content.
 
 - **Arguments**: `(text_or_type, *args, **options)`
 
@@ -972,11 +956,11 @@ RSpec matcher for text content.
 
 ### **have_unchecked_field**
 
-RSpec matcher for unchecked fields.
+[Asserts] for unchecked fields.
 
 - **Arguments**: `(locator = nil, **options, &optional_filter_block)`
 
-- **Returns**: `Object`
+- **Returns**: `self`
 
 - **Example**:
   ```ruby
@@ -985,11 +969,11 @@ RSpec matcher for unchecked fields.
 
 ### **have_value**
 
-RSpec matcher for whether the value of the [current element] matches the provided value.
+[Asserts] whether the value of the [current element] matches the provided value.
 
 - **Arguments**: `(*args, **kw_args, &optional_filter_block)`
 
-- **Returns**: `Object`
+- **Returns**: `self`
 
 - **Example**:
   ```ruby
@@ -998,11 +982,11 @@ RSpec matcher for whether the value of the [current element] matches the provide
 
 ### **have_xpath**
 
-RSpec matcher for whether elements(s) matching a given xpath selector exist.
+[Asserts] whether elements(s) matching a given xpath selector exist.
 
 - **Arguments**: `(xpath, **options, &optional_filter_block)`
 
-- **Returns**: `Object`
+- **Returns**: `self`
 
 - **Example**:
   ```ruby
@@ -1012,11 +996,11 @@ RSpec matcher for whether elements(s) matching a given xpath selector exist.
 
 ### **match_css**
 
-RSpec matcher for whether the current element matches a given css selector.
+[Asserts] whether the current element matches a given css selector.
 
 - **Arguments**: `(css, **options, &optional_filter_block)`
 
-- **Returns**: `Object`
+- **Returns**: `self`
 
 - **Example**:
   ```ruby
@@ -1026,11 +1010,11 @@ RSpec matcher for whether the current element matches a given css selector.
 
 ### **match_selector**
 
-RSpec matcher for whether the current element matches a given selector.
+[Asserts] whether the current element matches a given selector.
 
 - **Arguments**: `(*args, **kw_args, &optional_filter_block)`
 
-- **Returns**: `Object`
+- **Returns**: `self`
 
 - **Example**:
   ```ruby
@@ -1040,11 +1024,11 @@ RSpec matcher for whether the current element matches a given selector.
 
 ### **match_style**
 
-RSpec matcher for element style.
+[Asserts] for element style.
 
 - **Arguments**: `(styles = nil, **options)`
 
-- **Returns**: `Object`
+- **Returns**: `self`
 
 - **Example**:
   ```ruby
@@ -1054,54 +1038,58 @@ RSpec matcher for element style.
 
 ### **match_xpath**
 
-RSpec matcher for whether the current element matches a given xpath selector.
+[Asserts] whether the current element matches a given xpath selector.
 
 - **Arguments**: `(xpath, **options, &optional_filter_block)`
 
-- **Returns**: `Object`
+- **Returns**: `self`
 
 - **Example**:
   ```ruby
   # TODO: Example
   ```
 
-
-
 ### **have_all_of_selectors**
 
-Asserts that all of the provided selectors are descendants of the [current context].
+[Asserts] that all of the provided selectors are descendants of the [current context].
 
-Aliases can be used, but you must provide a selector such as `:css` as the first argument.
+If using [aliases], you must explicitly provide a [selector][selectors] as the first argument.
 
 It will wait until all of the elements are found, until [timeout][synchronization].
 
-- **Examples**:
+- **Returns**: `self`
+
+- **Example**:
   ```ruby
   form.should.have_all_of_selectors(:css, :name_input, :last_name_input)
   ```
 
 ### **have_any_of_selectors**
 
-Asserts that at least of the provided selectors are descendants of the [current context].
+[Asserts] that at least of the provided selectors are descendants of the [current context].
 
-Aliases can be used, but you must provide a selector such as `:css` as the first argument.
+If using [aliases], you must explicitly provide a [selector][selectors] as the first argument.
 
 It will wait until one of the elements is found, until [timeout][synchronization].
 
-- **Examples**:
+- **Returns**: `self`
+
+- **Example**:
   ```ruby
   form.should.have_any_of_selectors(:css, :name_input, :last_name_input, wait: 2)
   ```
 
 ### **have_none_of_selectors**
 
-Asserts that none of the provided selectors are descendants of the [current context].
+[Asserts] that none of the provided selectors are descendants of the [current context].
 
-Aliases can be used, but you must provide a selector such as `:css` as the first argument.
+If using [aliases], you must explicitly provide a [selector][selectors] as the first argument.
 
 It will wait until none of the elements are found, until [timeout][synchronization].
 
-- **Examples**:
+- **Returns**: `self`
+
+- **Example**:
   ```ruby
   form.should.have_none_of_selectors(:css, '.error', '.warning')
   ```
@@ -1124,15 +1112,15 @@ Inspects the `Capybara::Node::Element` element the test helper is wrapping.
 Saves a snapshot of the page and open it in a browser for inspection. Requires [`launchy`][launchy].
 
 
-- **Arguments**: `{String} path (optional)`: the path to where it should be saved
+- **Arguments**: `path {String} (optional)`: the path to where it should be saved
 
 ### **save_and_open_screenshot**
 
 Save a screenshot of the page and open it for inspection. Requires [`launchy`][launchy].
 
-- **Arguments**: `{String} path (optional)`: the path to where it should be saved
+- **Arguments**: `path {String} (optional)`: the path to where it should be saved
 
-- **Returns**: `{String} path`: the path to which the file was saved
+- **Returns**: `path {String}`: the path to which the file was saved
 
 - **Example**:
   ```ruby
@@ -1147,17 +1135,17 @@ Save a screenshot of the page and open it for inspection. Requires [`launchy`][l
 
 Saves a snapshot of the page.
 
-- **Arguments**: `{String} path (optional)`: the path to where it should be saved
+- **Arguments**: `path {String} (optional)`: the path to where it should be saved
 
-- **Returns**: `{String} path`: the path to which the file was saved
+- **Returns**: `path {String}`: the path to which the file was saved
 
 ### **save_screenshot**
 
 Saves a screenshot of the page.
 
-- **Arguments**: `{String} path (optional)`: the path to where it should be saved
+- **Arguments**: `path {String} (optional)`: the path to where it should be saved
 
-- **Returns**: `{String} path`: the path to which the file was saved
+- **Returns**: `path {String}`: the path to which the file was saved
 
 
 ## Element
@@ -1169,7 +1157,7 @@ The following methods are always performed on the [current element].
 Retrieves the given HTML attribute of the [current element].
 
 - **Arguments**:
-  - `{String | Symbol} attribute` the name of the HTML attribute
+  - `attribute {String | Symbol}` the name of the HTML attribute
 
 - **Returns**: `String` value of the attribute
 
@@ -1195,6 +1183,11 @@ Whether or not the [current element] is checked.
   checkbox.checked?
   ```
 
+  ::: tip
+  You can pass [`:checked`](/api/selectors) to [assertions][api_assertions] or [finders][api_finders].
+  :::
+
+
 ### **disabled?**
 
 Whether or not the [current element] is disabled.
@@ -1205,6 +1198,10 @@ Whether or not the [current element] is disabled.
   ```ruby
   form.name_input.disabled?
   ```
+
+  ::: tip
+  You can pass [`:disabled`](/api/selectors) to [assertions][api_assertions] or [finders][api_finders].
+  :::
 
 ### **multiple?**
 
@@ -1219,6 +1216,10 @@ Whether or not the [current element] supports multiple results.
   end
   ```
 
+  ::: tip
+  You can pass [`:multiple`](/api/selectors) to [assertions][api_assertions] or [finders][api_finders].
+  :::
+
 ### **native**
 
 The native element from the driver, this allows access to driver-specific methods.
@@ -1230,6 +1231,10 @@ The native element from the driver, this allows access to driver-specific method
 Whether the [current element] is not currently in the viewport or it (or descendants) would not be considered clickable at the elements center point.
 
 - **Returns**: `Boolean`
+
+  ::: tip
+  You can pass [`:obscured`][find] to [assertions][api_assertions] or [finders][api_finders].
+  :::
 
 ### **path**
 
@@ -1250,6 +1255,10 @@ Whether the [current element] is read-only.
   end
   ```
 
+  ::: tip
+  You can pass [`:readonly`](/api/selectors) to [assertions][api_assertions] or [finders][api_finders].
+  :::
+
 ### **rect**
 
 Returns size and position information for the [current element].
@@ -1268,6 +1277,10 @@ Whether or not the [current element] is selected.
   option.selected?
   ```
 
+  ::: tip
+  You can pass [`:selected`](/api/selectors) to [assertions][api_assertions] or [finders][api_finders].
+  :::
+
 ### **tag_name**
 
 The tag name of the [current element].
@@ -1283,7 +1296,7 @@ The tag name of the [current element].
 
 Retrieves the text of the [current element].
 
-- **Arguments**: `{ :all | :visible } type`: defaults to `:visible` text
+- **Arguments**: `type { :all | :visible }`: defaults to `:visible` text
 
 - **Returns**: `String`
 
@@ -1294,7 +1307,7 @@ Retrieves the text of the [current element].
   ```
 
   ::: tip
-  Use [`have_text`][have_text] instead when making assertions, or pass `:text` or `:exact_text` to [finders][api_finders] to restrict the results.
+  Use [`have_text`][have_text] instead when making assertions, or pass [`:text` or `:exact_text`][find] to [finders][api_finders] to restrict the results.
   :::
 
 ### **value**
@@ -1309,7 +1322,7 @@ Retrieves the value of the [current element].
   languages_input.value == ['English', 'Spanish']
   ```
   ::: tip
-  Use [`have_value`][have_value] instead when making assertions, or pass `:with` to [`find_field`][find_field].
+  Use [`have_value`][have_value] instead when making assertions, or pass [`:with`](/api/selectors#field) to [`find_field`][find_field].
   :::
 
 ### **visible?**
@@ -1324,7 +1337,7 @@ Whether or not the [current element] is visible.
   ```
 
   ::: tip
-  Prefer to pass `:visible` to the [finders], or [create an assertion][synchronize_expectation].
+  Prefer to pass [`:visible`][find] to [assertions][api_assertions] or [finders][api_finders], or [create an assertion][synchronize_expectation].
   :::
 
 
@@ -1346,13 +1359,12 @@ Finds all elements in the [current context] that match the given selector and op
 
 Also available as `find_all`.
 
-- **Arguments**: a [locator alias][aliases], or a [capybara selector][selectors].
+- **Arguments**: same as [`find`][find], plus:
 
-  **Options**: same as [`find`][find], plus:
-    - `{Integer} :count`: of matching elements that should exist
-    - `{Integer} :minimum`: of matching elements that should exist
-    - `{Integer} :maximum`: of matching elements that should exist
-    - `{Range} :between`: range of matching elements that should exist
+    - `:count {Integer}`: of matching elements that should exist
+    - `:minimum {Integer}`: of matching elements that should exist
+    - `:maximum {Integer}`: of matching elements that should exist
+    - `:between {Range}`: range of matching elements that should exist
 
 - **Raises**: `Capybara::ExpectationNotMet` if the number of elements doesn't match the conditions
 - **Returns**: a collection of found elements, which **may be empty**
@@ -1365,7 +1377,7 @@ Also available as `find_all`.
 
 - **Examples**:
   ```ruby
-  table.all('tr', minimum: 1)
+  table.find_all('tr', minimum: 1)
   form.all(:fillable_field, count: 3)
   ```
   ```ruby
@@ -1375,7 +1387,7 @@ Also available as `find_all`.
   ```
   ```ruby
   def find_by_index(locator, index:, **options)
-    all(locator, minimum: index + 1, **options)[index]
+    find_all(locator, minimum: index + 1, **options)[index]
   end
   ```
 
@@ -1404,20 +1416,20 @@ Finds an element in the [current context] based on the given arguments.
 
   **Options**: any filters in the specified (or default) [selector][selectors], plus:
 
-  - `{String | Regexp} text`: only elements which contain or match this text
-  - `{String | Boolean} exact_text`: only elements that exactly match this text
-  - `{Boolean | Symbol} visible`:
+  - `:text {String | Regexp}`: only elements which contain or match this text
+  - `:exact_text {String | Boolean}`: only elements that exactly match this text
+  - `:visible {Boolean | Symbol}`:
     - `true` or `:visible`: only find visible elements
     - `false` or `:all`: find invisible _and_ visible elements
     - `:hidden`: only find invisible elements
-  - `{Boolean} obscured`:
+  - `:obscured {Boolean}`:
     - `true`: only elements whose centerpoint is not in the viewport or is obscured
     - `false`: only elements whose centerpoint is in the viewport and is not obscured
-  - `{String | Regexp} id`: only elements with the specified id
-  - `{String | Array<String> | Regexp} class`: only elements with matching class(es)
+  - `:id {String | Regexp}`: only elements with the specified id
+  - `:class {String | Array<String> | Regexp}`: only elements with matching class(es)
     - Absence of a class can be checked by prefixing the class name with `!`
-  - `{String | Regexp | Hash} style`: only elements with matching style
-  - `{Symbol} match`: the [matching strategy] to use
+  - `:style {String | Regexp | Hash}`: only elements with matching style
+  - `:match {Symbol}`: the [matching strategy] to use
 
 - **Returns**: the found element, [wrapped][wrap] in a test helper
 
@@ -1437,81 +1449,98 @@ Finds an element in the [current context] based on the given arguments.
   end
   ```
 
+### **find_all**
+
+Alias for [`all`][all].
+
 ### **find_button**
 Finds a button in the [current context].
 
-- **Arguments**: `([locator], **options)`
+- **Arguments**: same as [`find`][find], see the [`:button` selector](/api/selectors#button) for usage
 
-- **Returns**: `Capybara::Node::Element`
+- **Returns**: the found button
 
-- **Example**:
+- **Examples**:
   ```ruby
-  # TODO: Example
+  find_button('Save')
+  find_button(type: 'submit')
   ```
-
 
 ### **find_by_id**
 Finds a element in the [current context], given its id.
 
-- **Arguments**: `(id, **options, &optional_filter_block)`
+- **Arguments**: same as [`find`][find], see the [`:id` selector](/api/selectors#id) for usage
 
-- **Returns**: `Capybara::Node::Element`
+- **Returns**: the found element
 
-- **Example**:
+- **Examples**:
   ```ruby
-  # TODO: Example
+  find_by_id('main', visible: true)
   ```
-
 
 ### **find_field**
 Finds a form field in the [current context].
 
-- **Arguments**: `([locator], **options)`
+The field can be found by its name, id, or label text.
 
-- **Returns**: `Capybara::Node::Element`
+- **Arguments**: same as [`find`][find], see the [`:field` selector](/api/selectors#field) for usage
 
-- **Example**:
+- **Returns**: the found field
+
+- **Examples**:
   ```ruby
-  # TODO: Example
+  find_field(type: 'checkbox', disabled: false)
+  find_field('Description', type: 'textarea', with: /Lorem/)
   ```
-
 
 ### **find_link**
 Finds a link in the [current context].
 
-- **Arguments**: `([locator], **options)`
+- **Arguments**: same as [`find`][find], see the [`:link` selector](/api/selectors#link) for usage
 
-- **Returns**: `Capybara::Node::Element`
+- **Returns**: the found link
 
-- **Example**:
+- **Examples**:
   ```ruby
-  # TODO: Example
+  find_link(href: '#introduction')
+  find_link('Download Paper', download: true)
   ```
-
 
 ### **first**
 Finds the first element in the [current context] matching the given selector and options.
 
-- **Arguments**: `([kind], locator, options)`
+- **Arguments**: same as [`all`][all], uses `minimum: 1` by default
 
-- **Returns**: `Capybara::Node::Element`
+- **Returns**: the found element
 
-- **Example**:
+  When passing `count`, `minimum`, or `between`, it **may return `nil`** if the conditions allow it.
+
+- **Raises**: `Capybara::ExpectationNotMet` if the number of elements doesn't match the conditions
+
+- **Examples**:
   ```ruby
-  # TODO: Example
+  first(:link, href: true)
+  ```
+  ```ruby
+  navbar.first(:menu, minimum: 0)
   ```
 
-
 ### **sibling**
-Finds an element in the [current context] based on the given arguments that is also a sibling of the element called on.
 
-- **Arguments**: `(*args, **options, &optional_filter_block)`
+Finds an element based on the given arguments that is also a sibling of the [current context].
 
-- **Returns**: `Capybara::Node::Element`
+- **Arguments**: same as [`find`][find].
 
-- **Example**:
+- **Returns**: the sibling element
+
+- **Examples**:
   ```ruby
-  # TODO: Example
+  list_item.sibling('li', text: 'Pending')
+  ```
+  ```ruby
+  def next_menu
+    sibling(:menu, below: self)
+  end
   ```
 
 ## Modals
@@ -1521,14 +1550,14 @@ Finds an element in the [current context] based on the given arguments that is a
 Executes the block, accepting an alert that is opened while it executes.
 
 - **Arguments**:
-  -  `{String | Regexp} text (optional)`: text that the modal should contain
+  -  `text {String | Regexp} (optional)`: text that the modal should contain
 
 ### **accept_confirm**
 
 Executes the block, accepting a confirmation dialog that is opened while it executes.
 
 - **Arguments**:
-  -  `{String | Regexp} text (optional)`: text that the modal should contain
+  -  `text {String | Regexp} (optional)`: text that the modal should contain
 
 - **Example**:
   ```ruby
@@ -1542,9 +1571,10 @@ Executes the block, accepting a confirmation dialog that is opened while it exec
 Executes the block, accepting a prompt, and optionally responding to it.
 
 - **Arguments**:
-  -  `{String | Regexp} text (optional)`: text that the prompt should contain
-  - __Options__:
-      - `{String} :with (optional)`: input for the prompt
+  -  `text {String | Regexp} (optional)`: text that the prompt should contain
+
+  __Options__:
+      - `:with {String} (optional)`: input for the prompt
 
 ### **dismiss_confirm**
 
@@ -1588,13 +1618,36 @@ Path helpers can be easily [made available to test helpers](https://github.com/E
 
 ## Page
 
+### **have_current_path**
+
+[Asserts] that the page has the given path.
+
+- When passing a full url it will compare against the full url
+- When passing a path only the path and query portion will be compared
+- When passing a regexp, it will depend on the `:url` option
+
+- **Arguments**: `path {String | Regexp}`: the expected path
+
+  __Options__:
+  - `:url {Boolean}`: whether to compare to the current url or just the path
+  - `:ignore_query {Boolean}`: whether to ignore the query portion, defaults to `false`
+  - `:wait {Numeric}`: how much time to wait for the current url to match
+- **Returns**: `self`
+
+- **Example**:
+  ```ruby
+  current_page.should.have_current_path('/cities', wait: 10)
+  current_page.should_not.have_current_path('https://example.com', ignore_query: true)
+  ```
+
 ### **have_title**
 [Asserts][api_assertions] if the page has the given title.
 
 - **Arguments**:
-  - `{String | Regexp} title`: string or regex that the title should match
-  - __Options__:
-    - `{Boolean} :exact`: defaults to `false`, whether the provided string should be an exact match or just a substring
+  - `title {String | Regexp}`: string or regex that the title should match
+
+  __Options__:
+    - `:exact {Boolean}`: defaults to `false`, whether the provided string should be an exact match or just a substring
 
 - **Example**:
   ```ruby
@@ -1606,9 +1659,10 @@ Path helpers can be easily [made available to test helpers](https://github.com/E
 [Checks][api_matchers] if the page has the given title.
 
 - **Arguments**:
-  - `{String | Regexp} title`: string or regex that the title should match
-  - __Options__:
-    - `{Boolean} :exact`: defaults to `false`, whether the provided string should be an exact match or just a substring
+  - `title {String | Regexp}`: string or regex that the title should match
+
+  __Options__:
+    - `:exact {Boolean}`: defaults to `false`, whether the provided string should be an exact match or just a substring
 
 - **Returns**: `Boolean`
 
@@ -1796,28 +1850,28 @@ Use as a escape hatch to interact with content outside a previous `within` call,
 Executes the given block within the specific fieldset.
 
 - **Arguments**:
-  -  `{String} locator`: id or legend of the fieldset
+  -  `locator {String}`: id or legend of the fieldset
 
 ### **within_frame**
 
 Executes the given block within the given iframe.
 
 - **Arguments**:
-  -  `{String} frame`: frame, id, name, or index of the frame
+  -  `frame {String}`: frame, id, name, or index of the frame
 
 ### **within_table**
 
 Executes the given block within the a specific table.
 
 - **Arguments**:
-  -  `{String} locator`: id or caption of the table
+  -  `locator {String}`: id or caption of the table
 
 ### **within_window**
 
 Switches to the given window, executes the given block within that window, and then switches back to the original window.
 
 - **Arguments**:
-  -  `{Capybara::Window | Proc } window`: window to switch to
+  -  `window {Capybara::Window | Proc }`: window to switch to
 
   When passing a proc, it will be invoked once per existing window, choosing the first window where the `proc` returns true.
 
@@ -1870,8 +1924,8 @@ Learn more about it [in the documentation][capybara_synchronize].
 You should rarely need to use this directly, check `synchronize_expectation` instead.
 
 - **Options**:
-  -  `{Array} :errors`: exception classes that should be retried
-  -  `{Numeric} :wait`: amount of seconds to retry the block before it succeeds or times out
+  -  `:errors {Array}`: exception classes that should be retried
+  -  `:wait {Numeric}`: amount of seconds to retry the block before it succeeds or times out
 
 - **Example**:
   ```ruby
@@ -1889,8 +1943,8 @@ Allows to automatically retry [expectations][expectations] until they succeed or
 It will automatically [reload][synchronization] the [current context] on each retry.
 
 - **Options**:
-  -  `{Array} :retry_on_errors`: additional exception classes that should be retried
-  -  `{Numeric} :wait`: amount of seconds to retry the block before it succeeds or times out
+  -  `:retry_on_errors {Array}`: additional exception classes that should be retried
+  -  `:wait {Numeric}`: amount of seconds to retry the block before it succeeds or times out
 
 - **Example**:
   ```ruby
@@ -1908,7 +1962,7 @@ Changes the [default maximum wait time][synchronization] for all commands that a
 Useful for changing the timeout for commands that do not take a `:wait` keyword argument.
 
 - **Arguments**:
-  -  `{Numeric} seconds`: the default maximum wait time for retried commands
+  -  `seconds {Numeric}`: the default maximum wait time for retried commands
 
 - **Example**:
   ```ruby
@@ -1945,7 +1999,7 @@ Waits for a window to become closed.
 
 Opens a new window, __without__ switching to it.
 
-- **Arguments**: `{Symbol} kind` defaults to `:tab`
+- **Arguments**: `kind {Symbol}` defaults to `:tab`
 
 - **Returns**: `Capybara::Window` a new window or tab
 
@@ -1975,7 +2029,7 @@ Captures a window that is opened while executing the given block.
 
 More reliable than using `windows.last`, as it will wait for the window to be opened.
 
-- **Options**: `{Numeric} :wait`: seconds to wait a new window to be opened
+- **Options**: `:wait {Numeric}`: seconds to wait a new window to be opened
 
 - **Returns**: `Capybara::Window` opened in the block
 

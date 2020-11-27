@@ -73,6 +73,7 @@ Locates `a` elements with an `href` attribute.
 - **Filters**:
   - `:title {String}`: matches the title attribute
   - `:alt {String}`: matches the alt attribute of a contained img element
+  - `:download {Boolean | String}`: matchers the download attribute
   - `:href {String | Regexp | nil | false}`: matches the normalized href of the link
     - `nil` will find elements with no `href` attribute
     - `false` ignores whether the `href` is present
