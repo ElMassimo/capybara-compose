@@ -778,7 +778,7 @@ Check the [guide][Assertions] for a quick tour.
 
 To use an assertion, call [`should`][should] or [`should_not`][should_not], and then chain the assertion.
 
-Negated versions are available, such as `have_no_selector` and `not_match_selector`, but are omitted for brevity.
+Negated versions are available, such as `have_no_selector` and `not_match_selector`, but are omitted for brevity as they work exactly the same as using [`should_not`](should_not) with a positive assertion.
 
 ::: tip
 [Injected][composition] test helpers will preserve the _[assertion state]_ of the current helper.
@@ -824,27 +824,26 @@ You may specify a [locator alias][aliases] or use any [capybara selector][select
 
 [Asserts] that the [current context] contains a button with the given selector.
 
-- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
+- **Arguments**: same as [`find_all`][all], see the [`:button` selector](/api/selectors#button) for usage
 
 - **Returns**: `self`
 
 - **Example**:
   ```ruby
-  # TODO: Example
+  form.should.have_button(type: 'submit', disabled: true)
   ```
-
 
 ### **have_checked_field**
 
-[Asserts] that the [current context] contains a checked field with the given selector.
+[Asserts] that the [current context] contains a radio button or checkbox with the given selector, that is currently checked.
 
-- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
+- **Arguments**: same as [`find_all`][all], see the [`:field` selector](/api/selectors#field) for usage
 
 - **Returns**: `self`
 
 - **Example**:
   ```ruby
-  # TODO: Example
+  form.should.have_checked_field('Terms and Conditions')
   ```
 
 ### **have_content**
@@ -856,56 +855,52 @@ Alias for [`have_text`][have_text].
 
 [Asserts] that the [current context] contains an element with the given CSS selector.
 
-- **Arguments**: `(css, **options, &optional_filter_block)`
+- **Arguments**: same as [`find_all`][all], see the [`:css` selector](/api/selectors#css) for usage
 
 - **Returns**: `self`
 
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
 
 ### **have_field**
 
-[Asserts] for form fields.
+[Asserts] that the [current context] contains a form field with the given selector.
 
-- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
+- **Arguments**: same as [`find_all`][all], see the [`:field` selector](/api/selectors#field) for usage
 
 - **Returns**: `self`
 
 - **Example**:
   ```ruby
-  # TODO: Example
+  form.should.have_field('First Name').should_not.have_field('Last Name')
   ```
-
 
 ### **have_link**
 
-[Asserts] for links.
+[Asserts] that the [current context] contains a link with the given selector.
 
-- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
+- **Arguments**: same as [`find_all`][all], see the [`:link` selector](/api/selectors#link) for usage
 
 - **Returns**: `self`
 
 - **Example**:
   ```ruby
-  # TODO: Example
+  current_page.should.have_link('Go to Checkout', href: '#checkout')
   ```
-
 
 ### **have_select**
 
 [Asserts] for select elements.
 
-- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
+- **Arguments**: same as [`find_all`][all], see the [`:select` selector](/api/selectors#select) for usage
 
 - **Returns**: `self`
 
 - **Example**:
   ```ruby
-  # TODO: Example
+  form.should_not.have_select('Language', selected: 'German')
+  form.should.have_select('Language', selected: ['English', 'German'])
+  form.should.have_select('Language', options: ['English', 'German', 'Spanish'])
+  form.should.have_select('Language', with_options: ['English', 'German'])
   ```
-
 
 ### **have_selector**
 
@@ -1096,6 +1091,8 @@ It will wait until none of the elements are found, until [timeout][synchronizati
 
 
 ## Debugging
+
+Check out the [guide](/guide/advanced/debugging) for additional information.
 
 The following methods are useful when debugging test failures.
 
