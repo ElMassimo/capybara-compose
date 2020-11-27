@@ -11,7 +11,7 @@
 
 In order to prevent race conditions and avoid flaky tests, it's important that any expectations that depend on **asynchronous** outcomes are **retried**.
 
-Most Capybara methods will automatically [retry][async] until they succeed or a certain [timeout][using_wait_time] ellapses.
+Most capybara methods will automatically [retry][async] until they succeed or a certain [timeout][using_wait_time] ellapses.
 
 All [finders], [assertions], [matchers], and some [actions] allow passing a `:wait` keyword to specify how many seconds it should be retried before failing or returning control.
 
@@ -35,7 +35,7 @@ Elements will be automatically reloaded by Capybara as the block is retried, so 
 
 ```ruby
 def be_checked
-  synchronize_expectation { expect(checked?).to_or not_to, eq(true) }
+  synchronize_expectation(wait: 3) { expect(checked?).to_or not_to, eq(true) }
 end
 ```
 
@@ -44,8 +44,9 @@ Using strict settings will prevent flaky tests and save you time in the long run
 
 ```ruby
 Capybara.configure do |config|
-  config.match = :smart
+  config.default_max_wait_time = 2
   config.exact = true
+  config.match = :smart
   config.ignore_hidden_elements = true
 end
 ```

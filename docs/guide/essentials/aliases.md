@@ -59,9 +59,9 @@ form.error_summary(text: "Can't be blank")
 form.find('#error_explanation', visible: true, text: "Can't be blank")
 ```
 
-## Capybara Selectors
+## Using Selectors in Aliases
 
-All [selectors][capybara selectors] defined in Capybara can be used in the aliases, including any custom ones you define.
+All [capybara selectors] can be used in the aliases, including any custom ones you define.
 
 You can omit the selector when using the default one, which is [usually `css`](https://github.com/teamcapybara/capybara#xpath-css-and-selectors).
 

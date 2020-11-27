@@ -35,7 +35,7 @@ protected
   #
   # By default Capybara's methods like `find` and `have_css` already use
   # synchronize to achieve asynchronicity, so it's not necessary to use this.
-  def synchronize(wait: Capybara.default_max_wait_time == 0 ? Capybara.default_max_wait_time : 3, **options, &block)
+  def synchronize(wait: Capybara.default_max_wait_time, **options, &block)
     (current_element? ? current_context : page.document).synchronize(wait, **options, &block)
   end
 end

@@ -78,8 +78,9 @@
         "global": true,
         "default_value": "Selectors"
       },
-      "lvl1": ".content h2",
-      "lvl2": ".content ul li code",
+      "lvl1": ".content h1",
+      "lvl2": ".content h2",
+      "lvl3": ".content ul li code",
       "text": ".content p, .content li",
       "lang": {
         "selector": "/html/@lang",

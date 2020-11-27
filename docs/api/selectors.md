@@ -1,15 +1,16 @@
 ---
 sidebar: auto
 ---
+[capybara]: https://github.com/teamcapybara/capybara
 [capybara selectors]: https://www.rubydoc.info/github/teamcapybara/capybara/Capybara/Selector
 [api_finders]: /api/#finders
 [api_actions]: /api/#actions
 [filters]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/spec/support/global_filters.rb#L10-L19
 [test_id]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/spec/support/global_filters.rb#L6-L8
 
-# Selectors
+# Capybara Selectors
 
-Selectors are common strategies to locate elements in the page, provided by Capybara.
+Selectors are common strategies to locate elements in the page, provided by [capybara].
 
 They are typically used when using [finders][api_finders], and certain [actions][api_actions].
 

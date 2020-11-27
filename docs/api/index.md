@@ -89,9 +89,9 @@ have been extended to support [locator aliases][aliases].
 Some methods can receive a `:wait` option, which determines how long an interaction will be [retried][async] before failing. For the actions that don't, it can still be configured with [`using_wait_time`][using_wait_time].
 
 
-## Class DSL
+## Test Helper Class
 
-The following methods are available at the class scope in any `Capybara::TestHelper` subclass.
+The following methods are available at the class scope in `Capybara::TestHelper` subclasses.
 
 ### **aliases**
 
@@ -163,7 +163,7 @@ Read the [composition] guide for a quick overview.
 - **Example**:
 
   ```ruby
-  class CitiesTestHelper < BaseTestHelper
+  class CitiesTestHelper < Capybara::TestHelper
     use_test_helpers(:form, :table)
 
     aliases(
@@ -181,9 +181,9 @@ Read the [composition] guide for a quick overview.
   ```
 
 
-## Test Helper
+## Test Helper Instance
 
-The following instance methods are available in `Capybara::TestHelper` subclasses.
+The following instance methods are available in `Capybara::TestHelper` instances.
 
 ### **not_to**
 
@@ -293,172 +293,6 @@ When passing a test helper, it will wrap its [current element].
   end
   ```
 
-## Element
-
-The following methods are always performed on the [current element].
-
-### **[]**
-
-Retrieves the given HTML attribute of the [current element].
-
-- **Arguments**:
-  - `{String | Symbol} attribute` the name of the HTML attribute
-
-- **Returns**: `String` value of the attribute
-
-- **Examples**:
-  ```ruby
-  input[:value]
-  ```
-  ```ruby
-  # Public: Returns the HTML id of the element.
-  def id
-    self[:id]
-  end
-  ```
-
-### **checked?**
-
-Whether or not the [current element] is checked.
-
-- **Returns**: `Boolean`
-
-- **Example**:
-  ```ruby
-  checkbox.checked?
-  ```
-
-### **disabled?**
-
-Whether or not the [current element] is disabled.
-
-- **Returns**: `Boolean`
-
-- **Example**:
-  ```ruby
-  form.name_input.disabled?
-  ```
-
-### **multiple?**
-
-Whether or not the [current element] supports multiple results.
-
-- **Returns**: `Boolean`
-
-- **Example**:
-  ```ruby
-  def can_select_many?
-    select_input.multiple?
-  end
-  ```
-
-### **native**
-
-The native element from the driver, this allows access to driver-specific methods.
-
-- **Returns**: `Object`
-
-### **obscured?**
-
-Whether the [current element] is not currently in the viewport or it (or descendants) would not be considered clickable at the elements center point.
-
-- **Returns**: `Boolean`
-
-### **path**
-
-An XPath expression describing where on the page the element can be found.
-
-- **Returns**:  `String`
-
-### **readonly?**
-
-Whether the [current element] is read-only.
-
-- **Returns**: `Boolean`
-
-- **Example**:
-  ```ruby
-  def optional_type_in(text)
-    input.set(text) unless input.readonly?
-  end
-  ```
-
-### **rect**
-
-Returns size and position information for the [current element].
-
-- **Returns**: `Struct { x, y, height, width }`
-
-
-### **selected?**
-
-Whether or not the [current element] is selected.
-
-- **Returns**: `Boolean`
-
-- **Example**:
-  ```ruby
-  option.selected?
-  ```
-
-### **tag_name**
-
-The tag name of the [current element].
-
-- **Returns**: `String`
-
-- **Example**:
-  ```ruby
-  users.click_link('Add User').tag_name == 'a'
-  ```
-
-### **text**
-
-Retrieves the text of the [current element].
-
-- **Arguments**: `{ :all | :visible } type`: defaults to `:visible` text
-
-- **Returns**: `String`
-
-- **Example**:
-  ```ruby
-  find_link('Home').text == 'Home'
-  find_link('Hidden', visible: false).text(:all) == 'Hidden'
-  ```
-
-  ::: tip
-  Use [`have_text`][have_text] instead when making assertions, or pass `:text` or `:exact_text` to [finders][api_finders] to restrict the results.
-  :::
-
-### **value**
-
-Retrieves the value of the [current element].
-
-- **Returns**: `{ String | Array<String> }`
-
-- **Example**:
-  ```ruby
-  city_input.value == 'Montevideo'
-  languages_input.value == ['English', 'Spanish']
-  ```
-  ::: tip
-  Use [`have_value`][have_value] instead when making assertions, or pass `:with` to [`find_field`][find_field].
-  :::
-
-### **visible?**
-
-Whether or not the [current element] is visible.
-
-- **Returns**: `Boolean`
-
-- **Example**:
-  ```ruby
-  find_link('Sign in with SSO', visible: :all).visible?
-  ```
-
-  ::: tip
-  Prefer to pass `:visible` to the [finders], or [create an assertion][synchronize_expectation].
-  :::
 
 ## Actions
 
@@ -925,8 +759,6 @@ one option.
 
 ### **unselect_option**
 
-Unselect this node if it is an option element inside a multiple select tag.
-
 Unselects the [current element] if it is an option inside a multiple select tag.
 
 Used implicitly when calling [`unselect`][unselect], which should be preferred.
@@ -954,7 +786,7 @@ Negated versions are available, such as `have_no_selector` and `not_match_select
 
 [Asserts] that the [current context] contains an element with the given selector.
 
-You may specify a [locator alias][aliases] or use any [selector][selectors].
+You may specify a [locator alias][aliases] or use any [capybara selector][selectors].
 
 - **Arguments**: same as [`find_all`][all]
 
@@ -983,8 +815,6 @@ RSpec matcher for whether ancestor element(s) matching a given selector exist.
   ```ruby
   # TODO: Example
   ```
-
-
 
 ### **have_button**
 
@@ -1276,6 +1106,228 @@ It will wait until none of the elements are found, until [timeout][synchronizati
   form.should.have_none_of_selectors(:css, '.error', '.warning')
   ```
 
+
+## Debugging
+
+The following methods are useful when debugging test failures.
+
+### **flash**
+
+Toggles the [current element] background color between white and black for a period of time.
+
+### **inspect_node**
+
+Inspects the `Capybara::Node::Element` element the test helper is wrapping.
+
+### **save_and_open_page**
+
+Saves a snapshot of the page and open it in a browser for inspection. Requires [`launchy`][launchy].
+
+
+- **Arguments**: `{String} path (optional)`: the path to where it should be saved
+
+### **save_and_open_screenshot**
+
+Save a screenshot of the page and open it for inspection. Requires [`launchy`][launchy].
+
+- **Arguments**: `{String} path (optional)`: the path to where it should be saved
+
+- **Returns**: `{String} path`: the path to which the file was saved
+
+- **Example**:
+  ```ruby
+  def have_city(name)
+    # Take a screenshot before the assertion runs.
+    save_and_open_screenshot('have_city.png')
+    have_content(name)
+  end
+  ```
+
+### **save_page**
+
+Saves a snapshot of the page.
+
+- **Arguments**: `{String} path (optional)`: the path to where it should be saved
+
+- **Returns**: `{String} path`: the path to which the file was saved
+
+### **save_screenshot**
+
+Saves a screenshot of the page.
+
+- **Arguments**: `{String} path (optional)`: the path to where it should be saved
+
+- **Returns**: `{String} path`: the path to which the file was saved
+
+
+## Element
+
+The following methods are always performed on the [current element].
+
+### **[]**
+
+Retrieves the given HTML attribute of the [current element].
+
+- **Arguments**:
+  - `{String | Symbol} attribute` the name of the HTML attribute
+
+- **Returns**: `String` value of the attribute
+
+- **Examples**:
+  ```ruby
+  input[:value]
+  ```
+  ```ruby
+  # Public: Returns the HTML id of the element.
+  def id
+    self[:id]
+  end
+  ```
+
+### **checked?**
+
+Whether or not the [current element] is checked.
+
+- **Returns**: `Boolean`
+
+- **Example**:
+  ```ruby
+  checkbox.checked?
+  ```
+
+### **disabled?**
+
+Whether or not the [current element] is disabled.
+
+- **Returns**: `Boolean`
+
+- **Example**:
+  ```ruby
+  form.name_input.disabled?
+  ```
+
+### **multiple?**
+
+Whether or not the [current element] supports multiple results.
+
+- **Returns**: `Boolean`
+
+- **Example**:
+  ```ruby
+  def can_select_many?
+    select_input.multiple?
+  end
+  ```
+
+### **native**
+
+The native element from the driver, this allows access to driver-specific methods.
+
+- **Returns**: `Object`
+
+### **obscured?**
+
+Whether the [current element] is not currently in the viewport or it (or descendants) would not be considered clickable at the elements center point.
+
+- **Returns**: `Boolean`
+
+### **path**
+
+An XPath expression describing where on the page the element can be found.
+
+- **Returns**:  `String`
+
+### **readonly?**
+
+Whether the [current element] is read-only.
+
+- **Returns**: `Boolean`
+
+- **Example**:
+  ```ruby
+  def optional_type_in(text)
+    input.set(text) unless input.readonly?
+  end
+  ```
+
+### **rect**
+
+Returns size and position information for the [current element].
+
+- **Returns**: `Struct { x, y, height, width }`
+
+
+### **selected?**
+
+Whether or not the [current element] is selected.
+
+- **Returns**: `Boolean`
+
+- **Example**:
+  ```ruby
+  option.selected?
+  ```
+
+### **tag_name**
+
+The tag name of the [current element].
+
+- **Returns**: `String`
+
+- **Example**:
+  ```ruby
+  users.click_link('Add User').tag_name == 'a'
+  ```
+
+### **text**
+
+Retrieves the text of the [current element].
+
+- **Arguments**: `{ :all | :visible } type`: defaults to `:visible` text
+
+- **Returns**: `String`
+
+- **Example**:
+  ```ruby
+  find_link('Home').text == 'Home'
+  find_link('Hidden', visible: false).text(:all) == 'Hidden'
+  ```
+
+  ::: tip
+  Use [`have_text`][have_text] instead when making assertions, or pass `:text` or `:exact_text` to [finders][api_finders] to restrict the results.
+  :::
+
+### **value**
+
+Retrieves the value of the [current element].
+
+- **Returns**: `{ String | Array<String> }`
+
+- **Example**:
+  ```ruby
+  city_input.value == 'Montevideo'
+  languages_input.value == ['English', 'Spanish']
+  ```
+  ::: tip
+  Use [`have_value`][have_value] instead when making assertions, or pass `:with` to [`find_field`][find_field].
+  :::
+
+### **visible?**
+
+Whether or not the [current element] is visible.
+
+- **Returns**: `Boolean`
+
+- **Example**:
+  ```ruby
+  find_link('Sign in with SSO', visible: :all).visible?
+  ```
+
+  ::: tip
+  Prefer to pass `:visible` to the [finders], or [create an assertion][synchronize_expectation].
+  :::
+
+
 ## Finders
 
 Check the [guide][Finders] for a quick tour.
@@ -1294,8 +1346,7 @@ Finds all elements in the [current context] that match the given selector and op
 
 Also available as `find_all`.
 
-- **Arguments**:
-  - `locator`: a [locator alias][aliases], or a [capybara selector][selectors].
+- **Arguments**: a [locator alias][aliases], or a [capybara selector][selectors].
 
   **Options**: same as [`find`][find], plus:
     - `{Integer} :count`: of matching elements that should exist
@@ -1319,7 +1370,7 @@ Also available as `find_all`.
   ```
   ```ruby
   def unselect_all_items
-    all(:selected_option).each(&:click)
+    all(:selected_option, wait: false).each(&:click)
   end
   ```
   ```ruby
@@ -1338,21 +1389,20 @@ Finds an element that matches the given arguments and is an ancestor of the [cur
 
 - **Examples**:
   ```ruby
+  list_item.ancestor('ul', text: 'Pending')
+  ```
+  ```ruby
   def group_with_name(group)
     find(:group_name, text: group).ancestor(:group)
   end
-  ```
-  ```ruby
-  list_item.ancestor('ul', text: 'Pending')
   ```
 
 ### **find**
 Finds an element in the [current context] based on the given arguments.
 
-- **Arguments**:
-  - `locator`: a [locator alias][aliases], or a [capybara selector][selectors].
+- **Arguments**: a [locator alias][aliases], or a [capybara selector][selectors].
 
-  **Options**: any filters in the specified [selector][selectors], plus:
+  **Options**: any filters in the specified (or default) [selector][selectors], plus:
 
   - `{String | Regexp} text`: only elements which contain or match this text
   - `{String | Boolean} exact_text`: only elements that exactly match this text
@@ -1376,7 +1426,7 @@ Finds an element in the [current context] based on the given arguments.
   table.find('tr', match: :first).find('td', text: 'Bond')
   ```
   ```ruby
-  form.find(:first_name_input, disabled: true)
+  form.find(:first_name_input, disabled: true, wait: 5)
   ```
   ```ruby
   container.find(:xpath, '../..')
@@ -1464,154 +1514,117 @@ Finds an element in the [current context] based on the given arguments that is a
   # TODO: Example
   ```
 
-## Scoping
+## Modals
 
-Check the [guide][scoping] for a quick tour.
+### **accept_alert**
 
-### **within**
-
-Executes the given block within the context of the specified element.
-
-For the duration of the block, any command to Capybara will be scoped to the given element.
-
-::: tip
-When called without parameters the block will be scoped to the [current element].
-:::
-
-- **Arguments**: Same as [`find`][find], can also handle [aliases].
-
-- **Returns**: `Object`: The return value of the block.
-
-- **Examples**:
-  ```ruby
-  dropdown.within { click_link('Open') }
-  ```
-  ```ruby
-  users.find_user('Kim').within { click_link('Edit') }
-  ```
-  ```ruby
-  def add_user(first_name:)
-    click_link('Add User')
-
-    within('.new-user-modal') {
-      fill_in 'First Name', with: first_name
-      click_button 'Save'
-    }
-  end
-  ```
-
-### **within_document**
-
-Unscopes the inner block from any previous `within` calls.
-
-For the duration of the block, any command to Capybara will be scoped to the entire `page`.
-
-::: tip
-Use as a escape hatch to interact with content outside a previous `within` call, such as modals.
-:::
-
-### **within_fieldset**
-
-Executes the given block within the specific fieldset.
+Executes the block, accepting an alert that is opened while it executes.
 
 - **Arguments**:
-  -  `{String} locator`: id or legend of the fieldset
+  -  `{String | Regexp} text (optional)`: text that the modal should contain
 
-### **within_frame**
+### **accept_confirm**
 
-Executes the given block within the given iframe.
-
-- **Arguments**:
-  -  `{String} frame`: frame, id, name, or index of the frame
-
-### **within_table**
-
-Executes the given block within the a specific table.
+Executes the block, accepting a confirmation dialog that is opened while it executes.
 
 - **Arguments**:
-  -  `{String} locator`: id or caption of the table
-
-### **within_window**
-
-Switches to the given window, executes the given block within that window, and then switches back to the original window.
-
-- **Arguments**:
-  -  `{Capybara::Window | Proc } window`: window to switch to
-
-  When passing a proc, it will be invoked once per existing window, choosing the first window where the `proc` returns true.
-
-- **Examples**:
-  ```ruby
-  checkout = window_opened_by { click_button('Checkout') }
-  within_window(checkout) { click_on('Confirm Purchase') }
-  ```
-  ```ruby
-  within_window(->{ page.title == 'New User' }) do
-    click_button 'Submit'
-  end
-  ```
-
-## Synchronization
-
-Check the [guide][Synchronization] for a quick tour.
-
-### **synchronize**
-
-This method is Capybara's primary way to deal with asynchronicity.
-
-Learn more about it [in the documentation][capybara_synchronize].
-
-You should rarely need to use this directly, check `synchronize_expectation` instead.
-
-- **Options**:
-  -  `{Array} :errors`: exception classes that should be retried
-  -  `{Numeric} :wait`: amount of seconds to retry the block before it succeeds or times out
+  -  `{String | Regexp} text (optional)`: text that the modal should contain
 
 - **Example**:
   ```ruby
-  def have_created_user(name)
-    synchronize(wait: 3, errors: [ActiveRecord::RecordNotFound]) {
-      User.find_by(name: name)
-    }
+  def delete(city)
+    accept_confirm { row_for(city).click_on('Destroy') }
   end
   ```
 
-### **synchronize_expectation**
+### **accept_prompt**
 
-Allows to automatically retry [expectations][expectations] until they succeed or the [time out][synchronization] ellapses.
-
-It will automatically [reload][synchronization] the [current context] on each retry.
-
-- **Options**:
-  -  `{Array} :retry_on_errors`: additional exception classes that should be retried
-  -  `{Numeric} :wait`: amount of seconds to retry the block before it succeeds or times out
-
-- **Example**:
-  ```ruby
-  def be_visible
-    synchronize_expectation(wait: 2) {
-      expect(visible?).to_or not_to, eq(true)
-    }
-  end
-  ```
-
-### **using_wait_time**
-
-Changes the [default maximum wait time][synchronization] for all commands that are executed inside the block.
-
-Useful for changing the timeout for commands that do not take a `:wait` keyword argument.
+Executes the block, accepting a prompt, and optionally responding to it.
 
 - **Arguments**:
-  -  `{Numeric} seconds`: the default maximum wait time for retried commands
+  -  `{String | Regexp} text (optional)`: text that the prompt should contain
+  - __Options__:
+      - `{String} :with (optional)`: input for the prompt
+
+### **dismiss_confirm**
+
+Like `accept_confirm`, but dismisses the confirmation dialog instead.
+
+### **dismiss_prompt**
+
+Like `accept_prompt`, but dismisses the prompt instead.
+
+
+## Navigation
+
+### **go_back**
+
+Moves back a single entry in the browser's history.
+
+### **go_forward**
+
+Moves forward a single entry in the browser's history.
+
+### **refresh**
+
+Refreshes the current page.
+
+### **visit**
+
+Navigates to the given URL, which can either be relative or absolute.
+
+Path helpers can be easily [made available to test helpers](https://github.com/ElMassimo/capybara_test_helpers/blob/819ad283ba32468fbc67a4d45c929f4efac5a464/examples/rails_app/test_helpers/navigation_test_helper.rb#L25-L43).
+
+- **Arguments**:
+  - `visit_uri`: The URL to navigate to. The parameter will be cast to a `String`.
 
 - **Example**:
+
   ```ruby
-  def wait_and_hover
-    using_wait_time(10) { hover }
+  def visit_page
+    visit cities_path
   end
   ```
 
-## Matchers
+## Page
+
+### **have_title**
+[Asserts][api_assertions] if the page has the given title.
+
+- **Arguments**:
+  - `{String | Regexp} title`: string or regex that the title should match
+  - __Options__:
+    - `{Boolean} :exact`: defaults to `false`, whether the provided string should be an exact match or just a substring
+
+- **Example**:
+  ```ruby
+  current_page.should.have_title('Capybara Test Helpers', exact: false)
+  ```
+
+### **has_title?**
+
+[Checks][api_matchers] if the page has the given title.
+
+- **Arguments**:
+  - `{String | Regexp} title`: string or regex that the title should match
+  - __Options__:
+    - `{Boolean} :exact`: defaults to `false`, whether the provided string should be an exact match or just a substring
+
+- **Returns**: `Boolean`
+
+- **Example**:
+  ```ruby
+  current_page.has_title?('Capybara Test Helpers', wait: false)
+  ```
+
+### **page.html**
+- **Returns**: `String` snapshot of the DOM of the current document
+
+### **page.title**
+- **Returns**: `String` title of the document
+
+
+## Querying
 
 Check the [guide][Matchers] for a quick tour.
 
@@ -1732,173 +1745,180 @@ Have in mind that matchers have some [caveats][matcher caveats], so prefer [asse
 - **Returns**: `Boolean`
 
 
-## Modals
+## Scoping
 
-### **accept_alert**
+Check the [guide][scoping] for a quick tour.
 
-Executes the block, accepting an alert that is opened while it executes.
+### **within**
 
-- **Arguments**:
-  -  `{String | Regexp} text (optional)`: text that the modal should contain
+Executes the given block within the context of the specified element.
 
-### **accept_confirm**
+For the duration of the block, any command to Capybara will be scoped to the given element.
 
-Executes the block, accepting a confirmation dialog that is opened while it executes.
+::: tip
+When called without parameters the block will be scoped to the [current element].
+:::
 
-- **Arguments**:
-  -  `{String | Regexp} text (optional)`: text that the modal should contain
+- **Arguments**: Same as [`find`][find], can also handle [aliases].
 
-- **Example**:
+- **Returns**: `Object`: The return value of the block.
+
+- **Examples**:
   ```ruby
-  def delete(city)
-    accept_confirm { row_for(city).click_on('Destroy') }
+  dropdown.within { click_link('Open') }
+  ```
+  ```ruby
+  users.find_user('Kim').within { click_link('Edit') }
+  ```
+  ```ruby
+  def add_user(first_name:)
+    click_link('Add User')
+
+    within('.new-user-modal') {
+      fill_in 'First Name', with: first_name
+      click_button 'Save'
+    }
   end
   ```
 
-### **accept_prompt**
+### **within_document**
 
-Executes the block, accepting a prompt, and optionally responding to it.
+Unscopes the inner block from any previous `within` calls.
 
-- **Arguments**:
-  -  `{String | Regexp} text (optional)`: text that the prompt should contain
-  - __Options__:
-      - `{String} :with (optional)`: input for the prompt
+For the duration of the block, any command to Capybara will be scoped to the entire `page`.
 
-### **dismiss_confirm**
+::: tip
+Use as a escape hatch to interact with content outside a previous `within` call, such as modals.
+:::
 
-Like `accept_confirm`, but dismisses the confirmation dialog instead.
+### **within_fieldset**
 
-### **dismiss_prompt**
-
-Like `accept_prompt`, but dismisses the prompt instead.
-
-
-## Navigation
-
-### **go_back**
-
-Moves back a single entry in the browser's history.
-
-### **go_forward**
-
-Moves forward a single entry in the browser's history.
-
-### **refresh**
-
-Refreshes the current page.
-
-### **visit**
-
-Navigates to the given URL, which can either be relative or absolute.
-
-Path helpers can be easily [made available to test helpers](https://github.com/ElMassimo/capybara_test_helpers/blob/819ad283ba32468fbc67a4d45c929f4efac5a464/examples/rails_app/test_helpers/navigation_test_helper.rb#L25-L43).
+Executes the given block within the specific fieldset.
 
 - **Arguments**:
-  - `visit_uri`: The URL to navigate to. The parameter will be cast to a `String`.
+  -  `{String} locator`: id or legend of the fieldset
 
-- **Example**:
+### **within_frame**
 
+Executes the given block within the given iframe.
+
+- **Arguments**:
+  -  `{String} frame`: frame, id, name, or index of the frame
+
+### **within_table**
+
+Executes the given block within the a specific table.
+
+- **Arguments**:
+  -  `{String} locator`: id or caption of the table
+
+### **within_window**
+
+Switches to the given window, executes the given block within that window, and then switches back to the original window.
+
+- **Arguments**:
+  -  `{Capybara::Window | Proc } window`: window to switch to
+
+  When passing a proc, it will be invoked once per existing window, choosing the first window where the `proc` returns true.
+
+- **Examples**:
   ```ruby
-  def visit_page
-    visit cities_path
+  checkout = window_opened_by { click_button('Checkout') }
+  within_window(checkout) { click_on('Confirm Purchase') }
+  ```
+  ```ruby
+  within_window(->{ page.title == 'New User' }) do
+    click_button 'Submit'
   end
   ```
 
-## Debugging
+## Server
 
-### **flash**
+### **server_url**
+- **Returns**: `String` url of the current server, including protocol and port
 
-Toggles the [current element] background color between white and black for a period of time.
+### **status_code**
+- **Returns**: `Integer` for the current HTTP status code
 
-### **inspect_node**
+### **response_headers**
+- **Returns**: `Hash<String, String>` of response headers
 
-Inspects the `Capybara::Node::Element` element the test helper is wrapping.
+## Session
 
-### **save_and_open_page**
+### **current_host**
 
-Saves a snapshot of the page and open it in a browser for inspection. Requires [`launchy`][launchy].
+- **Returns**: `String` host of the current page
 
+### **current_path**
 
-- **Arguments**:
-  - `{String} path (optional)`: the path to where it should be saved
+- **Returns**: `String` path of the current page, without any domain information
 
-### **save_and_open_screenshot**
+### **current_url**
 
-Save a screenshot of the page and open it for inspection. Requires [`launchy`][launchy].
+- **Returns**: `String` fully qualified URL of the current page.
 
-- **Arguments**:
-  - `{String} path (optional)`: the path to where it should be saved
+## Synchronization
 
-- **Returns**:
-  - `{String} path`: the path to which the file was saved
+Check the [guide][Synchronization] for a quick tour.
+
+### **synchronize**
+
+This method is Capybara's primary way to deal with asynchronicity.
+
+Learn more about it [in the documentation][capybara_synchronize].
+
+You should rarely need to use this directly, check `synchronize_expectation` instead.
+
+- **Options**:
+  -  `{Array} :errors`: exception classes that should be retried
+  -  `{Numeric} :wait`: amount of seconds to retry the block before it succeeds or times out
 
 - **Example**:
   ```ruby
-  def have_city(name)
-    # Take a screenshot before the assertion runs.
-    save_and_open_screenshot('have_city.png')
-    have_content(name)
+  def have_created_user(name)
+    synchronize(wait: 3, errors: [ActiveRecord::RecordNotFound]) {
+      User.find_by(name: name)
+    }
   end
   ```
 
-### **save_page**
+### **synchronize_expectation**
 
-Saves a snapshot of the page.
+Allows to automatically retry [expectations][expectations] until they succeed or the [time out][synchronization] ellapses.
 
-- **Arguments**:
-  - `{String} path (optional)`: the path to where it should be saved
+It will automatically [reload][synchronization] the [current context] on each retry.
 
-- **Returns**:
-  - `{String} path`: the path to which the file was saved
-
-### **save_screenshot**
-
-Saves a screenshot of the page.
-
-- **Arguments**:
-  - `{String} path (optional)`: the path to where it should be saved
-
-- **Returns**:
-  - `{String} path`: the path to which the file was saved
-
-## Page
-
-### **have_title**
-[Asserts][api_assertions] if the page has the given title.
-
-- **Arguments**:
-  - `{String | Regexp} title`: string or regex that the title should match
-  - __Options__:
-    - `{Boolean} :exact`: defaults to `false`, whether the provided string should be an exact match or just a substring
+- **Options**:
+  -  `{Array} :retry_on_errors`: additional exception classes that should be retried
+  -  `{Numeric} :wait`: amount of seconds to retry the block before it succeeds or times out
 
 - **Example**:
   ```ruby
-  current_page.should.have_title('Capybara Test Helpers', exact: false)
+  def be_visible
+    synchronize_expectation(wait: 2) {
+      expect(visible?).to_or not_to, eq(true)
+    }
+  end
   ```
 
-### **has_title?**
+### **using_wait_time**
 
-[Checks][api_matchers] if the page has the given title.
+Changes the [default maximum wait time][synchronization] for all commands that are executed inside the block.
+
+Useful for changing the timeout for commands that do not take a `:wait` keyword argument.
 
 - **Arguments**:
-  - `{String | Regexp} title`: string or regex that the title should match
-  - __Options__:
-    - `{Boolean} :exact`: defaults to `false`, whether the provided string should be an exact match or just a substring
-
-- **Returns**: `Boolean`
+  -  `{Numeric} seconds`: the default maximum wait time for retried commands
 
 - **Example**:
   ```ruby
-  current_page.has_title?('Capybara Test Helpers', wait: false)
+  # Hovers even if it takes 10 seconds for the element to become interactable.
+  def wait_and_hover
+    using_wait_time(10) { hover }
+  end
   ```
 
-### **page.html**
-- **Returns**: `String` snapshot of the DOM of the current document
-
-### **page.title**
-- **Returns**: `String` title of the document
-
-## Window
+## Windows
 
 ### **become_closed**
 
@@ -1969,28 +1989,3 @@ More reliable than using `windows.last`, as it will wait for the window to be op
 All the windows that are currently open. The order depends on the driver, don't rely on it.
 
  - **Returns**: `Array<Capybara::Window>`
-
-## Server
-
-### **server_url**
-- **Returns**: `String` url of the current server, including protocol and port
-
-### **status_code**
-- **Returns**: `Integer` for the current HTTP status code
-
-### **response_headers**
-- **Returns**: `Hash<String, String>` of response headers
-
-## Session
-
-### **current_host**
-
-- **Returns**: `String` host of the current page
-
-### **current_path**
-
-- **Returns**: `String` path of the current page, without any domain information
-
-### **current_url**
-
-- **Returns**: `String` fully qualified URL of the current page.
