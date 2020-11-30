@@ -217,7 +217,7 @@ Also available as `should_still`, `should_now`, `and`, `and_instead`, `and_also`
 
 - **Examples**:
   ```ruby
-  users.should.have_content('Jim')
+  users.should.have_content('Jane')
   ```
   ```ruby
   Then(/^there should( not)? be an? "(.+?)" city$/) do |or_should_not, name|
@@ -233,7 +233,7 @@ Also available as `should_still_not`, `should_no_longer`, `nor`, `and_not`.
 
 - **Examples**:
   ```ruby
-  users.should_not.have_content('Jim')
+  users.should_not.have_content('Jane')
   ```
 
 ### **test_context**
@@ -850,6 +850,10 @@ You may specify a [locator alias][aliases] or use any [capybara selector][select
 
 Alias for [`have_text`][have_text].
 
+- **Example**:
+  ```ruby
+  current_page.should.have_content('have', between: 130..150)
+  ```
 
 ### **have_css**
 
@@ -859,6 +863,10 @@ Alias for [`have_text`][have_text].
 
 - **Returns**: `self`
 
+- **Example**:
+  ```ruby
+  current_page.should.have_css('#main .container')
+  ```
 
 ### **have_field**
 
@@ -870,7 +878,7 @@ Alias for [`have_text`][have_text].
 
 - **Example**:
   ```ruby
-  form.should.have_field('First Name').should_not.have_field('Last Name')
+  form.should.have_field('First Name').and_not.have_field('Last Name')
   ```
 
 ### **have_link**
@@ -888,7 +896,7 @@ Alias for [`have_text`][have_text].
 
 ### **have_select**
 
-[Asserts] for select elements.
+[Asserts] that the [current context] contains a select field with the given selector.
 
 - **Arguments**: same as [`find_all`][all], see the [`:select` selector](/api/selectors#select) for usage
 
@@ -896,152 +904,163 @@ Alias for [`have_text`][have_text].
 
 - **Example**:
   ```ruby
-  form.should_not.have_select('Language', selected: 'German')
-  form.should.have_select('Language', selected: ['English', 'German'])
-  form.should.have_select('Language', options: ['English', 'German', 'Spanish'])
-  form.should.have_select('Language', with_options: ['English', 'German'])
+  form.should.have_select('Language', selected: ['English', 'Spanish'])
   ```
 
 ### **have_selector**
 
 Alias for [`have`][have].
 
+- **Example**:
+  ```ruby
+  form.should.have_selector(:button, 'Save')
+  ```
 
 ### **have_sibling**
 
-[Asserts] whether sibling element(s) matching a given selector exist.
+[Asserts] that the [current element] has a sibling with the given selector.
 
-- **Arguments**: `(*args, **kw_args, &optional_filter_block)`
+- **Arguments**: same as [`sibling`][sibling]
 
 - **Returns**: `self`
 
 - **Example**:
   ```ruby
-  # TODO: Example
+  list_item.should.have_sibling('li', text: 'Pending')
   ```
-
 
 ### **have_table**
 
-[Asserts] for table elements.
+[Asserts] that the [current context] contains a table field with the given selector.
 
-- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
+- **Arguments**: same as [`find_all`][all], see the [`:table` selector](/api/selectors#table) for usage
 
 - **Returns**: `self`
 
 - **Example**:
   ```ruby
-  # TODO: Example
+  users.should.have_table(caption: 'Users')
   ```
-
 
 ### **have_text**
 
-[Asserts] for text content.
+[Asserts] that the [current element] has the given text content, ignoring HTML tags.
 
-- **Arguments**: `(text_or_type, *args, **options)`
+- **Arguments**:
+  - `type { :all | :visible } (optional)`: whether to check for only visible or all text
+  - `text {String | Regexp}`: the expected text
 
-- **Returns**: `Object (also: #have_content)`
-
-- **Example**:
-  ```ruby
-  # TODO: Example
-  ```
-
-
-### **have_unchecked_field**
-
-[Asserts] for unchecked fields.
-
-- **Arguments**: `(locator = nil, **options, &optional_filter_block)`
+  __Options__: same options as [`find_all`][all], plus:
+    - `:exact {Boolean}`: defaults to `false`, whether the provided string should be an exact match or just a substring
 
 - **Returns**: `self`
 
 - **Example**:
   ```ruby
-  # TODO: Example
+  lorem_ipsum
+    .should.have_text('Lorem').and_also.have_text('ipsum')
+    .should.have_text('Lorem ipsum dolor', exact: true)
+  ```
+  ```ruby
+  lorem_ipsum.should.have_text(:all, /dolor/, between: 2..6)
+  ```
+
+### **have_unchecked_field**
+
+[Asserts] that the [current context] contains a radio button or checkbox with the given selector, that is currently unchecked.
+
+- **Arguments**: same as [`find_all`][all], see the [`:field` selector](/api/selectors#field) for usage
+
+- **Returns**: `self`
+
+- **Example**:
+  ```ruby
+  form.should.have_unchecked_field('Terms and Conditions')
   ```
 
 ### **have_value**
 
-[Asserts] whether the value of the [current element] matches the provided value.
+[Asserts] that the value of the [current element] matches the provided value.
 
-- **Arguments**: `(*args, **kw_args, &optional_filter_block)`
+- **Arguments**:
+  - `value { String | Array<String> }`: the expected value
 
 - **Returns**: `self`
 
 - **Example**:
   ```ruby
-  # TODO: Example
+  form.find_field('Address').should.have_value('Oceanside Resort', wait: 5)
+  form.find_field('Languages').should.have_value(['Spanish', 'English'])
   ```
 
 ### **have_xpath**
 
-[Asserts] whether elements(s) matching a given xpath selector exist.
+[Asserts] that the [current context] contains an element with the given XPath selector.
 
-- **Arguments**: `(xpath, **options, &optional_filter_block)`
+- **Arguments**: same as [`find_all`][all], see the [`:xpath` selector](/api/selectors#xpath) for usage
 
 - **Returns**: `self`
 
 - **Example**:
   ```ruby
-  # TODO: Example
+  current_page.should.have_xpath('.//table/tr')
   ```
 
 
 ### **match_css**
 
-[Asserts] whether the current element matches a given css selector.
+[Asserts] that the [current element] matches a given CSS selector.
 
-- **Arguments**: `(css, **options, &optional_filter_block)`
+- **Arguments**: same as [`find`][find], see the [`:css` selector](/api/selectors#css) for usage
 
 - **Returns**: `self`
 
 - **Example**:
   ```ruby
-  # TODO: Example
+  form.find_select('Languages').should.match_css(':disabled')
   ```
-
 
 ### **match_selector**
 
-[Asserts] whether the current element matches a given selector.
+[Asserts] that the [current element] matches a given selector.
 
-- **Arguments**: `(*args, **kw_args, &optional_filter_block)`
+You may specify a [locator alias][aliases] or use any [capybara selector][selectors].
+
+- **Arguments**: same as [`find`][find]
 
 - **Returns**: `self`
 
-- **Example**:
+- **Examples**:
   ```ruby
-  # TODO: Example
+  form_page.submit_button.should.match_selector(:button, label: 'Submit')
   ```
-
 
 ### **match_style**
 
-[Asserts] for element style.
+[Asserts] that the [current element] matches the specified CSS styles.
 
-- **Arguments**: `(styles = nil, **options)`
+- **Arguments**:
+  - `styles {Hash}`: the expected styles
 
 - **Returns**: `self`
 
 - **Example**:
   ```ruby
-  # TODO: Example
+  icon.should.match_style(color: 'white', 'font-size': => /px/)
+  icon.hover.should.match_style({ color: 'red' }, wait: 2)
   ```
-
 
 ### **match_xpath**
 
-[Asserts] whether the current element matches a given xpath selector.
+[Asserts] that the [current element] matches a given XPath expression.
 
-- **Arguments**: `(xpath, **options, &optional_filter_block)`
+- **Arguments**: same as [`find`][find], see the [`:xpath` selector](/api/selectors#xpath) for usage
 
 - **Returns**: `self`
 
 - **Example**:
   ```ruby
-  # TODO: Example
+  form.find_select('Title').should.match_xpath('.//select[@id="form_title"]')
   ```
 
 ### **have_all_of_selectors**
@@ -1050,7 +1069,7 @@ Alias for [`have`][have].
 
 If using [aliases], you must explicitly provide a [selector][selectors] as the first argument.
 
-It will wait until all of the elements are found, until [timeout][synchronization].
+Waits until all of the elements are found, or [times out][synchronization].
 
 - **Returns**: `self`
 
@@ -1065,7 +1084,7 @@ It will wait until all of the elements are found, until [timeout][synchronizatio
 
 If using [aliases], you must explicitly provide a [selector][selectors] as the first argument.
 
-It will wait until one of the elements is found, until [timeout][synchronization].
+Waits until one of the elements is found, or [times out][synchronization].
 
 - **Returns**: `self`
 
@@ -1080,7 +1099,7 @@ It will wait until one of the elements is found, until [timeout][synchronization
 
 If using [aliases], you must explicitly provide a [selector][selectors] as the first argument.
 
-It will wait until none of the elements are found, until [timeout][synchronization].
+Waits until none of the elements are found, or [times out][synchronization].
 
 - **Returns**: `self`
 

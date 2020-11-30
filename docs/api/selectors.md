@@ -37,7 +37,7 @@ They can be used with any of the built-in selectors.
 
 Locates elements using a CSS selector.
 
-- **Locator**: a CSS selector.
+- **Locator**: a CSS selector
 
 - **Example**:
   ```ruby
@@ -158,7 +158,7 @@ Locates file `input` elements.
 
 - **Example**:
   ```ruby
-  all(:xpath, `.//option[@selected]`)
+  all(:xpath, './/option[@selected]')
   ```
 
 ## `:fillable_field`
@@ -357,7 +357,7 @@ Locates `option` elements.
 
 Locates `table` elements.
 
-- **Locator**: id, [test_id][test_id], or caption text of table
+- **Locator**: id, [test_id][test_id], or caption text of the table
 
 - **Filters**:
   - `:caption {String}`: match text of associated caption
@@ -391,9 +391,13 @@ Locates `tr` elements.
 
 Locates elements using an XPath expression.
 
-- **Locator**: an XPath expression. Example: `.//option[@selected]`
+- **Locator**: an XPath expression
 
-- **Example**:
+- **Examples**:
   ```ruby
-  all(:xpath, `.//option[@selected]`)
+  all(:xpath, './/option[@selected]')
+  ```
+  ```ruby
+  expression = XPath.generate { |x| x.descendant(:p) }
+  current_page.should.have_xpath(expression)
   ```

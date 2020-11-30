@@ -176,8 +176,13 @@ RSpec.feature 'node', test_helpers: [:html_page, :form_page, :js_page] do
     end
 
     it 'should extract disabled node' do
-      form_page.find(:xpath, '//input[@id="customer_name"]').should.be_disabled
-      form_page.find(:xpath, '//input[@id="customer_email"]').should_not.be_disabled
+      form_page.find(:xpath, '//input[@id="customer_name"]')
+        .should.be_disabled
+        .should.match_css(':disabled')
+
+      form_page.find(:xpath, '//input[@id="customer_email"]')
+        .should_not.be_disabled
+        .should_not.match_css(':disabled')
     end
 
     it 'should see disabled options as disabled' do

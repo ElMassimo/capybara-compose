@@ -62,8 +62,10 @@ RSpec.feature 'all', test_helpers: [:html_page, :js_page, :form_page] do
       expect { paras[0].text }.not_to raise_error
       html_page.refresh
       sleep 1 # Ensure page has started to reload
-      expect(paras[0]).to have_text('Lorem ipsum dolor')
-      expect(paras[1]).to have_text('Duis aute irure dolor')
+      paras[0].should.have_text('Lorem ipsum dolor').and_not.have_text('Lorem ipsum dolor', exact: true)
+      paras[1].should.have_text('Duis aute irure dolor').and_also.have_text(/dolor/)
+
+      html_page.should.have_text(:all, /dolor/, between: 2..4)
     end
 
     it 'should not reload if false', driver: :chrome_headless do
