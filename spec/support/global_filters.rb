@@ -15,5 +15,10 @@ Capybara::Selector.all.each_value do |selector|
     expression_filter(:qa) do |expression, value|
       builder(expression).add_attribute_conditions('data-qa': value)
     end
+    describe_expression_filters do |**options|
+      if (value = options[:qa])
+        " with data-qa #{ value.inspect }"
+      end
+    end
   end
 end
