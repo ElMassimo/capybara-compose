@@ -1,25 +1,15 @@
 [docs]: https://capybara-test-helpers.netlify.app/
+[guide]: https://capybara-test-helpers.netlify.app/guide/
 [api]: https://capybara-test-helpers.netlify.app/api/
 [design patterns]: https://capybara-test-helpers.netlify.app/guide/advanced/design-patterns
 [installation]: https://capybara-test-helpers.netlify.app/installation
 [capybara]: https://github.com/teamcapybara/capybara
 [cucumber]: https://github.com/cucumber/cucumber-ruby
+[current context]: https://capybara-test-helpers.netlify.app/guide/essentials/current-context
 [rspec]: https://github.com/rspec/rspec
-[rspec matchers]: https://relishapp.com/rspec/rspec-expectations/docs/built-in-matchers
-[rspec-rails]: https://github.com/rspec/rspec-rails#installation
-[trailing_commas]: https://maximomussini.com/posts/trailing-commas/
-[testing_robots]: https://jakewharton.com/testing-robots/
-[page_objects]: https://martinfowler.com/bliki/PageObject.html
-[rspec_injection]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/spec/system/cities_spec.rb#L7
-[rspec_global_injection]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/spec/system/support/default_test_helpers.rb#L8
-[cucumber_injection]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/features/step_definitions/city_steps.rb#L3
-[example app]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app
-[capybara_test_helpers_tests]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/spec
-[positive and negative assertions]: https://maximomussini.com/posts/cucumber-to_or_not_to/
-[should]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/lib/capybara_test_helpers/assertions.rb#L10-L15
-[should_not]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/lib/capybara_test_helpers/assertions.rb#L17-L22
-[rails_integration]: https://github.com/ElMassimo/capybara_test_helpers/commit/c512e39987215e30227dad45e775480bc1348325
-[cucumber_integration]: https://github.com/ElMassimo/capybara_test_helpers/commit/68e20cb40ba409c50f88f8b745eb908fb067a0aa
+[aliases]: https://capybara-test-helpers.netlify.app/guide/essentials/aliases
+[assertions]: https://capybara-test-helpers.netlify.app/guide/essentials/assertions
+[synchronization]: https://capybara-test-helpers.netlify.app/guide/advanced/synchronization
 
 <h1 align="center">
   Capybara Test Helpers
@@ -42,15 +32,21 @@
   </p>
 </h1>
 
-[__Capybara Test Helpers__](https://github.com/ElMassimo/capybara_test_helpers) is
-an opinionated library built on top of [capybara], that encourages good testing
-practices based on encapsulation and reuse.
+[__Capybara Test Helpers__](https://github.com/ElMassimo/capybara_test_helpers) allows you to easily encapsulate logic in your integration tests.
 
 Write tests that everyone can understand, and leverage your Ruby skills to keep them __easy to read and easy to change__.
 
+## Features ⚡️
+
+[Locator Aliases][aliases] work with every [Capybara] method, allowing you to encapsulate CSS selectors and labels, and avoid coupling tests with the implementation.
+
+The [entire Capybara DSL is available][api], and element results are [wrapped automatically][current context] so that you can chain your own assertions and actions fluently.
+
+A [powerful syntax for assertions][assertions] and convenient primitives for [synchronization] enable you to write async-aware expectations: say goodbye to flaky tests.
+
 ## Documentation 📖
 
-[Visit the documentation website][docs] to check out the guides, [API reference][api], and examples.
+Visit the [documentation website][docs] to check out the [guides][guide], searchable [__API reference__][api], and examples.
 
 ## Installation 💿
 
@@ -74,7 +70,7 @@ require 'capybara_test_helpers/cucumber'
 
 Additional installation instructions are available in the [documentation website][installation].
 
-## Quick Tour ⚡️
+## Quick Tour 🛣
 
 Let's say we have a list of cities, and we want to test the _Edit_ functionality using [Capybara].
 
@@ -121,7 +117,7 @@ Learn more about it in the [documentation website][docs].
 
 This library wouldn't be the same without early validation from my colleagues, and numerous improvements and bugfixes they contributed to it. Thanks for the support 😃
 
-- [capybara]: Solid library to write integration tests in Ruby.
+- [capybara]: Excellent library to write integration tests in Ruby.
 
 ## License
 

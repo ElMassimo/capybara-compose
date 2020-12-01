@@ -1,11 +1,12 @@
 [library]: https://github.com/ElMassimo/capybara_test_helpers
 [capybara]: https://github.com/teamcapybara/capybara
-[capybara dsl]: /api/
+[api]: /api/
 [testing_robots]: https://jakewharton.com/testing-robots/
 [cucumber]: https://github.com/cucumber/cucumber-ruby
 [rspec]: https://github.com/rspec/rspec
 [aliases]: /guide/essentials/aliases
 [assertions]: /guide/essentials/assertions
+[synchronization]: /guide/advanced/synchronization
 [injection]: /guide/essentials/injection
 [debugging]: /guide/advanced/debugging
 [testing_robots]: https://jakewharton.com/testing-robots/
@@ -13,22 +14,23 @@
 
 # Introduction
 
-[__Capybara Test Helpers__][library] is
-an opinionated library built on top of [capybara], that encourages good testing
-practices based on encapsulation and reuse.
+[__Capybara Test Helpers__][library] is a flexible testing library built on top of [capybara], that encourages good practices based on encapsulation and reuse.
 
 Write integration tests that everyone can understand, and leverage your Ruby skills to keep them __easy to read and easy to change__.
 
+[Get started](/guide/), or check the [API reference](/api/).
+
 ## Features ⚡️
 
-- Leverage your __Ruby__ skills for keeping tests in good shape
-- [__Aliases__][aliases] for element locators to avoid repetition
-- Powerful syntax for [__assertions__][assertions] (without monkey patching)
-- [__Composability__][injection]: implement a flow or interaction once, and [focus on the tests][testing_robots]
-- Full access to the __[Capybara DSL]__
-- [__Debugging__][debugging] and tracking performance is easier
+[Locator Aliases][aliases] work with every [Capybara] method, allowing you to encapsulate CSS selectors and labels, and avoid coupling tests with the implementation.
 
-[Get started](/guide/), or check the [API reference](/api/).
+The [entire Capybara DSL is available][api], and element results are [wrapped automatically](https://capybara-test-helpers.netlify.app/guide/essentials/current-context) so that you can chain your own assertions and actions fluently.
+
+A [powerful syntax for assertions](https://capybara-test-helpers.netlify.app/guide/essentials/assertions) and convenient primitives for [synchronization](https://capybara-test-helpers.netlify.app/guide/advanced/synchronization) enable you to write async-aware expectations: say goodbye to flaky tests.
+
+Conventions make it easier to provide [great debugging capabilities][debugging].
+
+Finally, since it's plain Ruby, you can leverage your existing skills to modularize code and keep tests in good shape.
 
 ## Why 🤔
 
