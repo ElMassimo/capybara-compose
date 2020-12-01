@@ -17,7 +17,7 @@ When [finders] and certain [actions] return an element, it will be [wrapped][wra
 ```ruby
 scenario 'edit user', test_helpers: [:users] do
   user = users.find(:table_row, { 'Name' => 'Kim' })
-  user.click_link('Edit')
+  user.click_to_edit # a method defined in UsersTestHelper
 end
 ```
 
