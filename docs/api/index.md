@@ -13,7 +13,7 @@ sidebar: auto
 [expectations]: /guide/essentials/assertions.html#using-the-assertion-state
 [assertion state]: /guide/essentials/assertions.html#understanding-the-assertion-state
 [matchers]: /guide/essentials/querying
-[api_matchers]: /api/#matchers
+[api_matchers]: /api/#querying
 [predicate]: /guide/essentials/querying
 [api_assertions]: /api/#assertions
 [api_finders]: /api/#finders

@@ -1,4 +1,4 @@
-[api]: /api/#matchers
+[api]: /api/#querying
 [retry]: /guide/advanced/synchronization
 [aliases]: /guide/essentials/aliases
 [actions]: /guide/essentials/actions
