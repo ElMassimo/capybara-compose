@@ -32,7 +32,7 @@ form.find(:save_button, visible: false)
 # Interacting with an element
 form.fill_in(:name_input, with: 'Jane')
 
-# Making an assertion
+# Making a query
 form.has_selector?(:error_summary, text: "Can't be blank")
 
 # Scoping interactions or assertions
