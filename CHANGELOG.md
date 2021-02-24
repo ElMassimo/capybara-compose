@@ -1,3 +1,7 @@
+## Capybara Compose 2.0.0 (2021-02-24) ##
+
+* Rebrand _Capybara Test Helpers_ as _Capybara Compose_, and emphasize how the advantage is in reusing modules shared by the community.
+
 ## Capybara Test Helpers 1.0.4 (2020-11-26) ##
 
 * Add `have_no` alias for `have_no_selector`.
@@ -7,7 +11,7 @@
 
 ## Capybara Test Helpers 1.0.3 (2020-11-24) ##
 
-* Add `CapybaraTestHelpers::BenchmarkHelpers`
+* Add `Capybara::Compose::BenchmarkHelpers`
 
 ## Capybara Test Helpers 1.0.2 (2020-11-23) ##
 

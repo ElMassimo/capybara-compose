@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'capybara/rspec'
 require 'active_support/core_ext/array/wrap'
 
 # Internal: Avoid warnings in assert_valid_keys for passing the `test_helper` option.
@@ -24,7 +23,7 @@ Capybara::Queries::SelectorQuery.prepend(Module.new {
 
     # Unwrap any test helpers that were provided to the :label selector, since
     # it's making an explicit check by class.
-    options[:for] = options[:for].to_capybara_node if options[:for].is_a?(CapybaraTestHelpers::TestHelper)
+    options[:for] = options[:for].to_capybara_node if options[:for].is_a?(Capybara::Compose::TestHelper)
 
     super(*args, **options, &filter_block)
   end
@@ -32,7 +31,7 @@ Capybara::Queries::SelectorQuery.prepend(Module.new {
 
 # Public: Adds aliasing for element selectors to make it easier to encapsulate
 # how to find a particular kind of element in the UI.
-module CapybaraTestHelpers::Selectors
+module Capybara::Compose::Selectors
   SELECTOR_SEPARATOR = ','
 
   def self.included(base)
@@ -76,7 +75,7 @@ module CapybaraTestHelpers::Selectors
           raise "A selector with the name #{ name.inspect } is already registered in Capybara," \
           " consider renaming the #{ name.inspect } alias in #{ self.class.name } to avoid confusion."
         end
-        if CapybaraTestHelpers::RESERVED_METHODS.include?(name)
+        if Capybara::Compose::RESERVED_METHODS.include?(name)
           raise "A method with the name #{ name.inspect } is part of the Capybara DSL," \
           " consider renaming the #{ name.inspect } alias in #{ self.class.name } to avoid confusion."
         end

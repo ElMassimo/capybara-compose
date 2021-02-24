@@ -1,10 +1,21 @@
 # frozen_string_literal: true
 
-require 'capybara/rspec'
+require 'capybara'
 
-# Internal: Configuration for Provides the basic functionality to create simple test helpers.
-module CapybaraTestHelpers
-  DEFAULTS = {
+require 'zeitwerk'
+loader = Zeitwerk::Loader.for_gem
+loader.tag = 'capybara-compose'
+loader.ignore(
+  File.expand_path("#{ __dir__ }/compose/rspec.rb"),
+  File.expand_path("#{ __dir__ }/compose/cucumber.rb"),
+  File.expand_path("#{ __dir__ }/compose/minitest.rb"),
+)
+loader.push_dir(__dir__, namespace: Capybara)
+loader.setup
+
+# Internal: Global configuration for the library.
+module Capybara::Compose
+  DEFAULT_CONFIGURATION = {
     helpers_paths: ['test_helpers'].freeze,
   }.freeze
 
@@ -34,9 +45,12 @@ module CapybaraTestHelpers
   # detect and move them to args if empty.
   METHODS_EXPECTING_A_HASH = %i[matches_style? has_style? match_style have_style].to_set.freeze
 
+  # Internal: Struct for configuration.
+  Config = Struct.new(*DEFAULT_CONFIGURATION.keys)
+
   # Public: Returns the current configuration for the test helpers.
   def self.config
-    @config ||= OpenStruct.new(DEFAULTS)
+    @config ||= Config.new(*DEFAULT_CONFIGURATION.values)
     yield @config if block_given?
     @config
   end
@@ -54,3 +68,7 @@ module CapybaraTestHelpers
     HELPER
   end
 end
+
+# NOTE: Simplify migration from Capybara Test Helpers.
+CapybaraTestHelpers = Capybara::Compose unless defined?(CapybaraTestHelpers)
+Capybara::TestHelper = Capybara::Compose::TestHelper unless defined?(Capybara::TestHelper)

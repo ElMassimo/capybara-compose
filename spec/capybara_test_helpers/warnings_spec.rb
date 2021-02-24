@@ -2,10 +2,10 @@
 
 RSpec.feature 'Development Warnings' do
   before do
-    CapybaraTestHelpers.config.helpers_paths = CapybaraTestHelpers::DEFAULTS[:helpers_paths]
+    Capybara::Compose.config.helpers_paths = Capybara::Compose::DEFAULT_CONFIGURATION[:helpers_paths]
   end
   after do
-    CapybaraTestHelpers.config.helpers_paths = CapybaraTestHelpers::DEFAULTS[:helpers_paths]
+    Capybara::Compose.config.helpers_paths = Capybara::Compose::DEFAULT_CONFIGURATION[:helpers_paths]
   end
 
   let(:html_page) { get_test_helper(:html_page) }
@@ -32,7 +32,7 @@ RSpec.feature 'Development Warnings' do
   end
 
   it 'warns when using Capybara selectors as locator aliases' do
-    CapybaraTestHelpers.config.helpers_paths += ['test_helpers_invalid']
+    Capybara::Compose.config.helpers_paths += ['test_helpers_invalid']
 
     expect { get_test_helper(:invalid_selectors) }
       .to raise_error(RuntimeError, /A selector with the name :button is already registered in Capybara/)

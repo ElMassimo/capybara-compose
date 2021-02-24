@@ -1,10 +1,10 @@
 [capybara]: https://github.com/teamcapybara/capybara
 [capybara dsl]: https://github.com/teamcapybara/capybara#the-dsl
-[rspec_injection]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/spec/system/cities_spec.rb#L7
-[rspec_global_injection]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/spec/system/support/default_test_helpers.rb#L8
-[cucumber_injection]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/features/step_definitions/city_steps.rb#L3
-[example app]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app
-[capybara_test_helpers_tests]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/spec
+[rspec_injection]: https://github.com/ElMassimo/capybara-compose/blob/master/examples/rails_app/spec/system/cities_spec.rb#L7
+[rspec_global_injection]: https://github.com/ElMassimo/capybara-compose/blob/master/examples/rails_app/spec/system/support/default_test_helpers.rb#L8
+[cucumber_injection]: https://github.com/ElMassimo/capybara-compose/blob/master/examples/rails_app/features/step_definitions/city_steps.rb#L3
+[example app]: https://github.com/ElMassimo/capybara-compose/blob/master/examples/rails_app
+[capybara-compose_tests]: https://github.com/ElMassimo/capybara-compose/blob/master/spec
 [rspec matchers]: https://relishapp.com/rspec/rspec-expectations/docs/built-in-matchers
 [actions]: /guide/essentials/actions
 [api]: /api/
@@ -103,6 +103,6 @@ end
 
 Although it might seem overkill for this small example, using a test helper brings the test a lot of clarity, making it easier to understand and to maintain in the future.
 
-The advantages of this approach become apparent when [several](https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/spec/system/cities_spec.rb) scenarios work with the same elements, or when the interactions are complex.
+The advantages of this approach become apparent when [several](https://github.com/ElMassimo/capybara-compose/blob/master/examples/rails_app/spec/system/cities_spec.rb) scenarios work with the same elements, or when the interactions are complex.
 
 [Read on][actions] to find out more about test helpers.

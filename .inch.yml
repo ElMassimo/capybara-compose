@@ -1,4 +1,4 @@
 files:
   # define files included in the analysis (defaults to ["{app,lib}/**/*.rb"])
   included:
-    - lib/capybara_test_helpers/**/*.rb
+    - lib/capybara/compose/**/*.rb

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'CapybaraTestHelpers in RSpec' do
+RSpec.describe 'Capybara::Compose in RSpec' do
   context 'Type: Other', type: :other do
     it 'should not include Capybara Test Helpers', helpers: [:navigation] do
       expect { navigation }.to raise_error(NameError)

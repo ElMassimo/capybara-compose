@@ -5,13 +5,13 @@
 
 In order to keep track of the interactions being performed in the test, it can be very convenient to print any test helper methods as they are executed, which can also help to detect slow paths.
 
-You can easily achieve this by adding `CapybaraTestHelpers::BenchmarkHelpers` to your `BaseTestHelper`:
+You can easily achieve this by adding `Capybara::Compose::BenchmarkHelpers` to your `BaseTestHelper`:
 
 ```ruby
-require 'capybara_test_helpers/benchmark_helpers' if ENV['CI']
+require 'capybara/compose/benchmark_helpers' if ENV['CI']
 
 class BaseTestHelper < Capybara::TestHelper
-  include CapybaraTestHelpers::BenchmarkHelpers if ENV['CI']
+  include Capybara::Compose::BenchmarkHelpers if ENV['CI']
 end
 ```
 

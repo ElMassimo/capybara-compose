@@ -1,5 +1,5 @@
 {
-  "name": "capybara_test_helpers",
+  "name": "capybara-compose",
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
@@ -12,8 +12,8 @@
     "vue": "^3.0.0"
   },
   "devDependencies": {
-    "@docsearch/css": "^1.0.0-alpha.27",
-    "@docsearch/js": "^1.0.0-alpha.27",
+    "@docsearch/css": "^1.0.0-alpha.28",
+    "@docsearch/js": "^1.0.0-alpha.28",
     "@typescript-eslint/eslint-plugin": "^4.8.1",
     "@typescript-eslint/parser": "^4.8.1",
     "@vue/eslint-config-standard": "^5.1.2",
@@ -24,7 +24,7 @@
     "eslint-plugin-vue": "^7.1.0",
     "typescript": "^4.0.5",
     "massimopress": "0.7.5-rc3",
-    "vitepress": "^0.7.4",
+    "vitepress": "^0.11.4",
     "vue": "^3.0.2"
   }
 }

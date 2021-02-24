@@ -1,8 +1,8 @@
-[rspec_injection]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/spec/system/cities_spec.rb#L7
-[rspec_global_injection]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/spec/system/support/default_test_helpers.rb#L8
-[cucumber_injection]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app/features/step_definitions/city_steps.rb#L3
-[example app]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/examples/rails_app
-[capybara_test_helpers_tests]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/spec
+[rspec_injection]: https://github.com/ElMassimo/capybara-compose/blob/master/examples/rails_app/spec/system/cities_spec.rb#L7
+[rspec_global_injection]: https://github.com/ElMassimo/capybara-compose/blob/master/examples/rails_app/spec/system/support/default_test_helpers.rb#L8
+[cucumber_injection]: https://github.com/ElMassimo/capybara-compose/blob/master/examples/rails_app/features/step_definitions/city_steps.rb#L3
+[example app]: https://github.com/ElMassimo/capybara-compose/blob/master/examples/rails_app
+[capybara-compose_tests]: https://github.com/ElMassimo/capybara-compose/blob/master/spec
 [rspec matchers]: https://relishapp.com/rspec/rspec-expectations/docs/built-in-matchers
 [composition]: /guide/advanced/composition
 [use_test_helpers]: /api/#use-test-helpers
@@ -85,7 +85,7 @@ Test helpers should be located in a `test_helpers` folder at the root of your pr
 You may configure a different location by configuring `helpers_paths`:
 
 ```ruby
-CapybaraTestHelpers.config.helpers_paths = ['my_integration_test_helpers']
+Capybara::Compose.config.helpers_paths = ['my_integration_test_helpers']
 ```
 
 ## Generating Test Helpers

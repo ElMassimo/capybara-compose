@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in capybara_test_helpers.gemspec
+# Specify your gem's dependencies in capybara-compose.gemspec
 gemspec
 
 gem 'rake', '~> 12.0'

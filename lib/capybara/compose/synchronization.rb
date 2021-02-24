@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Internal: Provides helper functions to perform asynchronous assertions.
-module CapybaraTestHelpers::Synchronization
+module Capybara::Compose::Synchronization
   # Internal: Necessary because the RSpec exception is not a StandardError and
   # thus capybara does not rescue it, so it wouldn't attempt to retry it.
   class ExpectationError < StandardError; end

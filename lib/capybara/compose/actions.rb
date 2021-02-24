@@ -6,7 +6,7 @@ private
 
   # Override: To ensure test helpers are sent to the driver as native elements.
   def driver_args(args)
-    super(args.map { |arg| arg.is_a?(CapybaraTestHelpers::TestHelper) ? arg.to_capybara_node : arg })
+    super(args.map { |arg| arg.is_a?(Capybara::Compose::TestHelper) ? arg.to_capybara_node : arg })
   end
 })
 
@@ -14,14 +14,14 @@ private
 Capybara::Node::Element.prepend(Module.new {
   # Override: Unwrap capybara test helpers into a node.
   def scroll_to(pos_or_x_or_el, *args, **kwargs)
-    pos_or_x_or_el = pos_or_x_or_el.to_capybara_node if pos_or_x_or_el.is_a?(CapybaraTestHelpers::TestHelper)
+    pos_or_x_or_el = pos_or_x_or_el.to_capybara_node if pos_or_x_or_el.is_a?(Capybara::Compose::TestHelper)
     super
   end
 })
 
 # Internal: Wraps Capybara actions to enable locator aliases, and to wrap the
 # result with a test helper so that methods can be chained in a fluent style.
-module CapybaraTestHelpers::Actions
+module Capybara::Compose::Actions
   delegate(
     :==,  # Allows to make comparisons more transparent.
     :===, # Allows to ensure case statements inside Capybara work as expected.
@@ -60,7 +60,7 @@ module CapybaraTestHelpers::Actions
     execute_script
     scroll_to
   ].each do |method_name|
-    CapybaraTestHelpers.define_helper_method(self, method_name, return_self: true, inject_test_helper: false)
+    Capybara::Compose.define_helper_method(self, method_name, return_self: true, inject_test_helper: false)
   end
 
   %i[
@@ -78,7 +78,7 @@ module CapybaraTestHelpers::Actions
     trigger
     unselect_option
   ].each do |method_name|
-    CapybaraTestHelpers.define_helper_method(self, method_name, target: :to_capybara_node, return_self: true, inject_test_helper: false)
+    Capybara::Compose.define_helper_method(self, method_name, target: :to_capybara_node, return_self: true, inject_test_helper: false)
   end
 
   %i[
@@ -94,7 +94,7 @@ module CapybaraTestHelpers::Actions
     select
     unselect
   ].each do |method_name|
-    CapybaraTestHelpers.define_helper_method(self, method_name, wrap: true)
+    Capybara::Compose.define_helper_method(self, method_name, wrap: true)
   end
 
   # Public: Sets the value for the input, or presses the specified keys, one at a time.

@@ -10,7 +10,7 @@ ENV['RACK_ENV'] ||= 'test'
 require 'cucumber/rails'
 
 # Make test helpers available in feature files.
-require 'capybara_test_helpers/cucumber'
+require 'capybara/compose/cucumber'
 require Rails.root.join('test_helpers/base_test_helper')
 
 ActionController::Base.allow_rescue = false

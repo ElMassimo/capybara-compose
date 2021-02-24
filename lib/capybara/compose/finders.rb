@@ -2,7 +2,7 @@
 
 # Internal: Wraps Capybara finders to be aware of the selector aliases, and to
 # auto-wrap the returned elements with test helpers.
-module CapybaraTestHelpers::Finders
+module Capybara::Compose::Finders
   %i[
     find
     find_all
@@ -14,7 +14,7 @@ module CapybaraTestHelpers::Finders
     ancestor
     sibling
   ].each do |method_name|
-    CapybaraTestHelpers.define_helper_method(self, method_name, wrap: true)
+    Capybara::Compose.define_helper_method(self, method_name, wrap: true)
   end
 
   # Public: Returns all the Capybara nodes that match the specified selector.

@@ -4,13 +4,13 @@
 ENV['RACK_ENV'] ||= 'development'
 
 require 'bundler/setup'
-require 'capybara_test_helpers'
+require 'capybara-compose'
 require 'pry-byebug'
 
 $LOAD_PATH.unshift Pathname.new(__dir__).join('../spec')
 
 # rubocop:disable Style/MixinUsage
-include(CapybaraTestHelpers::DependencyInjection)
+include(Capybara::Compose::DependencyInjection)
 # rubocop:enable Style/MixinUsage
 
 require File.expand_path('test_helpers/base_test_helper.rb')

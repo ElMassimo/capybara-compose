@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'capybara_test_helpers'
+require 'capybara/compose'
 require 'capybara/rspec'
 
 # Public: Use in an RSpec describe block or in an included module to make
@@ -16,7 +16,7 @@ RSpec.configure do |config|
   types = %i[feature system view]
 
   # Options that will register a test helper for the test to use.
-  keys = %i[capybara_test_helpers test_helpers helpers]
+  keys = %i[capybara/compose test_helpers helpers]
 
   # Inject test helpers by using a :helpers or :test_helpers option.
   inject_test_helpers = proc { |example|
@@ -27,7 +27,7 @@ RSpec.configure do |config|
 
   # Allow injecting test helpers in a feature or scenario.
   types.each do |type|
-    config.include(CapybaraTestHelpers::DependencyInjection, type: type)
+    config.include(Capybara::Compose::DependencyInjection, type: type)
     config.before(:each, type: type, &inject_test_helpers)
   end
 end

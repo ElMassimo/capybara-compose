@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe CapybaraTestHelpers::Selectors, type: :feature do
+RSpec.describe Capybara::Compose::Selectors, type: :feature do
   let(:test_helper) { Capybara::TestHelper.new(self) }
   let(:element) { page }
   let(:selectors) {
@@ -41,7 +41,7 @@ RSpec.describe CapybaraTestHelpers::Selectors, type: :feature do
 
     it 'throws an error if the selector does not exist' do
       expect { test_helper.send(:locator_for, :random) }
-        .to raise_error(NotImplementedError, /A selector in CapybaraTestHelpers::TestHelper is not defined/)
+        .to raise_error(NotImplementedError, /A selector in Capybara::Compose::TestHelper is not defined/)
     end
 
     it 'lets invalid structures go through and fail in Capybara' do

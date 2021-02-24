@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'capybara_test_helpers'
+require 'capybara/compose'
 
-World(CapybaraTestHelpers::DependencyInjection)
+World(Capybara::Compose::DependencyInjection)
 
 # Public: Use outside of the steps to make it available on all steps.
 def use_test_helpers(*names)

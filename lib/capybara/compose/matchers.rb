@@ -2,7 +2,7 @@
 
 # Internal: Wraps Capybara matchers to enable locator aliases, and to wrap the
 # result with a test helper so that methods can be chained in a fluent style.
-module CapybaraTestHelpers::Matchers
+module Capybara::Compose::Matchers
   %i[
     has_selector?
     has_no_selector?
@@ -29,7 +29,7 @@ module CapybaraTestHelpers::Matchers
     has_title?
     has_no_title?
   ].each do |method_name|
-    CapybaraTestHelpers.define_helper_method(self, method_name)
+    Capybara::Compose.define_helper_method(self, method_name)
   end
 
   %i[
@@ -50,7 +50,7 @@ module CapybaraTestHelpers::Matchers
     matches_style?
     has_style?
   ].each do |method_name|
-    CapybaraTestHelpers.define_helper_method(self, method_name, target: :to_capybara_node)
+    Capybara::Compose.define_helper_method(self, method_name, target: :to_capybara_node)
   end
 
   %i[
@@ -60,7 +60,7 @@ module CapybaraTestHelpers::Matchers
     assert_any_of_selectors
     assert_no_selector
   ].each do |method_name|
-    CapybaraTestHelpers.define_helper_method(self, method_name)
+    Capybara::Compose.define_helper_method(self, method_name)
   end
 
   %i[
@@ -71,7 +71,7 @@ module CapybaraTestHelpers::Matchers
     assert_sibling
     assert_no_sibling
   ].each do |method_name|
-    CapybaraTestHelpers.define_helper_method(self, method_name, target: :to_capybara_node)
+    Capybara::Compose.define_helper_method(self, method_name, target: :to_capybara_node)
   end
 
   alias has? has_selector?

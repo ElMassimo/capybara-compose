@@ -34,7 +34,7 @@ sidebar: auto
 [launchy]: https://github.com/copiousfreetime/launchy
 [capybara api]: https://rubydoc.info/github/teamcapybara/capybara/master/Capybara/Session
 [current element]: /api/#to-capybara-node
-[capybara_node_code]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/lib/capybara_test_helpers/test_helper.rb#L56-L58
+[capybara_node_code]: https://github.com/ElMassimo/capybara-compose/blob/master/lib/capybara-compose/test_helper.rb#L56-L58
 [click]: /api/#click
 [async]: https://github.com/teamcapybara/capybara#asynchronous-javascript-ajax-and-friends
 [using_wait_time]: /api/#using-wait-time
@@ -78,8 +78,8 @@ sidebar: auto
 [have_any_of_selectors]: /api/#have-any-of-selectors
 [have_none_of_selectors]: /api/#have-none-of-selectors
 [matching strategy]: https://github.com/teamcapybara/capybara#strategy
-[filters]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/spec/support/global_filters.rb#L10-L19
-[test_id]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/spec/support/global_filters.rb#L6-L8
+[filters]: https://github.com/ElMassimo/capybara-compose/blob/master/spec/support/global_filters.rb#L10-L19
+[test_id]: https://github.com/ElMassimo/capybara-compose/blob/master/spec/support/global_filters.rb#L6-L8
 
 # API Reference
 
@@ -1619,7 +1619,7 @@ Refreshes the current page.
 
 Navigates to the given URL, which can either be relative or absolute.
 
-Path helpers can be easily [made available to test helpers](https://github.com/ElMassimo/capybara_test_helpers/blob/819ad283ba32468fbc67a4d45c929f4efac5a464/examples/rails_app/test_helpers/navigation_test_helper.rb#L25-L43).
+Path helpers can be easily [made available to test helpers](https://github.com/ElMassimo/capybara-compose/blob/819ad283ba32468fbc67a4d45c929f4efac5a464/examples/rails_app/test_helpers/navigation_test_helper.rb#L25-L43).
 
 - **Arguments**:
   - `visit_uri`: The URL to navigate to. The parameter will be cast to a `String`.

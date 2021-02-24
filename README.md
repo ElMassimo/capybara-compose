@@ -14,25 +14,25 @@
 <h1 align="center">
   Capybara Test Helpers
   <p align="center">
-    <a href="https://github.com/ElMassimo/capybara_test_helpers/actions">
-      <img alt="Build Status" src="https://github.com/ElMassimo/capybara_test_helpers/workflows/build/badge.svg"/>
+    <a href="https://github.com/ElMassimo/capybara-compose/actions">
+      <img alt="Build Status" src="https://github.com/ElMassimo/capybara-compose/workflows/build/badge.svg"/>
     </a>
-    <a href="https://codeclimate.com/github/ElMassimo/capybara_test_helpers">
-      <img alt="Maintainability" src="https://codeclimate.com/github/ElMassimo/capybara_test_helpers/badges/gpa.svg"/>
+    <a href="https://codeclimate.com/github/ElMassimo/capybara-compose">
+      <img alt="Maintainability" src="https://codeclimate.com/github/ElMassimo/capybara-compose/badges/gpa.svg"/>
     </a>
-    <a href="https://codeclimate.com/github/ElMassimo/capybara_test_helpers">
-      <img alt="Test Coverage" src="https://codeclimate.com/github/ElMassimo/capybara_test_helpers/badges/coverage.svg"/>
+    <a href="https://codeclimate.com/github/ElMassimo/capybara-compose">
+      <img alt="Test Coverage" src="https://codeclimate.com/github/ElMassimo/capybara-compose/badges/coverage.svg"/>
     </a>
-    <a href="https://rubygems.org/gems/capybara_test_helpers">
-      <img alt="Gem Version" src="https://img.shields.io/gem/v/capybara_test_helpers.svg?colorB=e9573f"/>
+    <a href="https://rubygems.org/gems/capybara-compose">
+      <img alt="Gem Version" src="https://img.shields.io/gem/v/capybara-compose.svg?colorB=e9573f"/>
     </a>
-    <a href="https://github.com/ElMassimo/capybara_test_helpers/blob/master/LICENSE.txt">
+    <a href="https://github.com/ElMassimo/capybara-compose/blob/main/LICENSE.txt">
       <img alt="License" src="https://img.shields.io/badge/license-MIT-428F7E.svg"/>
     </a>
   </p>
 </h1>
 
-[__Capybara Test Helpers__](https://github.com/ElMassimo/capybara_test_helpers) allows you to easily encapsulate logic in your integration tests.
+[__Capybara Test Helpers__](https://github.com/ElMassimo/capybara-compose) allows you to easily encapsulate logic in your integration tests.
 
 Write tests that everyone can understand, and leverage your Ruby skills to keep them __easy to read and easy to change__.
 
@@ -53,19 +53,19 @@ Visit the [documentation website][docs] to check out the [guides][guide], search
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'capybara_test_helpers'
+gem 'capybara/compose'
 ```
 
 To use with [RSpec], add the following to your `spec_helper.rb`:
 
 ```ruby
-require 'capybara_test_helpers/rspec'
+require 'capybara/compose/rspec'
 ```
 
 To use with [Cucumber], add the following to your `support/env.rb`:
 
 ```ruby
-require 'capybara_test_helpers/cucumber'
+require 'capybara/compose/cucumber'
 ```
 
 Additional installation instructions are available in the [documentation website][installation].

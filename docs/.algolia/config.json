@@ -1,5 +1,5 @@
 {
-  "index_name": "capybara_test_helpers",
+  "index_name": "capybara-compose",
   "start_urls": [
     {
       "url": "https://capybara-test-helpers.netlify.app/api/selectors.html",

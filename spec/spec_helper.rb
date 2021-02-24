@@ -17,7 +17,7 @@ require 'rspec/expectations'
 require 'capybara'
 require 'capybara/rspec'
 require 'capybara/spec/spec_helper'
-require 'capybara_test_helpers/rspec'
+require 'capybara/compose/rspec'
 
 Dir[File.expand_path('spec/support/**/*.rb')].sort.each { |f| require f }
 

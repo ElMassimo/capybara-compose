@@ -3,7 +3,7 @@
 [aliases]: /guide/essentials/aliases
 [actions]: /guide/essentials/actions
 [assertions]: /guide/essentials/assertions
-[to_capybara_node]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/lib/capybara_test_helpers/test_helper.rb#L56-L58
+[to_capybara_node]: https://github.com/ElMassimo/capybara-compose/blob/master/lib/capybara-compose/test_helper.rb#L56-L58
 [wait]: /api/#using-wait-time
 
 # Querying ❔

@@ -1,6 +1,6 @@
 [api]: /api/#actions
 [aliases]: /guide/essentials/aliases
-[to_capybara_node]: https://github.com/ElMassimo/capybara_test_helpers/blob/master/lib/capybara_test_helpers/test_helper.rb#L56-L58
+[to_capybara_node]: https://github.com/ElMassimo/capybara-compose/blob/master/lib/capybara-compose/test_helper.rb#L56-L58
 [wrap]: /api/#wrap-element
 
 # Actions 🖱⌨️

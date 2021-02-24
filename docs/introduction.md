@@ -1,4 +1,4 @@
-[library]: https://github.com/ElMassimo/capybara_test_helpers
+[library]: https://github.com/ElMassimo/capybara-compose
 [capybara]: https://github.com/teamcapybara/capybara
 [api]: /api/
 [testing_robots]: https://jakewharton.com/testing-robots/

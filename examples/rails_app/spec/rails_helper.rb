@@ -8,7 +8,7 @@ require File.expand_path('../config/environment', __dir__)
 require 'rspec/rails'
 
 # Make test helpers available in system specs.
-require 'capybara_test_helpers/rspec'
+require 'capybara/compose/rspec'
 require Rails.root.join('test_helpers/base_test_helper')
 
 Dir[Rails.root.join('spec/system/support/**/*.rb')].sort.each { |f| require f }

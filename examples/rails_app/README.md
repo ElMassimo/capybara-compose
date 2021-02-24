@@ -1,6 +1,6 @@
 [docs]: https://capybara-test-helpers.netlify.app/
 [api]: https://capybara-test-helpers.netlify.app/api/
-[library]: https://github.com/ElMassimo/capybara_test_helpers
+[library]: https://github.com/ElMassimo/capybara-compose
 
 # Capybara Test Helpers in Rails 🛤
 

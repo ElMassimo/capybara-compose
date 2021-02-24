@@ -8,7 +8,7 @@ require 'rainbow'
 
 # Public: Keeps track of the running time for user-defined helpers, useful as a
 # way to keep track of the executed methods, and to easily spot slow operations.
-module CapybaraTestHelpers::BenchmarkHelpers
+module Capybara::Compose::BenchmarkHelpers
   extend ActiveSupport::Concern
 
   included do

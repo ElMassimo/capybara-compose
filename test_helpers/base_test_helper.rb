@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'capybara_test_helpers/benchmark_helpers'
+require 'capybara/compose/benchmark_helpers'
 require 'pry-rescue/rspec' unless ENV['CI']
 
 # Public: Provides the basic functionality to create simple test helpers.
 class BaseTestHelper < Capybara::TestHelper
-  include CapybaraTestHelpers::BenchmarkHelpers
+  include Capybara::Compose::BenchmarkHelpers
 
   # Internal: These are used on most test helpers.
   use_test_helpers(:current_page, :navigation)

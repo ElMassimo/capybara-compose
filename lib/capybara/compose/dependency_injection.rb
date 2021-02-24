@@ -2,7 +2,7 @@
 
 # Internal: Provides dependency injection for RSpec and Cucumber, by using the
 # test helper name and a convention for naming and organizing helpers.
-module CapybaraTestHelpers::DependencyInjection
+module Capybara::Compose::DependencyInjection
   # Public: Returns an instance of a test helper that inherits BaseTestHelper.
   #
   # NOTE: Memoizes the test helper instances, keeping one per test helper class.
@@ -30,15 +30,15 @@ module CapybaraTestHelpers::DependencyInjection
 
   # Internal: Requires a test helper file.
   def require_test_helper(name)
-    CapybaraTestHelpers.config.helpers_paths.each do |path|
+    Capybara::Compose.config.helpers_paths.each do |path|
       require Pathname.new(File.expand_path(path)).join("#{ name }.rb").to_s
       return true # Don't check on the result, it could have been required earlier.
     rescue LoadError
       false
     end
-    raise LoadError, "No '#{ name }.rb' file found in #{ CapybaraTestHelpers.config.helpers_paths.inspect }. "\
-      'Check for typos, or make sure the dirs in `CapybaraTestHelpers.config.helpers_paths` are in the load path.'
+    raise LoadError, "No '#{ name }.rb' file found in #{ Capybara::Compose.config.helpers_paths.inspect }. "\
+      'Check for typos, or make sure the dirs in `Capybara::Compose.config.helpers_paths` are in the load path.'
   end
 end
 
-Capybara.extend(CapybaraTestHelpers::DependencyInjection)
+Capybara.extend(Capybara::Compose::DependencyInjection)

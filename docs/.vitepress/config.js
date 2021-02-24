@@ -21,8 +21,8 @@ const config = {
   head,
   // serviceWorker: true,
   themeConfig: {
-    repo: 'ElMassimo/capybara_test_helpers',
-    docsRepo: 'ElMassimo/capybara_test_helpers',
+    repo: 'ElMassimo/capybara-compose',
+    docsRepo: 'ElMassimo/capybara-compose',
     docsDir: 'docs',
     docsBranch: 'master',
     editLinks: true,
@@ -30,7 +30,7 @@ const config = {
     algolia: {
       appId: 'GERZE019PN',
       apiKey: 'cdb4a3df8ecf73fadf6bde873fc1b0d2',
-      indexName: 'capybara_test_helpers',
+      indexName: 'capybara-compose',
     },
 
     nav: [
@@ -45,7 +45,7 @@ const config = {
       {
         text: 'Changelog',
         link:
-          'https://github.com/ElMassimo/capybara_test_helpers/blob/master/CHANGELOG.md',
+          'https://github.com/ElMassimo/capybara-compose/blob/master/CHANGELOG.md',
       },
     ],
 

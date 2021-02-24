@@ -2,8 +2,8 @@
 [cucumber]: https://github.com/cucumber/cucumber-ruby
 [rspec]: https://github.com/rspec/rspec
 [rspec-rails]: https://github.com/rspec/rspec-rails#installation
-[rails_integration]: https://github.com/ElMassimo/capybara_test_helpers/commit/c512e39987215e30227dad45e775480bc1348325
-[cucumber_integration]: https://github.com/ElMassimo/capybara_test_helpers/commit/68e20cb40ba409c50f88f8b745eb908fb067a0aa
+[rails_integration]: https://github.com/ElMassimo/capybara-compose/commit/c512e39987215e30227dad45e775480bc1348325
+[cucumber_integration]: https://github.com/ElMassimo/capybara-compose/commit/68e20cb40ba409c50f88f8b745eb908fb067a0aa
 [using test helpers in Cucumber]: /guide/cucumber/
 [use test helpers in RSpec]: /guide/essentials/injection
 
@@ -12,7 +12,7 @@
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'capybara_test_helpers'
+gem 'capybara/compose'
 ```
 
 And then run:
@@ -24,7 +24,7 @@ And then run:
 To use with [RSpec], require the following in `spec_helper.rb`:
 
 ```ruby
-require 'capybara_test_helpers/rspec'
+require 'capybara/compose/rspec'
 ```
 
 Most of the examples in the guide will cover how to [use test helpers in RSpec].
@@ -38,7 +38,7 @@ it as well so that other test helpers can extend it without manually requiring.
 
 ```ruby
 # spec/rails_helper.rb
-require 'capybara_test_helpers/rspec'
+require 'capybara/compose/rspec'
 require Rails.root.join('test_helpers/base_test_helper')
 ```
 
@@ -49,7 +49,7 @@ require Rails.root.join('test_helpers/base_test_helper')
 To use with [Cucumber], require the following in `env.rb`:
 
 ```ruby
-require 'capybara_test_helpers/cucumber'
+require 'capybara/compose/cucumber'
 require Rails.root.join('test_helpers/base_test_helper')
 ```
 

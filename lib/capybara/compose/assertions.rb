@@ -1,10 +1,15 @@
 # frozen_string_literal: true
 
-require 'capybara_test_helpers/to_or_expectation_handler'
+# NOTE: Optional dependency to enable `to_or`.
+begin
+  require 'rspec/expectations'
+  RSpec::Expectations::ExpectationTarget.include(Capybara::Compose::ToOrExpectationHandler)
+rescue LoadError
+end
 
 # Internal: Wraps RSpec matchers to allow using them after calling `should` or
 # `should_not` to perform the assertion.
-module CapybaraTestHelpers::Assertions
+module Capybara::Compose::Assertions
   # Public: Returns a test helper with a positive assertion state.
   # Any assertions called after it will execute as `expect(...).to ...`.
   def should(negated = false)
@@ -62,7 +67,7 @@ module CapybaraTestHelpers::Assertions
     have_title
     have_no_title
   ].each do |method_name|
-    CapybaraTestHelpers.define_helper_method(self, method_name, assertion: true)
+    Capybara::Compose.define_helper_method(self, method_name, assertion: true)
   end
 
   %i[
@@ -83,14 +88,14 @@ module CapybaraTestHelpers::Assertions
     match_style
     have_style
   ].each do |method_name|
-    CapybaraTestHelpers.define_helper_method(self, method_name, target: :to_capybara_node, assertion: true)
+    Capybara::Compose.define_helper_method(self, method_name, target: :to_capybara_node, assertion: true)
   end
 
   %i[
     have_current_path
     have_no_current_path
   ].each do |method_name|
-    CapybaraTestHelpers.define_helper_method(self, method_name, target: :page, assertion: true, inject_test_helper: false)
+    Capybara::Compose.define_helper_method(self, method_name, target: :page, assertion: true, inject_test_helper: false)
   end
 
   # Public: Allows to call have_selector with a shorter syntax.
@@ -112,11 +117,15 @@ module CapybaraTestHelpers::Assertions
 
 private
 
+  BE_PREDICATE_REGEX = /^(?:be_(?:an?_)?)(.*)/
+  HAS_REGEX = /^(?:have_)(.*)/
+  DYNAMIC_MATCHER_REGEX = Regexp.union(BE_PREDICATE_REGEX, HAS_REGEX)
+
   # Internal: Override the method_missing defined in RSpec::Matchers to avoid
   # accidentally calling a predicate or has matcher instead of an assertion.
   def method_missing(method, *args, **kwargs, &block)
     case method.to_s
-    when CapybaraTestHelpers::TestHelper::DYNAMIC_MATCHER_REGEX
+    when DYNAMIC_MATCHER_REGEX
       raise NoMethodError, "undefined method `#{ method }' for #{ inspect }.\nUse `delegate_to_test_context(:#{ method })` in the test helper class if you plan to use it often, or `test_context.#{ method }` as needed in the instance."
     else
       super
@@ -126,7 +135,7 @@ private
   # Internal: Override the method_missing defined in RSpec::Matchers to avoid
   # accidentally calling a predicate or has matcher instead of an assertion.
   def respond_to_missing?(method, *)
-    return false if method =~ CapybaraTestHelpers::TestHelper::DYNAMIC_MATCHER_REGEX
+    return false if method =~ DYNAMIC_MATCHER_REGEX
 
     super
   end

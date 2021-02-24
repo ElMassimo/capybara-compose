@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'capybara_test_helpers'
+require 'capybara/compose'
 require 'rails/generators/named_base'
 
 # Internal: Generates a new test helper file in the appropriate directory.
@@ -10,7 +10,7 @@ class TestHelperGenerator < Rails::Generators::NamedBase
   end
 
   def create_helper_file
-    create_file("#{ CapybaraTestHelpers.config.helpers_paths.first }/#{ file_name }_test_helper.rb") {
+    create_file("#{ Capybara::Compose.config.helpers_paths.first }/#{ file_name }_test_helper.rb") {
       <<~CAPYBARA_TEST_HELPER
         # frozen_string_literal: true
 

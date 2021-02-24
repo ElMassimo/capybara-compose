@@ -1,35 +1,32 @@
 # frozen_string_literal: true
 
-require 'capybara/rspec'
+# NOTE: Optional dependencies.
+require 'capybara/rspec' rescue nil
+require 'capybara/minitest' rescue nil
 
 require 'active_support/core_ext/module/delegation'
 require 'active_support/core_ext/string/inflections'
 require 'active_support/core_ext/object/blank'
-
-require 'capybara_test_helpers/selectors'
-require 'capybara_test_helpers/synchronization'
-require 'capybara_test_helpers/finders'
-require 'capybara_test_helpers/actions'
-require 'capybara_test_helpers/assertions'
-require 'capybara_test_helpers/matchers'
 
 # Public: Base class to create test helpers that have full access to the
 # Capybara DSL, while easily defining custom assertions, getters, and actions.
 #
 # It also supports locator aliases to prevent duplication and keep tests easier
 # to understand and to maintain.
-class CapybaraTestHelpers::TestHelper
-  include RSpec::Matchers
-  include RSpec::Mocks::ExampleMethods
-  include Capybara::DSL
-  include CapybaraTestHelpers::Selectors
-  include CapybaraTestHelpers::Synchronization
-  include CapybaraTestHelpers::Finders
-  include CapybaraTestHelpers::Actions
-  include CapybaraTestHelpers::Assertions
-  include CapybaraTestHelpers::Matchers
+class Capybara::Compose::TestHelper
+  include RSpec::Matchers rescue nil
+  include RSpec::Mocks::ExampleMethods rescue nil
+  include Capybara::Minitest::Assertions rescue nil
 
-  undef_method(*CapybaraTestHelpers::SKIPPED_DSL_METHODS)
+  include Capybara::DSL
+  include Capybara::Compose::Selectors
+  include Capybara::Compose::Synchronization
+  include Capybara::Compose::Finders
+  include Capybara::Compose::Actions
+  include Capybara::Compose::Assertions
+  include Capybara::Compose::Matchers
+
+  undef_method(*Capybara::Compose::SKIPPED_DSL_METHODS)
 
   attr_reader :query_context, :test_context
 
@@ -165,12 +162,10 @@ private
 
     # Internal: Fail early if a reserved method is redefined.
     def method_added(method_name)
-      return unless CapybaraTestHelpers::RESERVED_METHODS.include?(method_name)
+      return unless Capybara::Compose::RESERVED_METHODS.include?(method_name)
 
       raise "A method with the name #{ method_name.inspect } is part of the Capybara DSL," \
         ' overriding it could cause unexpected issues that could be very hard to debug.'
     end
   end
 end
-
-Capybara::TestHelper = CapybaraTestHelpers::TestHelper unless defined?(Capybara::TestHelper)
