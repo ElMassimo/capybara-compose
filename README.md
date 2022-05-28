@@ -2,7 +2,7 @@
 [guide]: https://capybara-test-helpers.netlify.app/guide/
 [api]: https://capybara-test-helpers.netlify.app/api/
 [design patterns]: https://capybara-test-helpers.netlify.app/guide/advanced/design-patterns
-[installation]: https://capybara-test-helpers.netlify.app/installation
+[installation]: https://capybara-test-helpers.netlify.app/guide/installation
 [capybara]: https://github.com/teamcapybara/capybara
 [cucumber]: https://github.com/cucumber/cucumber-ruby
 [current context]: https://capybara-test-helpers.netlify.app/guide/essentials/current-context

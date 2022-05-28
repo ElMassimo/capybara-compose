@@ -1,72 +1,15 @@
-.theme {
-  --accent-color: rgb(238, 115, 38);
-  --sidebar-width: 18rem;
+:root {
+  --vp-c-green: rgb(238, 115, 38);
+  --vp-c-green-light: #f38b54;
+  --vp-c-green-lighter: #faa77a;
+  --vp-c-green-dark: #cb4e00;
+  --vp-c-green-darker: #652802;
+
+  --vp-c-green-dimm-1: rgba(238, 115, 38, 0.5);
+  --vp-c-green-dimm-2: rgba(238, 115, 38, 0.25);
+  --vp-c-green-dimm-3: rgba(238, 115, 38, 0.05);
 }
 
-.hero img {
-  border-radius: 30%;
-}
-
-.home .nav-link {
-  border-color: #DC3008;
-}
-
-.home .nav-link:hover {
-  background-color: #f38b54;
-}
-
-.nav-link:active, .nav-link:hover {
-  text-decoration: none;
-}
-
-a.sidebar-link:hover {
-  text-decoration: none;
-}
-
-.content > div:first-child a {
-  color: #cb4e00;
-}
-
-.custom-block {
-  border-bottom-right-radius: 2px;
-  border-top-right-radius: 2px;
-  position: relative;
-}
-
-.custom-block.custom-block.tip {
-  background-color: #f7f5f3;
-  border-color: #f38b54;
-}
-
-.custom-block:before {
-  position: absolute;
-  top: 19px;
-  left: -14px;
-  color: #fff;
-  width: 20px;
-  height: 20px;
-  border-radius: 100%;
-  text-align: center;
-  line-height: 20px;
-  font-weight: 700;
-  font-size: 14px;
-}
-
-.custom-block.tip:before {
-  content: url(/icons/bulb.svg);
-  width: 25px;
-  height: 25px;
-  left: -16px;
-}
-
-details > summary {
-  cursor: pointer;
-}
-
-h2 {
-  margin-block-start: 1em;
-}
-
-h3 {
-  margin-block-start: 1.5em;
+.VPNavBar.has-sidebar .content {
+  background: var(--vp-c-bg);
 }

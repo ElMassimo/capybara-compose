@@ -1,5 +1,5 @@
 ---
-sidebar: auto
+outline: deep
 ---
 
 [el convention]: /guide/essentials/current-context.html#current-element
@@ -778,7 +778,7 @@ Check the [guide][Assertions] for a quick tour.
 
 To use an assertion, call [`should`][should] or [`should_not`][should_not], and then chain the assertion.
 
-Negated versions are available, such as `have_no_selector` and `not_match_selector`, but are omitted for brevity as they work exactly the same as using [`should_not`](should_not) with a positive assertion.
+Negated versions are available, such as `have_no_selector` and `not_match_selector`, but are omitted for brevity as they work exactly the same as using [`should_not`][should_not] with a positive assertion.
 
 ::: tip
 [Injected][composition] test helpers will preserve the _[assertion state]_ of the current helper.
