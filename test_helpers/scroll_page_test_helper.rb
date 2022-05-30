@@ -22,14 +22,14 @@ class ScrollPageTestHelper < BaseTestHelper
   end
 
   def viewport_bottom
-    evaluate_script('document.body.clientHeight')
+    evaluate_script('document.documentElement.clientHeight')
   end
 
   def max_scroll
     if current_element?
       evaluate_script('this.scrollHeight - this.clientHeight')
     else
-      evaluate_script('document.documentElement.scrollHeight - document.body.clientHeight')
+      evaluate_script('document.documentElement.scrollHeight - document.documentElement.clientHeight')
     end
   end
 

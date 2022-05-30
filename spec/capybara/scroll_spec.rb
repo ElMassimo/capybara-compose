@@ -39,7 +39,7 @@ RSpec.feature 'scroll', driver: :chrome_headless, test_helpers: [:scroll_page] d
   it 'can scroll the window to the vertical center' do
     scroll_page
       .scroll_to(:center)
-      .should.have_scrolled_to(0, scroll_page.max_scroll / 2)
+      .should.have_scrolled_to(0, scroll_page.max_scroll / 2.0)
   end
 
   it 'can scroll the window to specific location' do
@@ -85,7 +85,7 @@ RSpec.feature 'scroll', driver: :chrome_headless, test_helpers: [:scroll_page] d
 
   it 'can scroll the scrolling element to the vertical center' do
     el = scroll_page.scrollable.scroll_to(:center)
-    el.should.have_scroll_coordinates(0, el.max_scroll / 2)
+    el.should.have_scroll_coordinates(0, el.max_scroll / 2.0)
   end
 
   it 'can scroll the scrolling element to specific location' do
