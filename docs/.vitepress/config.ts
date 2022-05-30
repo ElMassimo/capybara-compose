@@ -117,9 +117,19 @@ export default defineConfig({
               text: 'Using with Cucumber',
               link: '/guide/cucumber/index.html',
             },
+          ],
+        },
+        {
+          text: 'API',
+          collapsible: false,
+          items: [
             {
-              text: 'API Reference',
+              text: 'Methods Reference',
               link: '/api/',
+            },
+            {
+              text: 'Selectors Reference',
+              link: '/api/selectors',
             },
           ],
         },

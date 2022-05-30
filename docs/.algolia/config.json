@@ -14,29 +14,10 @@
       "page_rank": 2
     },
     {
-      "url": "https://capybara-test-helpers.netlify.app/",
+      "url": "https://capybara-test-helpers.netlify.app/guide/introduction.html",
       "tags": ["guide"],
       "page_rank": 3
     }
-  ],
-  "stop_urls": [
-    "https://capybara-test-helpers.netlify.app/guide/introduction.html",
-    "https://capybara-test-helpers.netlify.app/guide/installation.html",
-    "https://capybara-test-helpers.netlify.app/guide/index.html",
-    "https://capybara-test-helpers.netlify.app/guide/essentials/actions.html",
-    "https://capybara-test-helpers.netlify.app/guide/essentials/finders.html",
-    "https://capybara-test-helpers.netlify.app/guide/essentials/querying.html",
-    "https://capybara-test-helpers.netlify.app/guide/essentials/assertions.html",
-    "https://capybara-test-helpers.netlify.app/guide/essentials/aliases.html",
-    "https://capybara-test-helpers.netlify.app/guide/essentials/current-context.html",
-    "https://capybara-test-helpers.netlify.app/guide/essentials/injection.html",
-    "https://capybara-test-helpers.netlify.app/guide/advanced/assertions.html",
-    "https://capybara-test-helpers.netlify.app/guide/advanced/composition.html",
-    "https://capybara-test-helpers.netlify.app/guide/advanced/debugging.html",
-    "https://capybara-test-helpers.netlify.app/guide/advanced/design-patterns.html",
-    "https://capybara-test-helpers.netlify.app/guide/advanced/filtering.html",
-    "https://capybara-test-helpers.netlify.app/guide/advanced/synchronization.html",
-    "https://capybara-test-helpers.netlify.app/guide/cucumber/index.html"
   ],
   "selectors": {
     "default": {
