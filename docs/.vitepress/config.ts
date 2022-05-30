@@ -47,7 +47,7 @@ export default defineConfig({
       {
         text: 'Changelog',
         link:
-          'https://github.com/ElMassimo/capybara_test_helpers/blob/master/CHANGELOG.md',
+          'https://github.com/ElMassimo/capybara_test_helpers/blob/main/CHANGELOG.md',
       },
     ],
 
