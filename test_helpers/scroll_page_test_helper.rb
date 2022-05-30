@@ -52,13 +52,13 @@ class ScrollPageTestHelper < BaseTestHelper
       # Testing access to RSpec matcher.
       expect(current_coordinates).to all(be_a(Numeric))
 
-      expect(current_coordinates).to eq coordinates
+      expect(current_coordinates.map(&:to_i)).to eq coordinates.map(&:to_i)
     }
   end
 
   def have_scroll_coordinates(*coordinates)
     synchronize_expectation {
-      expect(evaluate_script('[this.scrollLeft, this.scrollTop]')).to eq coordinates
+      expect(evaluate_script('[this.scrollLeft, this.scrollTop]').map(&:to_i)).to eq coordinates.map(&:to_i)
     }
   end
 
