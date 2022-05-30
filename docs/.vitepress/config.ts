@@ -8,7 +8,7 @@ if (process.env.NODE_ENV === 'production')
 export default defineConfig({
   lang: 'en-US',
   title: 'Capybara Test Helpers',
-  description: 'The perfect companion for your integration tests.',
+  description: 'Easily write fluent integration tests.',
   head,
   themeConfig: {
     algolia: {

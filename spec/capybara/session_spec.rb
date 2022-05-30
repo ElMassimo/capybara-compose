@@ -95,7 +95,7 @@ RSpec.describe 'Capybara::Session', driver: :chrome_headless, type: :feature, he
       visit_page(:form)
       form_page
         .fill_in(:first_name_input, with: long_string, fill_options: { clear: :none })
-        .should.have_value('John' + long_string)
+        .should.have_value("John#{ long_string }")
     end
   end
 

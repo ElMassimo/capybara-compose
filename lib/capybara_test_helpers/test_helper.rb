@@ -165,6 +165,7 @@ private
 
     # Internal: Fail early if a reserved method is redefined.
     def method_added(method_name)
+      super
       return unless CapybaraTestHelpers::RESERVED_METHODS.include?(method_name)
 
       raise "A method with the name #{ method_name.inspect } is part of the Capybara DSL," \

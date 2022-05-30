@@ -359,9 +359,9 @@ RSpec.feature 'node', test_helpers: [:html_page, :form_page, :js_page] do
 
   describe '#==' do
     it 'preserve object identity' do
-      expect(html_page.find(:xpath, '//h1') == html_page.find(:xpath, '//h1')).to be true # rubocop:disable Lint/UselessComparison
+      expect(html_page.find(:xpath, '//h1') == html_page.find(:xpath, '//h1')).to be true
       expect(html_page.find(:xpath, '//h1') == html_page.find(:xpath, '//h1').to_capybara_node).to be true
-      expect(html_page.find(:xpath, '//h1') === html_page.find(:xpath, '//h1')).to be true # rubocop:disable Style/CaseEquality, Lint/UselessComparison
+      expect(html_page.find(:xpath, '//h1') === html_page.find(:xpath, '//h1')).to be true # rubocop:disable Style/CaseEquality
       expect(html_page.find(:xpath, '//h1').eql?(html_page.find(:xpath, '//h1'))).to be false
     end
 

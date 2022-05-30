@@ -44,7 +44,7 @@ private
     args_str = args.map(&:inspect)
     [
       '  ' * @@indentation_level,
-      Rainbow(self.class.name.chomp('TestHelper') + '#').slategray.rjust(40),
+      Rainbow("#{ self.class.name.chomp('TestHelper') }#").slategray.rjust(40),
       Rainbow(method_name.to_s).cyan,
       Rainbow("(#{ args_str.join(', ') })").slategray,
       '  ',

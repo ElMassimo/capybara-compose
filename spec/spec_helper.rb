@@ -13,7 +13,6 @@ require 'rspec/expectations'
 
 require 'pry-byebug'
 
-require 'rspec/expectations'
 require 'capybara'
 require 'capybara/rspec'
 require 'capybara/spec/spec_helper'

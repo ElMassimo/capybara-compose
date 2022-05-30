@@ -29,11 +29,9 @@ module DefaultTestHelpers
     stream.reopen(old_stream)
   end
 
-  def quietly
-    silence_stream(STDOUT) do
-      silence_stream(STDERR) do
-        yield
-      end
+  def quietly(&block)
+    silence_stream($stdout) do
+      silence_stream($stderr, &block)
     end
   end
 end

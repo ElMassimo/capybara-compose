@@ -104,3 +104,6 @@ Security/YAMLLoad:
 
 Style/MutableConstant:
   Enabled: false
+
+Style/OptionalBooleanParameter:
+  Enabled: false

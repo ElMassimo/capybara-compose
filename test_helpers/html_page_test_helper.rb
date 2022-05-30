@@ -28,7 +28,7 @@ class HtmlPageTestHelper < BaseTestHelper
     first_paragraph_in_xpath: [:paragraph, '[@id="first"]'],
     input_with_spellcheck: [:xpath, '//input[@spellcheck="TRUE"]'],
     input_without_spellcheck: [:xpath, '//input[@spellcheck="FALSE"]'],
-    inner_element: ['div *', visible: :all],
+    inner_element: ['div *', { visible: :all }],
 
     # All Spec
     title_or_paragraph: 'h1, p',
