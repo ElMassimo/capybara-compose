@@ -14,7 +14,7 @@
       "page_rank": 2
     },
     {
-      "url": "https://capybara-test-helpers.netlify.app/guide/introduction.html",
+      "url": "https://capybara-test-helpers.netlify.app/guide/",
       "tags": ["guide"],
       "page_rank": 3
     }
@@ -76,5 +76,6 @@
     "attributesForFaceting": [
       "lang"
     ]
-  }
+  },
+  "js_render": true
 }
