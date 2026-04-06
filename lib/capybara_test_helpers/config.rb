@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'capybara/rspec'
+require 'set'
+require 'zeitwerk'
 
 # Internal: Configuration for Provides the basic functionality to create simple test helpers.
 module CapybaraTestHelpers
@@ -38,7 +40,47 @@ module CapybaraTestHelpers
   def self.config
     @config ||= OpenStruct.new(DEFAULTS)
     yield @config if block_given?
+    sync_helpers_loader!
     @config
+  end
+
+
+  def self.helpers_loader
+    return @helpers_loader if defined?(@helpers_loader)
+
+    @helpers_loader = Zeitwerk::Loader.new.tap do |loader|
+      loader.inflector.inflect('test_helper' => 'TestHelper')
+      loader.enable_reloading
+      loader.on_load do |_cpath, value, _abspath|
+        initialize_test_helper_class!(value)
+      end
+    end
+  end
+
+  def self.sync_helpers_loader!
+    loader = helpers_loader
+    desired_paths = config.helpers_paths.map { |path| File.expand_path(path) }.uniq
+
+    current_paths = loader.dirs.to_a
+    (current_paths - desired_paths).each { |path| loader.unregister(path) }
+    (desired_paths - current_paths).each { |path| loader.push_dir(path) if Dir.exist?(path) }
+
+    if @helpers_loader_setup
+      loader.reload
+    else
+      loader.setup
+      @helpers_loader_setup = true
+    end
+    true
+  end
+
+  def self.initialize_test_helper_class!(klass)
+    return klass unless klass.is_a?(Class) && klass <= Capybara::TestHelper
+    return klass if klass.instance_variable_defined?(:@capybara_test_helpers_initialized)
+
+    klass.on_test_helper_load
+    klass.instance_variable_set(:@capybara_test_helpers_initialized, true)
+    klass
   end
 
   # Internal: Allows to define methods that are a part of the Capybara DSL, as

@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 RSpec.feature 'Wrapping Test Helpers', test_helpers: [:html_page, :form_page] do
+
+  it 'autoloads helper constants used directly to wrap elements' do
+    visit_page(:html)
+    wrapped = HtmlPageTestHelper.new(page).wrap_element(find('p'))
+    expect(wrapped).to be_a(HtmlPageTestHelper)
+  end
+
   it 'wraps elements as expected' do
     visit_page(:html)
     expect(html_page.first_paragraph).to be_a(HtmlPageTestHelper)

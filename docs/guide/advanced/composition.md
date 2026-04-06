@@ -113,8 +113,6 @@ Another way to share functionality between test helpers is to use inheritance.
 Just like methods, any [aliases] defined in ancestors will also be available in the subclass.
 
 ```ruby
-Capybara.get_test_helper_class(:table) # or require_relative './table_test_helper'
-
 class UsersTestHelper < TableTestHelper
   aliases(
     el: '.users'
