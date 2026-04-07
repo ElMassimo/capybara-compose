@@ -11,7 +11,7 @@ SimpleCov.start {
 require 'bundler/setup'
 require 'rspec/expectations'
 
-require 'pry-byebug'
+require 'pry-byebug' unless ENV['CI']
 
 require 'capybara'
 require 'capybara/rspec'

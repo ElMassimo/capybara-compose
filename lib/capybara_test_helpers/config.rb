@@ -39,38 +39,35 @@ module CapybaraTestHelpers
   # Public: Returns the current configuration for the test helpers.
   def self.config
     @config ||= OpenStruct.new(DEFAULTS)
-    yield @config if block_given?
-    sync_helpers_loader!
+    if block_given?
+      yield @config
+      sync_helpers_loader!
+    end
     @config
   end
 
 
   def self.helpers_loader
-    return @helpers_loader if defined?(@helpers_loader)
-
-    @helpers_loader = Zeitwerk::Loader.new.tap do |loader|
-      loader.inflector.inflect('test_helper' => 'TestHelper')
-      loader.enable_reloading
-      loader.on_load do |_cpath, value, _abspath|
-        initialize_test_helper_class!(value)
-      end
-    end
+    @helpers_loader ||= build_helpers_loader
   end
 
   def self.sync_helpers_loader!
     loader = helpers_loader
-    desired_paths = config.helpers_paths.map { |path| File.expand_path(path) }.uniq
+    configured_paths = (@config || OpenStruct.new(DEFAULTS)).helpers_paths
+    desired_paths = configured_paths.map { |path| File.expand_path(path) }.uniq
 
-    current_paths = loader.dirs.to_a
-    (current_paths - desired_paths).each { |path| loader.unregister(path) }
-    (desired_paths - current_paths).each { |path| loader.push_dir(path) if Dir.exist?(path) }
+    return true if @helpers_loader_setup && @helpers_loader_paths == desired_paths
 
     if @helpers_loader_setup
-      loader.reload
-    else
-      loader.setup
-      @helpers_loader_setup = true
+      loader.unregister
+      @helpers_loader = build_helpers_loader
+      loader = @helpers_loader
     end
+
+    desired_paths.each { |path| loader.push_dir(path) if Dir.exist?(path) }
+    loader.setup
+    @helpers_loader_setup = true
+    @helpers_loader_paths = desired_paths
     true
   end
 
@@ -81,6 +78,16 @@ module CapybaraTestHelpers
     klass.on_test_helper_load
     klass.instance_variable_set(:@capybara_test_helpers_initialized, true)
     klass
+  end
+
+  def self.build_helpers_loader
+    Zeitwerk::Loader.new.tap do |loader|
+      loader.inflector.inflect('test_helper' => 'TestHelper')
+      loader.enable_reloading
+      loader.on_load do |_cpath, value, _abspath|
+        initialize_test_helper_class!(value)
+      end
+    end
   end
 
   # Internal: Allows to define methods that are a part of the Capybara DSL, as

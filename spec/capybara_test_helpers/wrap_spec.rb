@@ -4,7 +4,7 @@ RSpec.feature 'Wrapping Test Helpers', test_helpers: [:html_page, :form_page] do
 
   it 'autoloads helper constants used directly to wrap elements' do
     visit_page(:html)
-    wrapped = HtmlPageTestHelper.new(page).wrap_element(find('p'))
+    wrapped = HtmlPageTestHelper.new(page).wrap_element(find('p', text: 'Lorem ipsum dolor sit amet'))
     expect(wrapped).to be_a(HtmlPageTestHelper)
   end
 

@@ -63,7 +63,7 @@ private
     def benchmark_all
       return if defined?(@benchmarked_all)
 
-      benchmark(instance_methods - superclass.instance_methods - [:lazy_for])
+      benchmark(instance_methods(false) - [:lazy_for])
       @benchmarked_all = true
     end
 
