@@ -54,8 +54,9 @@ module CapybaraTestHelpers
   def self.sync_helpers_loader!
     loader = helpers_loader
     desired_paths = configured_helpers_paths
+    current_paths = loader.dirs.to_a
 
-    return true if @helpers_loader_setup && loader.dirs.to_a == desired_paths
+    return true if @helpers_loader_setup && current_paths == desired_paths
 
     if @helpers_loader_setup
       loader.unregister
@@ -89,7 +90,7 @@ module CapybaraTestHelpers
   end
 
   def self.configured_helpers_paths
-    (@config&.helpers_paths || DEFAULTS[:helpers_paths]).map { |path| File.expand_path(path) }.uniq
+    config.helpers_paths.map { |path| File.expand_path(path) }.uniq
   end
 
   # Internal: Allows to define methods that are a part of the Capybara DSL, as
