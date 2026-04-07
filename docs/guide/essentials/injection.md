@@ -82,6 +82,8 @@ The following convention is applied when injecting test helpers:
 
 Test helpers should be located in a `test_helpers` folder at the root of your project.
 
+Test helpers are loaded lazily, both when injected with `use_test_helpers` and when referenced directly as constants (for example when subclassing another helper).
+
 You may configure a different location by configuring `helpers_paths`:
 
 ```ruby

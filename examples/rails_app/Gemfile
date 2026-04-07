@@ -27,9 +27,9 @@ gem 'turbolinks', '~> 5'
 gem 'bootsnap', '>= 1.4.2', require: false
 
 group :development, :test do
-  gem 'pry-byebug'
-  gem 'pry-rescue'
-  gem 'pry-stack_explorer'
+  gem 'pry-byebug', require: false
+  gem 'pry-rescue', require: false
+  gem 'pry-stack_explorer', require: false
   gem 'rainbow'
 end
 

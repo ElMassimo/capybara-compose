@@ -5,6 +5,10 @@ RSpec.feature 'Inheritance', test_helpers: [:person_form] do
     visit '/form'
   end
 
+  it 'autoloads a parent helper when subclassing by constant' do
+    expect(PersonFormTestHelper.superclass).to eq(FormPageTestHelper)
+  end
+
   it 'inherits locator aliases from parent class' do
     person_form.within {
       title = person_form.title
