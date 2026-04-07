@@ -53,10 +53,9 @@ module CapybaraTestHelpers
 
   def self.sync_helpers_loader!
     loader = helpers_loader
-    configured_paths = (@config || OpenStruct.new(DEFAULTS)).helpers_paths
-    desired_paths = configured_paths.map { |path| File.expand_path(path) }.uniq
+    desired_paths = configured_helpers_paths
 
-    return true if @helpers_loader_setup && @helpers_loader_paths == desired_paths
+    return true if @helpers_loader_setup && loader.dirs.to_a == desired_paths
 
     if @helpers_loader_setup
       loader.unregister
@@ -67,7 +66,6 @@ module CapybaraTestHelpers
     desired_paths.each { |path| loader.push_dir(path) if Dir.exist?(path) }
     loader.setup
     @helpers_loader_setup = true
-    @helpers_loader_paths = desired_paths
     true
   end
 
@@ -88,6 +86,10 @@ module CapybaraTestHelpers
         initialize_test_helper_class!(value)
       end
     end
+  end
+
+  def self.configured_helpers_paths
+    (@config&.helpers_paths || DEFAULTS[:helpers_paths]).map { |path| File.expand_path(path) }.uniq
   end
 
   # Internal: Allows to define methods that are a part of the Capybara DSL, as
