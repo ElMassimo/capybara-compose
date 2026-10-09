@@ -10,15 +10,15 @@ module CapybaraTestHelpers::Synchronization
   EXPECTATION_ERRORS = [
     ExpectationError,
     Capybara::ElementNotFound,
-    (Selenium::WebDriver::Error::StaleElementReferenceError if defined?(Selenium::WebDriver::Error::StaleElementReferenceError)),
-  ].compact.freeze
+  ].freeze
 
 protected
 
   # Public: Can be used to make an asynchronous expectation, that will be
   # retried until the max wait time configured in Capybara.
   def synchronize_expectation(retry_on_errors: [], **options)
-    synchronize(errors: EXPECTATION_ERRORS + retry_on_errors, **options) {
+    errors = EXPECTATION_ERRORS + page.driver.invalid_element_errors + retry_on_errors
+    synchronize(errors: errors.uniq, **options) {
       begin
         yield
       rescue RSpec::Expectations::ExpectationNotMetError => error

@@ -1,3 +1,7 @@
+## Unreleased ##
+
+* Preserve the active Capybara driver's transient element errors in asynchronous assertions.
+
 ## Capybara Test Helpers 1.0.4 (2020-11-26) ##
 
 * Add `have_no` alias for `have_no_selector`.
