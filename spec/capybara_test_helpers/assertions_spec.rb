@@ -33,6 +33,18 @@ RSpec.feature 'assertions', test_helpers: [:form_page] do
         .to raise_error(RSpec::Expectations::ExpectationNotMetError, /got: "Jim"/)
     end
 
+    it 'reloads an input replaced before a Cuprite assertion', driver: :cuprite do
+      middle_name = form.find_field('Middle Name')
+      page.execute_script(<<~JS, middle_name)
+        const input = arguments[0];
+        const replacement = input.cloneNode(true);
+        replacement.value = 'Jim';
+        input.replaceWith(replacement);
+      JS
+
+      middle_name.should.have_value('Jim', wait: 1)
+    end
+
     it 'should wait asynchronously for the specified time', driver: :chrome_headless do
       form.find_field('Middle Name')
         .set_with_delay('Jim', delay: 1)
